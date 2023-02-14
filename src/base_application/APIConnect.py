@@ -20,10 +20,9 @@ def index():
     }
     return make_response(jsonify(answer), 200)
 
+
 @app.route("/api/test")
 def testAPI():
     file_path = "C:\University\Semester_2\Project6.1\Project-6.1_Code\src\resources\mt940Example.txt"
     transaction = parse_mt940_file(file_path)
-    return make_response(json.loads(json_util.dumps(transaction)),200)
-
-
+    return make_response(json.loads(json_util.dumps(transaction)), 200)
