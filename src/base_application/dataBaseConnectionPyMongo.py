@@ -13,8 +13,8 @@ def get_database():
 
 
 def get_collection():
-    dbname = get_database()
-    transactions_collection = dbname["Transactions"]
+    namedb = get_database()
+    transactions_collection = namedb["Transactions"]
     return transactions_collection
 
 
