@@ -46,3 +46,18 @@ def get_all_transactions():
         output_transactions.append(trans)
 
     return make_response(json.loads(json_util.dumps(output_transactions)), 200)
+
+
+@app.route("/api/uploadFile", methods=["POST"])
+def file_upload():
+    if "file" not in request.files:
+        return make_response(jsonify(error="No file found"), 400)
+
+    # Implement file contents check here
+
+    file = request.files["file"]
+
+    transaction = parse_mt940_file(file)
+    transactions_collection.insert_one(transaction)
+
+    return make_response(json.loads(json_util.dumps(transaction)), 200)
