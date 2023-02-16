@@ -1,10 +1,11 @@
 import json
 
 from flask import jsonify, request, make_response
-from utils import parse_mt940_file
+from utils import parse_mt940_file, check_mt940_file
 from bson import json_util, ObjectId
 # Get instances of Flask App and MongoDB collection from __init__ file
 from src.base_application import app, transactions_collection
+from bson import ObjectId
 
 
 @app.route("/")
@@ -61,3 +62,7 @@ def file_upload():
     transactions_collection.insert_one(transaction)
 
     return make_response(json.loads(json_util.dumps(transaction)), 200)
+
+@app.route("/api/getTransaction/<transaction_id>", methods=["GET"])
+def get_transaction_by_id():
+    transactions_collection.find_one({"_id": ObjectId(transaction_id)})

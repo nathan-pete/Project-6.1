@@ -13,3 +13,8 @@ def parse_mt940_file(file_path) -> dict:
 
     # Return the dictionary containing the parsed transactions
     return transactions
+
+
+def check_mt940_file():
+    return 1
+
