@@ -5,6 +5,9 @@ def login_admin_page():
     # create the main window
     window = tk.Tk()
     window.geometry("1200x900")
+    window.maxsize(width=1200,height=900)
+    window.minsize(width=1200,height=900)
+
 
     # create two frames side by side
     frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")
@@ -29,7 +32,7 @@ def login_admin_page():
     # add a label and text area to frame1 for Password
     pass_label = tk.Label(frame1, text="Password", font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black", justify="left")
     pass_label.place(x=20, y=350, width=123, height=24)
-    pass_entry = tk.Entry(frame1,show="*", font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
+    pass_entry = tk.Entry(frame1, show="*", font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
     pass_entry.place(x=153, y=350, width=200, height=28)
 
     # add a login button to frame1
@@ -44,6 +47,8 @@ def login_admin_page():
                              command=lambda: print("Back button clicked"))
     login_button.place(x=20, y=700, width=82, height=24)
 
+
+    window.resizable(False,False)
     # run the main loop
     window.mainloop()
 
