@@ -4,13 +4,8 @@ def login_admin_page():
     # create the main window
     window = tk.Tk()
     window.geometry("1200x900")
-<<<<<<< Updated upstream
-    window.maxsize(width=1200,height=900)
-    window.minsize(width=1200,height=900)
 
-=======
     window.resizable(False,False)
->>>>>>> Stashed changes
 
     # create two frames side by side
     frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")
@@ -50,12 +45,6 @@ def login_admin_page():
                              command=lambda: print("Back button clicked"))
     login_button.place(x=20, y=700, width=82, height=24)
 
-
-<<<<<<< Updated upstream
-    window.resizable(False,False)
-=======
-
->>>>>>> Stashed changes
     # run the main loop
     window.mainloop()
 
