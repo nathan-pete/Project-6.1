@@ -15,7 +15,7 @@ def login_admin_page():
     frame2.pack(side="right")
 
     # add a label to frame1 with the specified properties
-    label = tk.Label(frame1, text="Admin Panel", font=("Inter", 25, "normal"), bg="#D9D9D9", fg="black", justify="left")
+    label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
 
     # set the line height to 29 pixels and vertical alignment to top
@@ -40,10 +40,10 @@ def login_admin_page():
     login_button.place(x=200, y=450, width=82, height=24)
 
     # add a back button to frame1
-    login_button = tk.Button(frame1, text="Back", font=("Inter", 12), bg="white", fg="black",
+    back_button = tk.Button(frame1, text="Back", font=("Inter", 12), bg="white", fg="black",
                              bd=0, highlightthickness=0, activebackground="#B3B3B3",
                              command=lambda: print("Back button clicked"))
-    login_button.place(x=20, y=700, width=82, height=24)
+    back_button.place(x=20, y=700, width=82, height=24)
 
     # run the main loop
     window.mainloop()
