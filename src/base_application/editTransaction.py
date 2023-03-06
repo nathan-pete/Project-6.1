@@ -49,7 +49,7 @@ def edit_transaction_page():
     optionmenu_member.place(x=50, y=620, height=30, width=500)
 
     #Save Button
-    button_save = tk.Button(frame_left, text="Save", font=("Inter", 20), bg="#F0AFAF", fg="black", bd=0, highlightthickness=0, activebackground="#B3B3B3", command=get_input_save())
+    button_save = tk.Button(frame_left, text="Save", font=("Inter", 20), bg="#F0AFAF", fg="black", bd=0, highlightthickness=0, activebackground="#B3B3B3", command=get_input_save)
     button_save.place(x=50, y=700, width=500, height=50)
 
     #Back Button
@@ -59,7 +59,16 @@ def edit_transaction_page():
     # Start the window
     window.mainloop()
 
-def get_input_save():
+
+def get_input_save(category, member):
+    # Save to DB
+    print("results")
+    print(category)
+    print(member)
+
+
+
+
 
 
 # For testing TEMPORARY
