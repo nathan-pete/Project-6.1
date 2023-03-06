@@ -5,9 +5,9 @@
 * python 3.6 or higher
 * pip
 * git
-* mt940 
-* mt-940
-* mt940 parser
+* mt-940 4.28
+* pymongo 4.3.3
+* Flask 2.2.2
 
 
 <h3> Installation </h3>
