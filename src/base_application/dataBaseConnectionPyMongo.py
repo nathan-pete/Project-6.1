@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from flask import Flask
 
 
 def get_database():
@@ -17,11 +16,6 @@ def get_collection():
     namedb = get_database()
     transactions_collection = namedb["Transactions"]
     return transactions_collection
-
-
-def get_flask_app():
-    app = Flask(__name__)
-    return app
 
 
 # This is added so that many files can reuse the function get_database()
