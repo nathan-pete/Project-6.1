@@ -2,7 +2,7 @@ import json
 import mt940
 
 def parse_mt940_file(file_path) -> dict:
-    # Parse the contents of the MT940 file
+    # Parse the contents ggof the MT940 file
     transactions = mt940.parse(file_path)
 
     # Convert the parsed transactions to a JSON string
