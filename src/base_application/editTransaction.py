@@ -67,8 +67,4 @@ def get_input_save(category, member, desc):
     print(desc)
 
 
-
-
-
-# For testing TEMPORARY
 edit_transaction_page()
