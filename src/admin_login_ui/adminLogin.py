@@ -4,7 +4,7 @@ import tkinter as tk
 def login_admin_page():
     # create the main window
     window = tk.Tk()
-    window.geometry("1920x1080")
+    window.geometry("1200x900")
 
     window.resizable(False, False)
 
