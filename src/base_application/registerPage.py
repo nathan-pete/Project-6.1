@@ -7,7 +7,7 @@ from userPanel import create_window
 def register_page():
     # Create the main window
     root = tk.Tk()
-    root.title("Register a user")
+    root.title("Sports Accounting - Register a user")
     root.geometry("1200x900")
 
     def button_click():

@@ -12,7 +12,7 @@ def create_window():
 
     # Create the main window
     root = tk.Tk()
-    root.title("Tkinter Window")
+    root.title("Sports Accounting - Register a user")
     root.geometry("1200x900")
 
     def admin_login_button_click():

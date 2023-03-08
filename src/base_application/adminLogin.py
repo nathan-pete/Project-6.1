@@ -5,6 +5,7 @@ def login_admin_page():
     # create the main window
     window = tk.Tk()
     window.geometry("1200x900")
+    window.title("Sports Accounting - Register a user")
 
     window.resizable(False, False)
 

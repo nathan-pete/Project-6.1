@@ -9,7 +9,7 @@ from dataBaseConnectionPyMongo import get_database, get_collection
 class MainWindow:
     def __init__(self, master):
         self.master = master
-        self.master.title("MT940 Parser")
+        self.master.title("Sports Accounting - MT940 Parser")
 
         # Create the "Select File" button
         self.select_file_button = Button(self.master, text="Select File", command=self.select_file)
