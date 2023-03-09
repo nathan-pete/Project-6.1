@@ -9,11 +9,11 @@ def login_admin_page():
 
     window.resizable(False, False)
 
-    def login_button_click():
-        print("Login Pressed")
+    def login_button_click(user, password):
+        print(user, password)
+        # Check credentials
 
     def back_button_click():
-        # Save to DB
         window.destroy()
 
 
@@ -48,7 +48,7 @@ def login_admin_page():
     # add a login button to frame1
     login_button = tk.Button(frame1, text="Login", font=("Inter", 12), bg="white", fg="black",
                              bd=0, highlightthickness=0, activebackground="#B3B3B3",
-                             command=login_button_click)
+                             command=lambda: login_button_click(user_entry.get(), pass_entry.get()))
     login_button.place(x=200, y=450, width=82, height=24)
 
     # add a back button to frame1
