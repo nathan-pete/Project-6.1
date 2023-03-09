@@ -64,7 +64,7 @@ def get_input_save(category, member, desc):
     print("results")
     print(category)
     print(member)
-    print(desc)
+    print(desc[0:126])
 
 
 edit_transaction_page()

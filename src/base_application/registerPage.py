@@ -10,8 +10,9 @@ def register_page():
     root.title("Sports Accounting - Register a user")
     root.geometry("1200x900")
 
-    def button_click():
+    def button_click(name, password, iban):
         # Save to DB
+        print(name, password, iban)
         root.destroy()
         create_window()
 
@@ -50,7 +51,7 @@ def register_page():
     iban.place(x=160, y=390, width=300, height=30)
     iban.insert(0, "iban")
 
-    button1 = ttk.Button(left_frame, text="Sign up", command=button_click)
+    button1 = ttk.Button(left_frame, text="Sign up", command=lambda: button_click(assoc_name.get(), passwd.get(), iban.get()))
 
     button1.place(x=140, y=500, width=300, height=60)
 
