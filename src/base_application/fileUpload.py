@@ -39,9 +39,13 @@ class MainWindow:
         # with open(json_file_path, "w") as json_file:
         #     json.dump(statements, json_file, indent=4)
 
+        #Check MT940 file
+
         #Save to DB
         transactions_collection = get_collection()
         transactions_collection.insert_one(parse_mt940_file(self.file_path))
+
+        # Close Window
 
 
 
