@@ -69,6 +69,22 @@ def adminPanel():
     # def clickmanageMembers():
     #     print("clicked")
 
+    class Table:
+
+        def __init__(frame2, total_rows, total_columns, lst):
+
+            # code for creating table
+            for i in range(total_rows):
+                for j in range(total_columns):
+                    frame2.e = tk.Entry(total_columns, width=20, fg='blue',
+                                        font=('Inter', 14, 'bold'))
+
+                    frame2.e.grid(row=i, column=j)
+                    frame2.e.insert(tk.END, lst[i][j])
+
+            total_rows = len(lst)
+            total_columns = len(lst[0])
+
     window.mainloop()
 
 
