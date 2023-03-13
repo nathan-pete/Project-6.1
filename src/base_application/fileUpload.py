@@ -1,7 +1,7 @@
 import sys
 import mt940
 import json
-from utils import parse_mt940_file, check_tag, check_file_extension
+from utils import parse_mt940_file, check_mt940_file
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
 from dataBaseConnectionPyMongo import get_database, get_collection
@@ -32,7 +32,7 @@ class MainWindow:
     def parse_file(self):
         """Parse the selected MT940 file and save the result as a JSON file."""
         # Check MT940 file
-        if check_file_extension(self.file_path):
+        if check_mt940_file(self.file_path):
             # Check DataBase
             transactions_collection = get_collection()
             transactions_collection.insert_one(parse_mt940_file(self.file_path))

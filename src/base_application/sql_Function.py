@@ -1,5 +1,7 @@
 import sqlite3
 import re
+from utils import parse_mt940_file, check_mt940_file
+from json import *
 
 # Make a regular expression
 # for validating an Email
@@ -244,5 +246,45 @@ def select_From_Member():
         if sqliteConnection:
             sqliteConnection.close()
             print("The SQLite connection is closed")
-#insertIntoMember("Alin","boss@gmail.com")
-print(select_From_Member())
+
+
+def map_mt940_file(file_path):
+    if not check_mt940_file(file_path):
+        #Make a pop up
+        return
+
+    json_transactions = parse_mt940_file(file_path)
+    try:
+        # Db connection
+        sqliteConnection = sqlite3.connect('quintor.db')
+        cursor = sqliteConnection.cursor()
+
+        # Get user's account ID from db
+        splite_select_query = """ SELECT AccountID from Association"""
+        cursor.execute(splite_select_query)
+        records = cursor.fetchall()
+        account_id = records[0][0]
+
+        # Extract values from a JSON into varaibles
+        reference_number = json_transactions["transaction_reference"]
+        statement_number = json_transactions["statement_number"]
+        sequence_detail = json_transactions["sequence_number"]
+        available_balance = json_transactions["available_balance"]["amount"]["amount"]
+        forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
+
+        # Map values into a realtional DB
+        insertIntoFile(reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_id)
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("The SQLite connection is closed")
+
+
+
+# insertIntoAssociation("NL69INGB0123456789EUR", "Test")
+map_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
+
