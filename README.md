@@ -1,4 +1,5 @@
-# Project-6.1
+# Project-6.1 Sports Accounting
+## By NHL Stenden Student Team IT2C for Quintor
 
 <h3> Prequisites </h3>
 
