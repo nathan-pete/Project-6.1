@@ -265,14 +265,14 @@ def map_mt940_file(file_path):
         records = cursor.fetchall()
         account_id = records[0][0]
 
-        # Extract values from a JSON into varaibles
+        # Extract values from a JSON into variables for the File table
         reference_number = json_transactions["transaction_reference"]
         statement_number = json_transactions["statement_number"]
         sequence_detail = str(json_transactions["sequence_number"])
         available_balance = float(json_transactions["available_balance"]["amount"]["amount"])
         forward_available_balance = float(json_transactions["forward_available_balance"]["amount"]["amount"])
 
-        # Map values into a realtional DB
+        # Map values into the File table of relatable DB
         insertIntoFile(reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_id)
         cursor.close()
 
