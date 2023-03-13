@@ -8,6 +8,7 @@
 * mt940 
 * mt-940
 * mt940 parser
+* Sqlite 3
 
 
 <h3> Installation </h3>
