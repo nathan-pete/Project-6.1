@@ -20,11 +20,11 @@
 
 <h3> Authors <h3>
     
-    * Mathew Shardin
-    * Alin Costache
-    * Teodor Folea
-    * Martin Radoychev
-    * Nathan Pais D'Costa
+* Mathew Shardin
+* Alin Costache
+* Teodor Folea
+* Martin Radoychev
+* Nathan Pais D'Costa
 
 
 
