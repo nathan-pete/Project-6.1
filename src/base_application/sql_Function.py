@@ -49,7 +49,7 @@ def insertIntoFile(referenceNumber, statementNumber, sequenceDetail, availableBa
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
         if isinstance(referenceNumber, str):
-            if len(referenceNumber) < 16:
+            if len(referenceNumber) < 17:
                 if isinstance(statementNumber, str):
                     if statementNumber:
                         if isinstance(sequenceDetail, str):
@@ -268,9 +268,9 @@ def map_mt940_file(file_path):
         # Extract values from a JSON into varaibles
         reference_number = json_transactions["transaction_reference"]
         statement_number = json_transactions["statement_number"]
-        sequence_detail = json_transactions["sequence_number"]
-        available_balance = json_transactions["available_balance"]["amount"]["amount"]
-        forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
+        sequence_detail = str(json_transactions["sequence_number"])
+        available_balance = float(json_transactions["available_balance"]["amount"]["amount"])
+        forward_available_balance = float(json_transactions["forward_available_balance"]["amount"]["amount"])
 
         # Map values into a realtional DB
         insertIntoFile(reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_id)
