@@ -18,7 +18,7 @@
     `git clone <repository_link>` 
 2. Install the requirements
 
-<h3> Authors <h3>
+<h3> Authors </h3>
     
 * Mathew Shardin
 * Alin Costache
