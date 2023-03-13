@@ -1,5 +1,5 @@
 # Project-6.1 Sports Accounting
-## By NHL Stenden Student Team IT2C for Quintor
+### By NHL Stenden Student Team IT2C for Quintor
 
 <h3> Prequisites </h3>
 
@@ -17,6 +17,13 @@
 1. Clone requirments
     `git clone <repository_link>` 
 2. Install the requirements
+
+<h3> Authors <h3>
+* Mathew Shardin
+* Alin Costache
+* Teodor Folea
+* Martin Radoychev
+* Nathan Pais D'Costa
 
 
 
