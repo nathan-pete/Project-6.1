@@ -1,6 +1,11 @@
 import tkinter as tk
 
 
+def button_click(email, name):
+    # Save to DB
+    print(email, name)
+
+
 def member_registration_page():
     # create the main window
     window = tk.Tk()
@@ -16,7 +21,8 @@ def member_registration_page():
     frame2.pack(side="right")
 
     # add a label to frame1 with the specified properties
-    label = tk.Label(frame1, text="Member Registration", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
+    label = tk.Label(frame1, text="Member Registration", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black",
+                     justify="left")
     label.place(x=20, y=20, width=300, height=50)
 
     # set the line height to 29 pixels and vertical alignment to top
@@ -45,11 +51,8 @@ def member_registration_page():
     # add a back button to frame1
     back_button = tk.Button(frame1, text="Back", font=("Inter", 12), bg="white", fg="black",
                             bd=0, highlightthickness=0, activebackground="#B3B3B3",
-                            command=lambda: print("Back button clicked"))
+                            command=lambda: button_click(user_entry.get(), pass_entry.get()))
     back_button.place(x=20, y=700, width=82, height=24)
-
-    # run the main loop
-    window.mainloop()
 
 
 member_registration_page()
