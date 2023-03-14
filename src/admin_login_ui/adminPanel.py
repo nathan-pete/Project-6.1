@@ -42,7 +42,7 @@ def adminPanel():
     welcome.place(x=15, y=175, width=190, height=30)
 
     button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left")
-    button.place(x=450, y=175)
+    button.place(x=450, y=175, height=30)
 
     manageMembers = tk.Button(frame1, text="Manage Memberships", font=("Inter", 12, "normal"),
                               bg="#D9D9D9", fg="black", justify="left")
@@ -52,8 +52,7 @@ def adminPanel():
                        bg="#D9D9D9", fg="black", justify="left")
     upload.place(x=300, y=300, width=180, height=30)
 
-    searchBar = tk.Label(frame1, text="_______________________________________________________",
-                         font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black", justify="left")
+    searchBar = tk.Entry(frame1, font=("Inter", 14, "normal"), bg="#D9D9D9", fg="black", justify="left")
     searchBar.place(x=75, y=400, width=180, height=30)
 
     search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
@@ -69,22 +68,22 @@ def adminPanel():
     # def clickmanageMembers():
     #     print("clicked")
 
-    class Table:
-
-        def __init__(frame2, total_rows, total_columns, lst):
-
-            # code for creating table
-            for i in range(total_rows):
-                for j in range(total_columns):
-                    frame2.e = tk.Entry(total_columns, width=20, fg='blue',
-                                        font=('Inter', 14, 'bold'))
-
-                    frame2.e.grid(row=i, column=j)
-                    frame2.e.insert(tk.END, lst[i][j])
-
-            total_rows = len(lst)
-            total_columns = len(lst[0])
-
+    # class Table:
+    #
+    #     def __init__(frame2, total_rows, total_columns, lst):
+    #
+    #         # code for creating table
+    #         for i in range(total_rows):
+    #             for j in range(total_columns):
+    #                 frame2.e = tk.Entry(total_columns, width=20, fg='blue',
+    #                                     font=('Inter', 14, 'bold'))
+    #
+    #                 frame2.e.grid(row=i, column=j)
+    #                 frame2.e.insert(tk.END, lst[i][j])
+    #
+    #     total_rows = len(lst)
+    #     total_columns = len(lst[0])
+    #
     window.mainloop()
 
 
