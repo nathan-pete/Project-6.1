@@ -53,7 +53,7 @@ def member_registration():
     name_label = tk.Label(frame1, text="Name", font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black",
                           justify="left")
     name_label.place(x=20, y=350, width=123, height=24)
-    name_entry = tk.Entry(frame1, show="*", font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
+    name_entry = tk.Entry(frame1, font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
     name_entry.place(x=153, y=350, width=300, height=28)
 
     # add a login button to frame1
