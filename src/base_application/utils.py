@@ -18,9 +18,9 @@ def parse_mt940_file(file_path) -> dict:
 
 def check_mt940_file(file_path):
     if check_tag(file_path) and check_file_extension(file_path):
-        return 1
+        return True
     else:
-        return 0
+        return False
 
 
 def check_tag(file_path):
