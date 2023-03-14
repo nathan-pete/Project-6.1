@@ -1,7 +1,7 @@
 # ----------------------------------------------------- Imports ------------------------------------------------------ #
 import sqlite3
 import tkinter as tk
-from  tkinter import ttk
+from tkinter import ttk
 
 # ----------------------------------------------- Frames and Base Page ----------------------------------------------- #
 window = tk.Tk()
@@ -24,6 +24,21 @@ def save_text():
     input_text = searchBar.get()
     savedText.config(text="Search Results for: " + input_text)
     print("Saved:", input_text)
+
+
+def retrieveDB(table):
+    conn = sqlite3.connect('quintor.db')
+    cursor = conn.cursor()
+    cursor.execute("")
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Clear existing rows in the table
+    table.delete(*table.get_children())
+
+    # Insert retrieved data into the table
+    for row in rows:
+        table.insert("", "end", values=row)
 
 
 # ------------------------------------------------------ Frame 1 ----------------------------------------------------- #
@@ -59,15 +74,43 @@ search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
 search.place(x=300, y=400, width=180, height=30)
 
 # ------------------------------------------------------ Frame 2 ----------------------------------------------------- #
-savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"),  bg="#F0AFAF", fg="black",
+savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
                      justify="left")
 savedText.place(x=20, y=20, width=550, height=50)
 
+table = ttk.Treeview(frame2, columns=("Member ID", "Name", "DoB", "Contact", "Member Since", "Paid"),
+                     show="headings", style="Custom.Treeview")
+table.heading("Member ID", text="Member ID")
+table.heading("Name", text="Name")
+table.heading("DoB", text="DoB")
+table.heading("Contact", text="Contact")
+table.heading("Member Since", text="Member Since")
+table.heading("Paid", text="Paid")
 
+# Looping through the columns and get the heading
+for column in table["columns"]:
+    # Assigning the heading as text of the column
+    table.heading(column, text=column, command=lambda: None)
+    # For each heading we are disabling the property of resizing the column
+    table.bind("<Button-1>", lambda event: "break")
 
+    retrieveDB(table)
 
+# Apply the background color to the entire table
+style = ttk.Style()
+style.configure("Custom.Treeview", background="#F0AFAF")
 
+table.column("Member ID", width=100)  # Set the width of the first column
+table.column("Name", width=100)  # Set the width of the second column
+table.column("DoB", width=50)  # Set the width of the third column
+table.column("Contact", width=100)  # Set the width of the forth column
+table.column("Member Since", width=100)  # Set the width of the fifth
+table.column("Paid", width=50)  # Set the width of the fifth column to 20% of the table width
+table.config(height=2)  # Set the height of the table to 10 rows
 
+table.pack(fill="both", expand=False)  # Fill the frame with the table
+table.place(x=50, y=150)  # Place the table 30 pixels from the left and 150 pixels from the top
+frame2.pack_propagate(False)  # Prevent the frame from resizing to fit the table
 
 # -------------------------------------------------------- Run ------------------------------------------------------- #
 window.mainloop()
