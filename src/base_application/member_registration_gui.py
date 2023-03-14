@@ -1,6 +1,7 @@
 import tkinter as tk
 from sql_Function import *
 
+
 def member_registration():
     # create the main window
     window = tk.Tk()
@@ -9,13 +10,23 @@ def member_registration():
 
     window.resizable(False, False)
 
-    def login_button_click(email, name):
-        print(email, name)
-        # Check credentials
+    def register_button_click(email, name):
+        if check(email):
+            if len(name) <= 0:
+                print("Please enter your name")
+            else:
+                print(email, name)
+                insertIntoMember(name,email)
+                email_entry.delete(first=0, last=30)
+                name_entry.delete(first=0, last=30)
+        else:
+            print("Please enter a valid email")
+            email_entry.delete(first=0, last=30)
+            name_entry.delete(first=0, last=30)
+
 
     def back_button_click():
         window.destroy()
-
 
     # create two frames side by side
     frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")
@@ -33,7 +44,7 @@ def member_registration():
 
     # add a label and text area to frame1 for Email
     email_label = tk.Label(frame1, text="Email", font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black",
-                          justify="left")
+                           justify="left")
     email_label.place(x=20, y=300, width=123, height=24)
     email_entry = tk.Entry(frame1, font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
     email_entry.place(x=153, y=300, width=300, height=28)
@@ -46,10 +57,10 @@ def member_registration():
     name_entry.place(x=153, y=350, width=300, height=28)
 
     # add a login button to frame1
-    login_button = tk.Button(frame1, text="Register", font=("Inter", 12), bg="white", fg="black",
-                             bd=0, highlightthickness=0, activebackground="#B3B3B3",
-                             command=lambda: login_button_click(email_entry.get(), name_entry.get()))
-    login_button.place(x=200, y=450, width=82, height=24)
+    register_button = tk.Button(frame1, text="Register", font=("Inter", 12), bg="white", fg="black",
+                                bd=0, highlightthickness=0, activebackground="#B3B3B3",
+                                command=lambda: register_button_click(email_entry.get(), name_entry.get()))
+    register_button.place(x=200, y=450, width=82, height=24)
 
     # add a back button to frame1
     back_button = tk.Button(frame1, text="Back", font=("Inter", 12), bg="white", fg="black",
@@ -59,5 +70,6 @@ def member_registration():
 
     # run the main loop
     window.mainloop()
+
 
 member_registration()
