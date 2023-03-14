@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from userPanel import create_window
+from sql_Function import  insertIntoAssociation
 
 
 def register_page():
@@ -12,6 +13,7 @@ def register_page():
 
     def button_click(name, password, iban):
         # Save to DB
+        insertIntoAssociation(iban, name, password)
         print(name, password, iban)
         root.destroy()
         create_window()

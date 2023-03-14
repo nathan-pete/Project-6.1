@@ -1,5 +1,6 @@
 import sqlite3
 import re
+import hashlib
 from utils import parse_mt940_file, check_mt940_file
 from json import *
 
@@ -17,16 +18,18 @@ def check(email):
         return False
 
 
-def insertIntoAssociation(accountId, name):
+def insertIntoAssociation(accountId, name, password):
     try:
         sqliteConnection = sqlite3.connect('quintor.db')
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
         if isinstance(accountId, str):
             if isinstance(name, str):
-                sqlite_insert_with_param = """ INSERT INTO Association (accountId,name)
-                                            VALUES (?,?);"""
-                data_tuplet = (accountId, name)
+                if isinstance(password, str):
+                    hashed_password = hash_password(password)
+                sqlite_insert_with_param = """ INSERT INTO Association (accountId,name,password)
+                                            VALUES (?,?,?);"""
+                data_tuplet = (accountId, name, hashed_password)
                 cursor.execute(sqlite_insert_with_param, data_tuplet)
                 sqliteConnection.commit()
                 print("Python Variable inserted successfully into Association table")
@@ -41,6 +44,12 @@ def insertIntoAssociation(accountId, name):
         if sqliteConnection:
             sqliteConnection.close()
             print("The SQLite connection is closed")
+
+
+def hash_password(password):
+    # Convert the password string to bytes and hash it using SHA-256
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    return hashed_password
 
 
 def insertIntoFile(referenceNumber, statementNumber, sequenceDetail, availableBalance, forwardAvBalance, accountId):
@@ -202,6 +211,7 @@ def insertIntoMember(name, email):
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
+
 def select_From_Category():
     category_list = {}
     try:
@@ -250,7 +260,7 @@ def select_From_Member():
 
 def map_mt940_file(file_path):
     if not check_mt940_file(file_path):
-        #Make a pop up
+        # Make a pop up
         return
 
     json_transactions = parse_mt940_file(file_path)
@@ -273,7 +283,8 @@ def map_mt940_file(file_path):
         forward_available_balance = float(json_transactions["forward_available_balance"]["amount"]["amount"])
 
         # Map values into the File table of relatable DB
-        insertIntoFile(reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_id)
+        insertIntoFile(reference_number, statement_number, sequence_detail, available_balance,
+                       forward_available_balance, account_id)
         cursor.close()
 
     except sqlite3.Error as error:
@@ -284,7 +295,5 @@ def map_mt940_file(file_path):
             print("The SQLite connection is closed")
 
 
-
 # insertIntoAssociation("NL69INGB0123456789EUR", "Test")
-map_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
-
+#map_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
