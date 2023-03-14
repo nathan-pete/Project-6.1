@@ -257,6 +257,28 @@ def select_From_Member():
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
+def select_Email_From_Member():
+    member_list = {}
+    try:
+        sqliteConnection = sqlite3.connect('quintor.db')
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        splite_select_query = """ SELECT * from Member"""
+        cursor.execute(splite_select_query)
+        records = cursor.fetchall()
+        for row in records:
+            member_list[str(row[0])] = str(row[2])
+        return member_list
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("The SQLite connection is closed")
+
 
 def map_mt940_file(file_path):
     if not check_mt940_file(file_path):

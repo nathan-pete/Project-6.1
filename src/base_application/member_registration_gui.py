@@ -10,19 +10,33 @@ def member_registration():
 
     window.resizable(False, False)
 
-    def register_button_click(email, name):
-        if check(email):
-            if len(name) <= 0:
-                print("Please enter your name")
+    def check_For_Existing_Email():
+        isGood = True
+        email_list = select_Email_From_Member()
+        for value in email_list.values():
+            if value == email_entry.get():
+                isGood = False
             else:
-                print(email, name)
-                insertIntoMember(name,email)
+                isGood = True
+        return isGood
+
+    def register_button_click(email, name):
+            if check(email):
+                if len(name) <= 0:
+                    print("Please enter your name")
+                else:
+                    if check_For_Existing_Email():
+                        print(email, name)
+                        insertIntoMember(name,email)
+                        email_entry.delete(first=0, last=30)
+                        name_entry.delete(first=0, last=30)
+                    else:
+                        print("The email is already in the data base")
+            else:
+                print("Please enter a valid email")
                 email_entry.delete(first=0, last=30)
                 name_entry.delete(first=0, last=30)
-        else:
-            print("Please enter a valid email")
-            email_entry.delete(first=0, last=30)
-            name_entry.delete(first=0, last=30)
+
 
 
     def back_button_click():
