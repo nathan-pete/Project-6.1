@@ -14,10 +14,14 @@ def index():
             "test": "/api/test",
             "getTransactionsAmount": "/api/getTransactionsCount",
             "getTransactions": "/api/getTransactions",
-            "getTransaction": "/api/getTransaction/<transaction_id>",
-            "searchKeyword": "/api/searchKeyword/<keyword>",
             "uploadMT940File": "/api/uploadFile",
-            "getFileFromDB": "/api/getFileBack"
+            "searchKeywordSQL": "/api/searchKeyword/<keyword>",
+            "insertAssociationSQL": "/api/insertAssociation",
+            "insertFileSQL": "/api/insertFile",
+            "insertTransactionSQL": "/api/insertTransaction",
+            "insertMemberSQL": "/api/insertMemberSQL",
+            "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
+            "deleteMemberSQL": "/api/deleteMember/<member_id>",
         }
     }
     return make_response(jsonify(answer), 200)

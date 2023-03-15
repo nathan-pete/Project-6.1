@@ -87,5 +87,3 @@ def member_registration():
     # run the main loop
     window.mainloop()
 
-
-member_registration()
