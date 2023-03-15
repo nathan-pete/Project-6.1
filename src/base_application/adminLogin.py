@@ -1,4 +1,5 @@
 import tkinter as tk
+from adminPanel import adminPanel
 
 
 def login_admin_page():
@@ -12,6 +13,7 @@ def login_admin_page():
     def login_button_click(user, password):
         print(user, password)
         # Check credentials
+        adminPanel()
 
     def back_button_click():
         window.destroy()

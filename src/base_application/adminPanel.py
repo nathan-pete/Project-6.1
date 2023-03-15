@@ -2,6 +2,9 @@
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
+from manageMembers import manage_members
+# from userPanel import create_window
+from fileUpload import main
 
 
 # ----------------------------------------------- Frames and Base Page ----------------------------------------------- #
@@ -38,6 +41,19 @@ def adminPanel():
         for row in rows:
             table.insert("", "end", values=row)
 
+    def manage_members_button():
+        manage_members()
+        window.destroy()
+
+    def upload_button_click():
+        main()
+
+    def logout_button():
+        # create_window()
+        window.destroy()
+
+
+
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
@@ -52,15 +68,15 @@ def adminPanel():
                        fg="black", justify="left")
     welcome.place(x=15, y=175, width=190, height=30)
 
-    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left")
+    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left", command=lambda: logout_button())
     button.place(x=450, y=175, height=30)
 
     manageMembers = tk.Button(frame1, text="Manage Memberships", font=("Inter", 12, "normal"),
-                              bg="#D9D9D9", fg="black", justify="left")
+                              bg="#D9D9D9", fg="black", justify="left", command=lambda: manage_members_button())
     manageMembers.place(x=75, y=300, width=180, height=30)
 
     upload = tk.Button(frame1, text="Upload MT940 File", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left")
+                       bg="#D9D9D9", fg="black", justify="left", command=lambda: upload_button_click())
     upload.place(x=300, y=300, width=180, height=30)
 
     searchBar = tk.Entry(frame1, font=("Inter", 14, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -103,3 +119,5 @@ def adminPanel():
     frame2.pack_propagate(False)
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
+
+adminPanel()
