@@ -11,6 +11,7 @@ from fileUpload import main
 def adminPanel():
     window = tk.Tk()
     window.geometry("1200x900")
+    window.title("Sports Accounting - Admin Panel")
 
     window.resizable(False, False)
 
@@ -119,5 +120,3 @@ def adminPanel():
     frame2.pack_propagate(False)
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
-
-adminPanel()

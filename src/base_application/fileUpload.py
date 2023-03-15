@@ -25,7 +25,7 @@ class MainWindow:
 
     def select_file(self):
         """Open a file dialog to select an MT940 file."""
-        file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("MT940 Files", "*.txt"), ("All Files", "*.*")])
+        file_path = filedialog.askopenfilename(defaultextension=".sta", filetypes=[("MT940 Files", "*.sta"), ("All Files", "*.*")])
         self.selected_file_label.config(text=file_path)
         self.file_path = file_path
 
