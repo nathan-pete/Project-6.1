@@ -10,6 +10,7 @@
 * mt-940
 * mt940 parser
 * Sqlite 3
+* requests 2.28.2 - Kenneth Reitz
 
 
 <h3> Installation </h3>
