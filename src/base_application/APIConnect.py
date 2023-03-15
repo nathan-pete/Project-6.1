@@ -19,9 +19,14 @@ def index():
             "insertAssociationSQL": "/api/insertAssociation",
             "insertFileSQL": "/api/insertFile",
             "insertTransactionSQL": "/api/insertTransaction",
-            "insertMemberSQL": "/api/insertMemberSQL",
-            "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
+            "insertMemberSQL": "/api/insertMember",
+            "updateTransactionSQL": "/api/updateTransaction/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
+            "selectAllAssociationSQL": "/api/selectAllAssociation",
+            "selectAllFileSQL": "/api/selectAllFile",
+            "selectAllTransactionSQL": "/api/selectAllTransaction",
+            "selectAllMemberSQL": "/api/selectAllMember",
+            "selectJoinTransactionMemberCatSQL": "/api/selectJoin"
 
         }
     }
