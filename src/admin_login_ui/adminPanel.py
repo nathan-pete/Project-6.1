@@ -1,10 +1,29 @@
+# ----------------------------------------------------- Imports ------------------------------------------------------ #
 import sqlite3
 import tkinter as tk
+from tkinter import ttk
 
-from pip._internal.cli.cmdoptions import src
 
-
+# ----------------------------------------------- Frames and Base Page ----------------------------------------------- #
 def adminPanel():
+    window = tk.Tk()
+    window.geometry("1200x900")
+
+    window.resizable(False, False)
+
+    frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")
+    frame2 = tk.Frame(window, width=600, height=900, bg="#F0AFAF")
+
+    frame1.pack(side="left")
+    frame2.pack(side="right")
+
+    # --------------------------------------------------- Functions -------------------------------------------------- #
+    def save_text():
+        global input_text
+        input_text = searchBar.get()
+        savedText.config(text="Search Results for: " + input_text)
+        print("Saved:", input_text)
+
     def retrieveDB(table):
         conn = sqlite3.connect('quintor.db')
         cursor = conn.cursor()
@@ -12,26 +31,18 @@ def adminPanel():
         rows = cursor.fetchall()
         conn.close()
 
-    # create the main window
-    window = tk.Tk()
-    window.geometry("1200x900")
+        # Clear existing rows in the table
+        table.delete(*table.get_children())
 
-    window.resizable(False, False)
+        # Insert retrieved data into the table
+        for row in rows:
+            table.insert("", "end", values=row)
 
-    # create two frames side by side
-    frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")
-    frame2 = tk.Frame(window, width=600, height=900, bg="#F0AFAF")
-
-    frame1.pack(side="left")
-    frame2.pack(side="right")
-
-    # add a label to frame1 with the specified properties
+    # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
 
     label.config(anchor="nw", pady=0, padx=0, wraplength=0, height=0, width=0)
-
-    # association_name =
 
     line = tk.Label(frame1, text="_______________________________________________________",
                     font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -56,34 +67,41 @@ def adminPanel():
     searchBar.place(x=75, y=400, width=180, height=30)
 
     search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left")
+                       bg="#D9D9D9", fg="black", justify="left", command=save_text)
     search.place(x=300, y=400, width=180, height=30)
 
-    # **Help linking buttons to functions**
-    #
-    # manageMembers = tk.Button(frame1, text="Manage Members", font=("Inter", 12, "normal"),
-    #                           command=frame1.clickmanageMembers, bg="#D9D9D9", fg="black", justify="left")
-    # manageMembers.place(x=50, y=300)
-    #
-    # def clickmanageMembers():
-    #     print("clicked")
+    # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
+    savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
+                         justify="left")
+    savedText.place(x=20, y=20, width=550, height=50)
 
-    # class Table:
-    #
-    #     def __init__(frame2, total_rows, total_columns, lst):
-    #
-    #         # code for creating table
-    #         for i in range(total_rows):
-    #             for j in range(total_columns):
-    #                 frame2.e = tk.Entry(total_columns, width=20, fg='blue',
-    #                                     font=('Inter', 14, 'bold'))
-    #
-    #                 frame2.e.grid(row=i, column=j)
-    #                 frame2.e.insert(tk.END, lst[i][j])
-    #
-    #     total_rows = len(lst)
-    #     total_columns = len(lst[0])
-    #
+    table = ttk.Treeview(frame2, columns=("Member ID", "Name", "DoB", "Contact", "Member Since", "Paid"),
+                         show="headings", style="Custom.Treeview")
+    table.heading("Member ID", text="Member ID")
+    table.heading("Name", text="Name")
+    table.heading("DoB", text="DoB")
+    table.heading("Contact", text="Contact")
+    table.heading("Member Since", text="Member Since")
+    table.heading("Paid", text="Paid")
+
+    for column in table["columns"]:
+        table.heading(column, text=column, command=lambda: None)
+        table.bind("<Button-1>", lambda event: "break")
+
+        retrieveDB(table)
+
+    table.column("Member ID", width=100)
+    table.column("Name", width=100)
+    table.column("DoB", width=50)
+    table.column("Contact", width=100)
+    table.column("Member Since", width=100)
+    table.column("Paid", width=50)
+    table.config(height=2)
+
+    table.pack(fill="both", expand=False)
+    table.place(x=50, y=150)
+    frame2.pack_propagate(False)
+    # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
 
 
