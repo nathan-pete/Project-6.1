@@ -22,6 +22,7 @@ def index():
             "insertMemberSQL": "/api/insertMemberSQL",
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
+
         }
     }
     return make_response(jsonify(answer), 200)
