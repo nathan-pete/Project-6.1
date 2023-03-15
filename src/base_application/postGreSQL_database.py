@@ -12,8 +12,9 @@ def table_create():
     cursor = conn.cursor()
     # Creating table as per requirement
     sql_create_association_table = """ CREATE TABLE IF NOT EXISTS Association (
-                AccountID VARCHAR(35) NOT NULL PRIMARY KEY ,
-                name VARCHAR(50) NOT NULL
+                accountID VARCHAR(35) NOT NULL PRIMARY KEY ,
+                name VARCHAR(50) NOT NULL,
+                password VARCHAR(256) NOT NULL
             ); """
     # Create Association table
     cursor.execute(sql_create_association_table)
@@ -30,24 +31,6 @@ def table_create():
     # Create File table
     cursor.execute(sql_create_file_table)
 
-    sql_create_transaction_table = """ CREATE TABLE IF NOT EXISTS Transactions (
-                transactionID SERIAL PRIMARY KEY,
-                referenceNumber VARCHAR(16),
-                transactionDetail VARCHAR ,
-                description VARCHAR(128),
-                amount DOUBLE PRECISION NOT NULL,
-                currency VARCHAR(3) NOT NULL,
-                transaction_date VARCHAR(10),
-                categoryID INTEGER,
-                memberID INTEGER,
-                typeTransaction VARCHAR,
-                FOREIGN KEY (referenceNumber) REFERENCES File (referenceNumber),
-                FOREIGN KEY (categoryID) REFERENCES Category (categoryID),
-                FOREIGN KEY (memberID) REFERENCES Member (memberID)
-                ); """
-    # Create transaction table
-    cursor.execute(sql_create_transaction_table)
-
     sql_create_category_table = """ CREATE TABLE IF NOT EXISTS Category (
                     categoryID SERIAL PRIMARY KEY,
                     name VARCHAR(32)
@@ -62,6 +45,24 @@ def table_create():
                         ); """
     # Create Member table
     cursor.execute(sql_create_member_table)
+
+    sql_create_transaction_table = """ CREATE TABLE IF NOT EXISTS Transactions (
+                   transactionID SERIAL PRIMARY KEY,
+                   referenceNumber VARCHAR(16),
+                   transactionDetail VARCHAR ,
+                   description VARCHAR(128),
+                   amount DOUBLE PRECISION NOT NULL,
+                   currency VARCHAR(3) NOT NULL,
+                   transaction_date VARCHAR(10),
+                   categoryID INTEGER,
+                   memberID INTEGER,
+                   typeTransaction VARCHAR,
+                   FOREIGN KEY (referenceNumber) REFERENCES File (referenceNumber),
+                   FOREIGN KEY (categoryID) REFERENCES Category (categoryID),
+                   FOREIGN KEY (memberID) REFERENCES Member (memberID)
+                   ); """
+    # Create transaction table
+    cursor.execute(sql_create_transaction_table)
     print("Tables created successfully........")
     conn.commit()
     # Closing the connection
