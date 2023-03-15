@@ -75,14 +75,14 @@ def adminPanel():
                          justify="left")
     savedText.place(x=20, y=20, width=550, height=50)
 
-    table = ttk.Treeview(frame2, columns=("Member ID", "Name", "DoB", "Contact", "Member Since", "Paid"),
+    table = ttk.Treeview(frame2, columns=("Date", "Details", "Description", "Ref", "Amount", "Edit"),
                          show="headings", style="Custom.Treeview")
-    table.heading("Member ID", text="Member ID")
-    table.heading("Name", text="Name")
-    table.heading("DoB", text="DoB")
-    table.heading("Contact", text="Contact")
-    table.heading("Member Since", text="Member Since")
-    table.heading("Paid", text="Paid")
+    table.heading("Date", text="Date")
+    table.heading("Details", text="Company Name")
+    table.heading("Description", text="Description")
+    table.heading("Ref", text="Ref")
+    table.heading("Amount", text="Amount")
+    table.heading("Edit", text="Edit")
 
     for column in table["columns"]:
         table.heading(column, text=column, command=lambda: None)
@@ -90,16 +90,16 @@ def adminPanel():
 
         retrieveDB(table)
 
-    table.column("Member ID", width=100)
-    table.column("Name", width=100)
-    table.column("DoB", width=50)
-    table.column("Contact", width=100)
-    table.column("Member Since", width=100)
-    table.column("Paid", width=50)
+    table.column("Date", width=75)
+    table.column("Details", width=100)
+    table.column("Description", width=100)
+    table.column("Ref", width=100)
+    table.column("Amount", width=100)
+    table.column("Edit", width=75)
     table.config(height=2)
 
     table.pack(fill="both", expand=False)
-    table.place(x=50, y=150)
+    table.place(x=25, y=150)
     frame2.pack_propagate(False)
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
