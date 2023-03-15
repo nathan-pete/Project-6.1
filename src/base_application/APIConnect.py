@@ -1,11 +1,11 @@
 import json
-
 from flask import jsonify, request, make_response
 from utils import parse_mt940_file, check_mt940_file
 from bson import json_util, ObjectId
-# Get instances of Flask App and MongoDB collection from __init__ file
+# Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
 from src.base_application import app, transactions_collection
 from bson import ObjectId
+import requests
 
 
 @app.route("/")
@@ -18,7 +18,8 @@ def index():
             "getTransactions": "/api/getTransactions",
             "getTransaction": "/api/getTransaction/<transaction_id>",
             "searchKeyword": "/api/searchKeyword/<keyword>",
-            "uploadMT940File": "/api/uploadFile"
+            "uploadMT940File": "/api/uploadFile",
+            "getFileFromDB": "/api/getFileBack"
         }
     }
     return make_response(jsonify(answer), 200)
@@ -26,10 +27,12 @@ def index():
 
 @app.route("/api/test")
 def test():
-    file_path = "C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.txt"
-    transaction = parse_mt940_file(file_path)
-    transactions_collection.insert_one(transaction)
-    return make_response(json.loads(json_util.dumps(transaction)), 200)
+    # file_path = "C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.txt"
+    # transaction = parse_mt940_file(file_path)
+    # transactions_collection.insert_one(transaction)
+    # return make_response(json.loads(json_util.dumps(transaction)), 200)
+    return make_response(jsonify("API works fine!"))
+    # return make_response("API works fine - Test")
 
 
 @app.route("/api/getTransactionsCount", methods=["GET"])
@@ -49,20 +52,17 @@ def get_all_transactions():
     return make_response(json.loads(json_util.dumps(output_transactions)), 200)
 
 
+# Send a POST request with the file path to this function
 @app.route("/api/uploadFile", methods=["POST"])
 def file_upload():
-    if "file" not in request.files:
-        return make_response(jsonify(error="No file found"), 400)
+    # Grab the file path from the post request sent to this function of API
+    file_path = request.form.get('file_path')
 
-    # Implement file contents check here
+    if not check_mt940_file(file_path):
+        return make_response(jsonify(error="File is not correct format. Unprocessable Entity"), 422)
 
-    file = request.files["file"]
-
-    transaction = parse_mt940_file(file)
+    # Insert into No SQL Db
+    transaction = parse_mt940_file(file_path)
     transactions_collection.insert_one(transaction)
 
-    return make_response(json.loads(json_util.dumps(transaction)), 200)
-
-@app.route("/api/getTransaction/<transaction_id>", methods=["GET"])
-def get_transaction_by_id():
-    transactions_collection.find_one({"_id": ObjectId(transaction_id)})
+    return make_response(jsonify(status="File uploaded!"), 200)
