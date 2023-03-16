@@ -1,9 +1,15 @@
 import json
+from tkinter import filedialog
+
+import tkinter as tk
 from flask import jsonify, request, make_response
 from utils import parse_mt940_file, check_mt940_file
+
 from bson import json_util, ObjectId
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
 from src.base_application import app, transactions_collection
+from bson.json_util import dumps as json_util_dumps
+
 
 
 @app.route("/")
@@ -44,6 +50,34 @@ def get_transactions_count():
     return output
 
 
+def download():
+    with app.app_context():
+        # Get the data from the database
+        try:
+            data = get_all_transactions()
+        except TypeError:
+            data = []
+
+        # Create a response object
+        response = make_response(json_util_dumps(data))
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['Content-Disposition'] = 'attachment; filename=data.json'
+
+    # Extract the data from the response
+    data = response.get_data()
+
+    # Prompt the user to select a file path
+    root = tk.Tk()
+    root.withdraw()
+    file_path = filedialog.asksaveasfilename(defaultextension='.json')
+
+    # Write the data to the selected file path
+    with open(file_path, 'w') as f:
+        f.write(data.decode('utf-8'))
+
+    return response
+
+
 @app.route("/api/getTransactions", methods=["GET"])
 def get_all_transactions():
     output_transactions = []
@@ -52,7 +86,7 @@ def get_all_transactions():
         print(trans)
         output_transactions.append(trans)
 
-    return make_response(json.loads(json_util.dumps(output_transactions)), 200)
+    return output_transactions
 
 
 # Send a POST request with the file path to this function

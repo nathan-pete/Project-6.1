@@ -2,9 +2,12 @@
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
+from manageMembers import manage_members
+from fileUpload import main
+from src.base_application.APIConnect import get_all_transactions, download
 
 
-# ----------------------------------------------- Frames and Base Page ----------------------------------------------- #
 def adminPanel():
     window = tk.Tk()
     window.geometry("1200x900")
@@ -38,6 +41,22 @@ def adminPanel():
         for row in rows:
             table.insert("", "end", values=row)
 
+
+    def manage_members_button():
+        manage_members()
+        window.destroy()
+
+    def upload_button_click():
+        main()
+
+    def logout_button():
+        # create_window()
+        window.destroy()
+
+
+
+
+
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
@@ -69,6 +88,15 @@ def adminPanel():
     search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
                        bg="#D9D9D9", fg="black", justify="left", command=save_text)
     search.place(x=300, y=400, width=180, height=30)
+
+    downloadJSON = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
+                          bg="#D9D9D9", fg="black", justify="left", command=lambda: download())
+    downloadJSON.place(x=35, y=500, width=250, height=30)
+
+
+    downloadXML = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
+                            bg="#D9D9D9", fg="black", justify="left")
+    downloadXML.place(x=300, y=500, width=250, height=30)
 
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
     savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
