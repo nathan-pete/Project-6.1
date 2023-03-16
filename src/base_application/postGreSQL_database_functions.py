@@ -128,4 +128,4 @@ def add_part(part_name, vendor_name):
         if conn is not None:
             conn.close()
 
-add_part("Mathew","Stored")
+add_part("Alin","Stored")
