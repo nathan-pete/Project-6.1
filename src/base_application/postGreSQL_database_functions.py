@@ -172,4 +172,89 @@ def insert_into_transaction(referenceNumber, transactionDetail, description, amo
             conn.close()
 
 
-insert_into_transaction("123", "transactionDetail", "description", 23, "EUR", "12-10-23", 1, 1, "Card")
+def insert_into_Member(name, email):
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL insert_into_member(%s,%s)', (name, email))
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+# insert_into_Member("Alin", "bosull2002@gmail.com")
+
+def update_transaction(transactionID, referenceNumber, transactionDetail, description, amount, currency,
+                       transaction_date,
+                       categoryID, memberID, typeTransaction):
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL update_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
+            transactionID, referenceNumber, transactionDetail, description, amount, currency, transaction_date,
+            categoryID, memberID,
+            typeTransaction))
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+# update_transaction(1,"123","update","update",69.69,"USD","23-02-2023",1,2,"CASH")
+
+def delete_member(memberID):
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL delete_member(%s)', (memberID,))
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+# delete_member(3)
+
+def get_Association():
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL get_association();')
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+get_Association()
