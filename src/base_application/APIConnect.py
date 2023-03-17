@@ -1,6 +1,7 @@
 import json
 from tkinter import filedialog
 import xml.etree.ElementTree as ET
+import xml.dom.minidom
 import tkinter as tk
 from flask import jsonify, request, make_response
 from json2xml import json2xml
@@ -98,8 +99,10 @@ def downloadXML():
 
         # Write the XML data to the selected file path
         if file_path:
+            xml_string = ET.tostring(xml_root, encoding='utf-8', method='xml')
+            xml_string_pretty = xml.dom.minidom.parseString(xml_string).toprettyxml()
             with open(file_path, 'wb') as f:
-                f.write(ET.tostring(xml_root))
+                f.write(xml_string_pretty.encode('utf-8'))
 
         # Create a response with appropriate headers
         response = make_response()
