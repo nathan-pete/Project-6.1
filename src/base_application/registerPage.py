@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from userPanel import create_window
-from sql_Function import insertIntoAssociation
+from utils import hash_password
 
 def register_page():
     # Create the main window
@@ -12,8 +12,8 @@ def register_page():
 
     def button_click(name, password, iban):
         # Save to DB
-        insertIntoAssociation(iban, name, password)
-        print(name, password, iban)
+        hashed_pass = hash_password(password)
+        print(name, hashed_pass, iban)
         root.destroy()
         create_window()
 
@@ -63,7 +63,7 @@ def register_page():
     # Start the main event loop
     root.mainloop()
 
-register_page()
+# register_page()
 
 
 

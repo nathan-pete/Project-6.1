@@ -3,17 +3,15 @@ from tkinter import filedialog
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import tkinter as tk
-
 import psycopg2
 from flask import jsonify, request, make_response
 from json2xml import json2xml
-
 from utils import parse_mt940_file, check_mt940_file
-
 from bson import json_util, ObjectId
+from bson.json_util import dumps as json_util_dumps
+
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
 from src.base_application import app, transactions_collection, postgre_connection
-from bson.json_util import dumps as json_util_dumps
 
 
 @app.route("/")
@@ -25,6 +23,8 @@ def index():
             "getTransactionsAmount": "/api/getTransactionsCount",
             "getTransactions": "/api/getTransactions",
             "uploadMT940File": "/api/uploadFile",
+            "downloadJSON": "/api/downloadJSON",
+            "downloadXML": "/api/downloadXML",
             "searchKeywordSQL": "/api/searchKeyword/<keyword>",
             "insertAssociationSQL": "/api/insertAssociation",
             "insertFileSQL": "/api/insertFile",
@@ -32,14 +32,15 @@ def index():
             "insertMemberSQL": "/api/insertMemberSQL",
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
-            "downloadJSON": "/api/downloadJSON",
-            "downloadXML": "/api/downloadXML"
+            "getAssociationSQL": "/api/getAssociation"
+
 
         }
     }
     return make_response(jsonify(answer), 200)
 
 # No SQL MongoDB functions of the API
+
 
 @app.route("/api/test")
 def test():
@@ -50,6 +51,7 @@ def test():
 def get_transactions_count():
     output = {"transactionsCount": transactions_collection.count_documents({})}
     return output
+
 
 @app.route("/api/downloadJSON", methods=["GET"])
 def downloadJSON():
@@ -76,6 +78,7 @@ def downloadJSON():
         f.write(json_data)
 
     return response
+
 
 @app.route("/api/downloadXML", methods=["GET"])
 def downloadXML():
@@ -112,7 +115,6 @@ def downloadXML():
         return response
 
 
-
 @app.route("/api/getTransactions", methods=["GET"])
 def get_all_transactions():
     output_transactions = []
@@ -142,7 +144,7 @@ def file_upload():
 
 # SQL PostGreSQL DB functions of the API
 @app.route("/api/deleteMember/<member_id>", methods=["GET"])
-def deleteMember(member_id):
+def delete_member(member_id):
     try:
         cursor = postgre_connection.cursor()
 
@@ -159,4 +161,49 @@ def deleteMember(member_id):
     finally:
         if postgre_connection is not None:
             postgre_connection.close()
+
+
+# The function receives a hashed password
+@app.route("/api/insertAssociation/<accountid>/<name>/<hashed_password>", methods=["GET"])
+def insert_association(accountId, name, hashed_password):
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL insert_into_association(%s,%s,%s)', (accountId, name, hashed_password))
+
+        # commit the transaction
+        postgre_connection.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if postgre_connection is not None:
+            postgre_connection.close()
+
+
+@app.route("/api/getAssociation", methods=["GET"])
+def getAssociation():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # Call a stored procedure
+        cursor.callproc("get_association")
+        # Get the output
+        output = cursor.fetchall()
+
+        cursor.close()
+
+        # Return the results as JSON
+        return jsonify(output)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if postgre_connection is not None:
+            postgre_connection.close()
+
+
+
 

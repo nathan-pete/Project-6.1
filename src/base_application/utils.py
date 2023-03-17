@@ -1,3 +1,4 @@
+import hashlib
 import json
 import mt940
 
@@ -57,3 +58,9 @@ def check_file_extension(file_path):
         return True
     else:
         return False
+
+
+def hash_password(password):
+    # Convert the password string to bytes and hash it using SHA-256
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    return hashed_password
