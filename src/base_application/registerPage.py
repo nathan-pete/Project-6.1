@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from userPanel import create_window
-from sql_Function import  insertIntoAssociation
+from sql_Function import insertIntoAssociation
 
 def register_page():
     # Create the main window
@@ -62,6 +62,8 @@ def register_page():
 
     # Start the main event loop
     root.mainloop()
+
+register_page()
 
 
 

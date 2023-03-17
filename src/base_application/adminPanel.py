@@ -6,11 +6,13 @@ from tkinter import filedialog
 from manageMembers import manage_members
 from fileUpload import main
 from src.base_application.APIConnect import get_all_transactions, downloadJSON, downloadXML
+import requests
 
 
 def adminPanel():
     window = tk.Tk()
     window.geometry("1200x900")
+    window.title("Sports Accounting - Admin Panel")
 
     window.resizable(False, False)
 
@@ -85,11 +87,11 @@ def adminPanel():
     search.place(x=300, y=400, width=180, height=30)
 
     downloadJSONFile = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
-                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadJSON())
+                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get("http://127.0.0.1:5000/api/downloadJSON"))
     downloadJSONFile.place(x=35, y=500, width=250, height=30)
 
     downloadXMLFile = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
-                                bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadXML())
+                                bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get("http://127.0.0.1:5000/api/downloadXML"))
     downloadXMLFile.place(x=300, y=500, width=250, height=30)
 
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #

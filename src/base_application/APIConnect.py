@@ -30,6 +30,8 @@ def index():
             "insertMemberSQL": "/api/insertMemberSQL",
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
+            "downloadJSON": "/api/downloadJSON",
+            "downloadXML": "/api/downloadXML"
 
         }
     }
@@ -38,12 +40,7 @@ def index():
 
 @app.route("/api/test")
 def test():
-    # file_path = "C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.txt"
-    # transaction = parse_mt940_file(file_path)
-    # transactions_collection.insert_one(transaction)
-    # return make_response(json.loads(json_util.dumps(transaction)), 200)
     return make_response(jsonify("API works fine!"))
-    # return make_response("API works fine - Test")
 
 
 @app.route("/api/getTransactionsCount", methods=["GET"])
@@ -51,7 +48,7 @@ def get_transactions_count():
     output = {"transactionsCount": transactions_collection.count_documents({})}
     return output
 
-
+@app.route("/api/downloadJSON", methods=["GET"])
 def downloadJSON():
     with app.app_context():
         # Get the data from the database
@@ -77,7 +74,7 @@ def downloadJSON():
 
     return response
 
-
+@app.route("/api/downloadXML", methods=["GET"])
 def downloadXML():
     with app.app_context():
         # Get the data from the database

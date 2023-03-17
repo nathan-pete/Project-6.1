@@ -13,8 +13,9 @@ def login_admin_page():
     def login_button_click(user, password):
         print(user, password)
         # Check credentials
-        adminPanel()
         window.destroy()
+        adminPanel()
+
 
     def back_button_click():
         window.destroy()
