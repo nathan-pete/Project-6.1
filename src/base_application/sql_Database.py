@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 
+
 def create_connection(quintor):
     """ create a database connection to the SQLite database
         specified by db_file
