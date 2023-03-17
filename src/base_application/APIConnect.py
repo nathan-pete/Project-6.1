@@ -59,12 +59,11 @@ def download():
             data = []
 
         # Create a response object
-        response = make_response(json_util_dumps(data))
+        json_data = json_util.dumps(data, indent=4)
+        response = make_response(json_data)
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
 
-    # Extract the data from the response
-    data = response.get_data()
 
     # Prompt the user to select a file path
     root = tk.Tk()
@@ -73,7 +72,7 @@ def download():
 
     # Write the data to the selected file path
     with open(file_path, 'w') as f:
-        f.write(data.decode('utf-8'))
+        f.write(json_data)
 
     return response
 

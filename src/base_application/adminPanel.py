@@ -41,7 +41,6 @@ def adminPanel():
         for row in rows:
             table.insert("", "end", values=row)
 
-
     def manage_members_button():
         manage_members()
         window.destroy()
@@ -52,10 +51,6 @@ def adminPanel():
     def logout_button():
         # create_window()
         window.destroy()
-
-
-
-
 
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -90,9 +85,8 @@ def adminPanel():
     search.place(x=300, y=400, width=180, height=30)
 
     downloadJSON = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
-                          bg="#D9D9D9", fg="black", justify="left", command=lambda: download())
+                             bg="#D9D9D9", fg="black", justify="left", command=lambda: download())
     downloadJSON.place(x=35, y=500, width=250, height=30)
-
 
     downloadXML = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
                             bg="#D9D9D9", fg="black", justify="left")
