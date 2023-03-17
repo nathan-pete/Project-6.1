@@ -237,14 +237,15 @@ def delete_member(memberID):
         if conn is not None:
             conn.close()
 
+
 # delete_member(3)
 
-def get_Association():
+def select_all_member():
     try:
         cursor = conn.cursor()
 
         # call a stored procedure
-        cursor.execute('CALL get_association();')
+        cursor.execute('SELECT * FROM  select_all_member()')
 
         # commit the transaction
         conn.commit()
@@ -257,4 +258,61 @@ def get_Association():
         if conn is not None:
             conn.close()
 
-get_Association()
+def select_all_association():
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM  select_all_association()')
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#select_all_association()
+
+def select_all_file():
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM  select_all_file()')
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+#select_all_file()
+
+def select_all_transaction():
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM  select_all_transaction()')
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+select_all_member()
