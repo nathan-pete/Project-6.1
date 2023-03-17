@@ -1,3 +1,4 @@
+import psycopg2
 from pymongo import MongoClient
 from flask import Flask
 
@@ -22,6 +23,14 @@ def get_collection():
 def get_flask_app():
     app = Flask(__name__)
     return app
+
+
+def get_connection_postgre():
+    # Establishing the connection
+    conn = psycopg2.connect(
+        database="Quintor", user='postgres', password='password', host='localhost', port='5432'
+    )
+    return conn
 
 
 # This is added so that many files can reuse the function get_database()

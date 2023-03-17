@@ -5,6 +5,7 @@ from utils import parse_mt940_file, check_mt940_file
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
 import requests
+from src.base_application import api_server_ip
 
 class MainWindow:
     def __init__(self, master):
@@ -34,7 +35,7 @@ class MainWindow:
         # Check MT940 file
         if check_mt940_file(self.file_path):
             # Check DataBase
-            url = 'http://127.0.0.1:5000/api/uploadFile'
+            url = api_server_ip + '/api/uploadFile'
             payload = {'file_path': self.file_path}
             response = requests.post(url, data=payload)
             print(response.text)

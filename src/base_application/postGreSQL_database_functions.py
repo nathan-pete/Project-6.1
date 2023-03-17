@@ -3,11 +3,13 @@ import re
 import hashlib
 from utils import parse_mt940_file, check_mt940_file
 from json import *
+from src.base_application import postgre_connection
 
 # Establishing the connection
-conn = psycopg2.connect(
-    database="Quintor", user='postgres', password='password', host='localhost', port='5432'
-)
+# conn = psycopg2.connect(
+#     database="Quintor", user='postgres', password='password', host='localhost', port='5432'
+# )
+conn = postgre_connection
 
 
 def hash_password(password):

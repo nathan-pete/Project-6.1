@@ -3,6 +3,8 @@ from tkinter import filedialog
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import tkinter as tk
+
+import psycopg2
 from flask import jsonify, request, make_response
 from json2xml import json2xml
 
@@ -10,7 +12,7 @@ from utils import parse_mt940_file, check_mt940_file
 
 from bson import json_util, ObjectId
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
-from src.base_application import app, transactions_collection
+from src.base_application import app, transactions_collection, postgre_connection
 from bson.json_util import dumps as json_util_dumps
 
 
@@ -37,6 +39,7 @@ def index():
     }
     return make_response(jsonify(answer), 200)
 
+# No SQL MongoDB functions of the API
 
 @app.route("/api/test")
 def test():
@@ -135,3 +138,25 @@ def file_upload():
     transactions_collection.insert_one(transaction)
 
     return make_response(jsonify(status="File uploaded!"), 200)
+
+
+# SQL PostGreSQL DB functions of the API
+@app.route("/api/deleteMember/<member_id>", methods=["GET"])
+def deleteMember(member_id):
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL delete_member(%s)', member_id)
+
+        # commit the transaction
+        postgre_connection.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if postgre_connection is not None:
+            postgre_connection.close()
+
