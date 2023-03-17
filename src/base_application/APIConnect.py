@@ -1,15 +1,16 @@
 import json
 from tkinter import filedialog
-
+import xml.etree.ElementTree as ET
 import tkinter as tk
 from flask import jsonify, request, make_response
+from json2xml import json2xml
+
 from utils import parse_mt940_file, check_mt940_file
 
 from bson import json_util, ObjectId
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
 from src.base_application import app, transactions_collection
 from bson.json_util import dumps as json_util_dumps
-
 
 
 @app.route("/")
@@ -50,7 +51,7 @@ def get_transactions_count():
     return output
 
 
-def download():
+def downloadJSON():
     with app.app_context():
         # Get the data from the database
         try:
@@ -64,7 +65,6 @@ def download():
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
 
-
     # Prompt the user to select a file path
     root = tk.Tk()
     root.withdraw()
@@ -75,6 +75,39 @@ def download():
         f.write(json_data)
 
     return response
+
+
+def downloadXML():
+    with app.app_context():
+        # Get the data from the database
+        try:
+            data = get_all_transactions()
+        except TypeError:
+            data = []
+
+        # Convert the data to a JSON string
+        json_data = json_util.dumps(data)
+
+        # Convert the JSON data to an ElementTree
+        xml_root = ET.fromstring(json2xml.Json2xml(json.loads(json_data)).to_xml())
+
+        # Prompt the user to select a file path
+        root = tk.Tk()
+        root.withdraw()
+        file_path = filedialog.asksaveasfilename(defaultextension='.xml')
+
+        # Write the XML data to the selected file path
+        if file_path:
+            with open(file_path, 'wb') as f:
+                f.write(ET.tostring(xml_root))
+
+        # Create a response with appropriate headers
+        response = make_response()
+        response.headers['Content-Type'] = 'application/xml'
+        response.headers['Content-Disposition'] = 'attachment; filename=data.xml'
+
+        return response
+
 
 
 @app.route("/api/getTransactions", methods=["GET"])

@@ -5,7 +5,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from manageMembers import manage_members
 from fileUpload import main
-from src.base_application.APIConnect import get_all_transactions, download
+from src.base_application.APIConnect import get_all_transactions, downloadJSON, downloadXML
 
 
 def adminPanel():
@@ -84,13 +84,13 @@ def adminPanel():
                        bg="#D9D9D9", fg="black", justify="left", command=save_text)
     search.place(x=300, y=400, width=180, height=30)
 
-    downloadJSON = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
-                             bg="#D9D9D9", fg="black", justify="left", command=lambda: download())
-    downloadJSON.place(x=35, y=500, width=250, height=30)
+    downloadJSONFile = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
+                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadJSON())
+    downloadJSONFile.place(x=35, y=500, width=250, height=30)
 
-    downloadXML = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
-                            bg="#D9D9D9", fg="black", justify="left")
-    downloadXML.place(x=300, y=500, width=250, height=30)
+    downloadXMLFile = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
+                            bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadXML())
+    downloadXMLFile.place(x=300, y=500, width=250, height=30)
 
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
     savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
