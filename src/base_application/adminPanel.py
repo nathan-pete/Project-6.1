@@ -2,16 +2,15 @@
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from manageMembers import manage_members
-# from userPanel import create_window
 from fileUpload import main
+from src.base_application.APIConnect import get_all_transactions, downloadJSON, downloadXML
 
 
-# ----------------------------------------------- Frames and Base Page ----------------------------------------------- #
 def adminPanel():
     window = tk.Tk()
     window.geometry("1200x900")
-    window.title("Sports Accounting - Admin Panel")
 
     window.resizable(False, False)
 
@@ -53,8 +52,6 @@ def adminPanel():
         # create_window()
         window.destroy()
 
-
-
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
@@ -69,15 +66,15 @@ def adminPanel():
                        fg="black", justify="left")
     welcome.place(x=15, y=175, width=190, height=30)
 
-    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left", command=lambda: logout_button())
+    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left")
     button.place(x=450, y=175, height=30)
 
     manageMembers = tk.Button(frame1, text="Manage Memberships", font=("Inter", 12, "normal"),
-                              bg="#D9D9D9", fg="black", justify="left", command=lambda: manage_members_button())
+                              bg="#D9D9D9", fg="black", justify="left")
     manageMembers.place(x=75, y=300, width=180, height=30)
 
     upload = tk.Button(frame1, text="Upload MT940 File", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left", command=lambda: upload_button_click())
+                       bg="#D9D9D9", fg="black", justify="left")
     upload.place(x=300, y=300, width=180, height=30)
 
     searchBar = tk.Entry(frame1, font=("Inter", 14, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -86,6 +83,14 @@ def adminPanel():
     search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
                        bg="#D9D9D9", fg="black", justify="left", command=save_text)
     search.place(x=300, y=400, width=180, height=30)
+
+    downloadJSONFile = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
+                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadJSON())
+    downloadJSONFile.place(x=35, y=500, width=250, height=30)
+
+    downloadXMLFile = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
+                                bg="#D9D9D9", fg="black", justify="left", command=lambda: downloadXML())
+    downloadXMLFile.place(x=300, y=500, width=250, height=30)
 
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
     savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
