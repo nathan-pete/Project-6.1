@@ -4,12 +4,14 @@ import hashlib
 from utils import parse_mt940_file, check_mt940_file
 from json import *
 from src.base_application import postgre_connection
+from dataBaseConnectionPyMongo import get_connection_postgre
 
 # Establishing the connection
 # conn = psycopg2.connect(
 #     database="Quintor", user='postgres', password='password', host='localhost', port='5432'
 # )
-conn = postgre_connection
+conn = get_connection_postgre()
+# conn = postgre_connection
 
 
 def hash_password(password):
@@ -317,4 +319,24 @@ def select_all_transaction():
         if conn is not None:
             conn.close()
 
-select_all_member()
+#select_all_member()
+
+def select_join_transaction_member():
+    try:
+        cursor = conn.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM  select_join()')
+
+        # commit the transaction
+        conn.commit()
+
+        # close the cursor
+        cursor.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+insert_into_Member("lastTest", "lastTest@gmail.com")
