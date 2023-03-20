@@ -11,6 +11,8 @@ from dataBaseConnectionPyMongo import get_connection_postgre
 #     database="Quintor", user='postgres', password='password', host='localhost', port='5432'
 # )
 conn = get_connection_postgre()
+
+
 # conn = postgre_connection
 
 
@@ -197,17 +199,13 @@ def insert_into_Member(name, email):
 
 # insert_into_Member("Alin", "bosull2002@gmail.com")
 
-def update_transaction(transactionID, referenceNumber, transactionDetail, description, amount, currency,
-                       transaction_date,
-                       categoryID, memberID, typeTransaction):
+def update_transaction(transactionID, description, categoryID, memberID):
     try:
         cursor = conn.cursor()
 
         # call a stored procedure
-        cursor.execute('CALL update_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
-            transactionID, referenceNumber, transactionDetail, description, amount, currency, transaction_date,
-            categoryID, memberID,
-            typeTransaction))
+        cursor.execute('CALL update_transaction(%s,%s,%s,%s)', (
+            transactionID, description, categoryID, memberID))
 
         # commit the transaction
         conn.commit()
@@ -221,7 +219,8 @@ def update_transaction(transactionID, referenceNumber, transactionDetail, descri
             conn.close()
 
 
-# update_transaction(1,"123","update","update",69.69,"USD","23-02-2023",1,2,"CASH")
+update_transaction(1, 'update2', 1, 2)
+
 
 def delete_member(memberID):
     try:
@@ -262,6 +261,7 @@ def select_all_member():
         if conn is not None:
             conn.close()
 
+
 def select_all_association():
     try:
         cursor = conn.cursor()
@@ -280,7 +280,8 @@ def select_all_association():
         if conn is not None:
             conn.close()
 
-#select_all_association()
+
+# select_all_association()
 
 def select_all_file():
     try:
@@ -299,7 +300,9 @@ def select_all_file():
     finally:
         if conn is not None:
             conn.close()
-#select_all_file()
+
+
+# select_all_file()
 
 def select_all_transaction():
     try:
@@ -319,7 +322,8 @@ def select_all_transaction():
         if conn is not None:
             conn.close()
 
-#select_all_member()
+
+# select_all_member()
 
 def select_join_transaction_member():
     try:
@@ -339,4 +343,4 @@ def select_join_transaction_member():
         if conn is not None:
             conn.close()
 
-insert_into_Member("lastTest", "lastTest@gmail.com")
+# insert_into_Member("lastTest", "lastTest@gmail.com")
