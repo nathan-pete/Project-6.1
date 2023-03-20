@@ -1,5 +1,9 @@
 import tkinter as tk
-from sql_Function import *
+
+import requests
+
+from utils import check_email
+from src.base_application import api_server_ip
 
 
 def member_registration():
@@ -10,33 +14,29 @@ def member_registration():
 
     window.resizable(False, False)
 
-    def check_For_Existing_Email():
-        isGood = True
-        email_list = select_Email_From_Member()
-        for value in email_list.values():
-            if value == email_entry.get():
-                isGood = False
-            else:
-                isGood = True
-        return isGood
+    # def check_For_Existing_Email():
+    #     isGood = True
+    #     email_list = select_Email_From_Member()
+    #     for value in email_list.values():
+    #         if value == email_entry.get():
+    #             isGood = False
+    #         else:
+    #             isGood = True
+    #     return isGood
 
     def register_button_click(email, name):
-            if check(email):
+            if check_email(email):
                 if len(name) <= 0:
                     print("Please enter your name")
                     email_entry.delete(first=0, last=255) # will delete what is from position 0 to 255
                     name_entry.delete(first=0, last=255)
                 else:
-                    if check_For_Existing_Email():
-                        print(email, name)
-                        insertIntoMember(name,email)
-                        email_entry.delete(first=0, last=30)
-                        name_entry.delete(first=0, last=30)
-                    else:
-                        print("The email is already in the data base")
-                        email_entry.delete(first=0, last=30)
-                        name_entry.delete(first=0, last=30)
+                    # Insert to DB
+                    response = requests.get(api_server_ip + "/api/insertMemberSQL/" + name + "/" + email)
+                    print(response)
+
             else:
+                # Make a pop up
                 print("Please enter a valid email")
                 email_entry.delete(first=0, last=30)
                 name_entry.delete(first=0, last=30)

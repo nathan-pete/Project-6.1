@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+
+import requests
+from src.base_application import api_server_ip
 from userPanel import create_window
 from utils import hash_password
 
@@ -11,9 +14,12 @@ def register_page():
     root.geometry("1200x900")
 
     def button_click(name, password, iban):
-        # Save to DB
         hashed_pass = hash_password(password)
-        print(name, hashed_pass, iban)
+        # Save to DB
+        payload = {'accountID': iban, 'name': name, 'password': hashed_pass}
+        response = requests.post(api_server_ip + "/api/insertAssociation", data=payload)
+        jsonTest = requests.get(api_server_ip + "/api/getAssociation")
+        print(jsonTest)
         root.destroy()
         create_window()
 
@@ -63,7 +69,7 @@ def register_page():
     # Start the main event loop
     root.mainloop()
 
-# register_page()
+register_page()
 
 
 

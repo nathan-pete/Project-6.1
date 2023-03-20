@@ -68,15 +68,15 @@ def adminPanel():
                        fg="black", justify="left")
     welcome.place(x=15, y=175, width=190, height=30)
 
-    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left")
+    button = tk.Button(frame1, text="Logout", font=("Inter", 12, "normal"), bg="#D9D9D9", fg="black", justify="left", command=lambda: logout_button())
     button.place(x=450, y=175, height=30)
 
     manageMembers = tk.Button(frame1, text="Manage Memberships", font=("Inter", 12, "normal"),
-                              bg="#D9D9D9", fg="black", justify="left")
+                              bg="#D9D9D9", fg="black", justify="left", command= lambda: manage_members_button())
     manageMembers.place(x=75, y=300, width=180, height=30)
 
     upload = tk.Button(frame1, text="Upload MT940 File", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left")
+                       bg="#D9D9D9", fg="black", justify="left", command=lambda: upload_button_click())
     upload.place(x=300, y=300, width=180, height=30)
 
     searchBar = tk.Entry(frame1, font=("Inter", 14, "normal"), bg="#D9D9D9", fg="black", justify="left")

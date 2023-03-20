@@ -6,7 +6,7 @@ import tkinter as tk
 import psycopg2
 from flask import jsonify, request, make_response
 from json2xml import json2xml
-from utils import parse_mt940_file, check_mt940_file
+from utils import parse_mt940_file, check_mt940_file, check_email
 from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 
@@ -29,7 +29,7 @@ def index():
             "insertAssociationSQL": "/api/insertAssociation",
             "insertFileSQL": "/api/insertFile",
             "insertTransactionSQL": "/api/insertTransaction",
-            "insertMemberSQL": "/api/insertMemberSQL",
+            "insertMemberSQL": "/api/insertMemberSQL/<name>/<email>",
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
             "getAssociationSQL": "/api/getAssociation"
@@ -39,7 +39,7 @@ def index():
     }
     return make_response(jsonify(answer), 200)
 
-# No SQL MongoDB functions of the API
+# ----------------------- No SQL MongoDB functions of the API ---------------------------------
 
 
 @app.route("/api/test")
@@ -142,7 +142,7 @@ def file_upload():
     return make_response(jsonify(status="File uploaded!"), 200)
 
 
-# SQL PostGreSQL DB functions of the API
+# -------------------------- SQL PostGreSQL DB functions of the API ---------------------------
 @app.route("/api/deleteMember/<member_id>", methods=["GET"])
 def delete_member(member_id):
     try:
@@ -156,6 +156,8 @@ def delete_member(member_id):
 
         # close the cursor
         cursor.close()
+
+        return make_response(jsonify(status="Member Removed"), 200)
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -164,45 +166,92 @@ def delete_member(member_id):
 
 
 # The function receives a hashed password
-@app.route("/api/insertAssociation/<accountid>/<name>/<hashed_password>", methods=["GET"])
-def insert_association(accountId, name, hashed_password):
+@app.route("/api/insertAssociation", methods=["POST"])
+def insert_association():
     try:
+        accountID = request.form.get('accountID')
+        name = request.form.get('name')
+        hashed_password = request.form.get('password')
+
         cursor = postgre_connection.cursor()
 
         # call a stored procedure
-        cursor.execute('CALL insert_into_association(%s,%s,%s)', (accountId, name, hashed_password))
+        cursor.execute('CALL insert_into_association(%s,%s,%s)', (accountID, name, hashed_password))
 
         # commit the transaction
         postgre_connection.commit()
 
         # close the cursor
         cursor.close()
+
+        return make_response(jsonify(status="Data inserted!"), 200)
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
 
 
-@app.route("/api/getAssociation", methods=["GET"])
-def getAssociation():
+# @app.route("/api/getAssociation", methods=["GET"])
+# def getAssociation():
+#     try:
+#         cursor = postgre_connection.cursor()
+#
+#         # Call a stored procedure
+#         cursor.callproc("get_association")
+#         # Get the output
+#         output = cursor.fetchall()
+#
+#         cursor.close()
+#
+#         # Return the results as JSON
+#         return make_response(jsonify(output), 200)
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(error)
+#     finally:
+#         if postgre_connection is not None:
+#             postgre_connection.close()
+
+
+@app.route("/api/insertMemberSQL/<name>/<email>", methods=["GET"])
+def insert_member(name, email):
     try:
         cursor = postgre_connection.cursor()
 
-        # Call a stored procedure
-        cursor.callproc("get_association")
-        # Get the output
-        output = cursor.fetchall()
+        # call a stored procedure
+        cursor.execute('CALL insert_into_member(%s,%s)', (name, email))
 
+        # commit the transaction
+        postgre_connection.commit()
+
+        # close the cursor
         cursor.close()
 
-        # Return the results as JSON
-        return jsonify(output)
+        return make_response(jsonify(status="Data inserted!"), 200)
+
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
         if postgre_connection is not None:
             postgre_connection.close()
+
+@app.route("/api/getAssociation", methods=["GET"])
+def get_association():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM association')
+
+        # Get all data from the stored procedure
+        data = cursor.fetchall()
+
+        # Return data in JSON format
+        # return make_response(jsonify(response), 200)
+        return jsonify(data)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if postgre_connection is not None:
+            postgre_connection.close()
+
 
 
 

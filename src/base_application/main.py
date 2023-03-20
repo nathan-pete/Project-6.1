@@ -1,8 +1,8 @@
 import asyncio
 import threading
-from src.base_application import app
+from src.base_application import app, api_server_ip
 from adminPanel import adminPanel
-from registerPage import register_page
+# from registerPage import register_page
 
 
 if __name__ == '__main__':
@@ -19,3 +19,6 @@ if __name__ == '__main__':
     # Run the Flask app and Tkinter GUI concurrently
     # tasks = [loop.create_task(flask_thread_api.start()), loop.create_task(flask_thread.start())]
     # loop.run_until_complete(asyncio.wait(tasks))
+
+
+

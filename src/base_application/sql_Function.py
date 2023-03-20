@@ -1,6 +1,10 @@
 import sqlite3
 import re
 import hashlib
+
+import requests
+
+from src.base_application import api_server_ip
 from utils import parse_mt940_file, check_mt940_file
 from json import *
 
@@ -257,6 +261,7 @@ def select_From_Member():
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
+
 def select_Email_From_Member():
     member_list = {}
     try:
@@ -316,6 +321,5 @@ def map_mt940_file(file_path):
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
-
 # insertIntoAssociation("NL69INGB0123456789EUR", "Test")
-#map_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
+# map_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")

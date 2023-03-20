@@ -35,13 +35,6 @@ def login_admin_page():
     # set the line height to 29 pixels and vertical alignment to top
     label.config(anchor="nw", pady=0, padx=0, wraplength=0, height=0, width=0)
 
-    # add a label and text area to frame1 for Username
-    user_label = tk.Label(frame1, text="Username", font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black",
-                          justify="left")
-    user_label.place(x=20, y=300, width=123, height=24)
-    user_entry = tk.Entry(frame1, font=("Inter", 18, "normal"), bg="white", fg="black", justify="left")
-    user_entry.place(x=153, y=300, width=300, height=28)
-
     # add a label and text area to frame1 for Password
     pass_label = tk.Label(frame1, text="Password", font=("Inter", 18, "normal"), bg="#D9D9D9", fg="black",
                           justify="left")

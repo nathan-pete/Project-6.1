@@ -1,6 +1,11 @@
 import hashlib
 import json
 import mt940
+import re
+
+# Make a regular expression
+# for validating an Email
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 
 def parse_mt940_file(file_path) -> dict:
@@ -64,3 +69,14 @@ def hash_password(password):
     # Convert the password string to bytes and hash it using SHA-256
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
     return hashed_password
+
+
+def check_email(email):
+    # pass the regular expression
+    # and the string into the fullmatch() method
+    if re.fullmatch(regex, email):
+        return True
+    else:
+        return False
+
+
