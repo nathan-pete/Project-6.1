@@ -127,5 +127,5 @@ def adminPanel():
     frame2.pack_propagate(False)
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
-# #
+
 adminPanel()

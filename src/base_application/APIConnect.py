@@ -256,65 +256,44 @@ def get_association():
         return jsonify(data)
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
+        return jsonify({'message': error})
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
 
 
-# @app.route("/api/insertFile", methods=["POST", "GET"])
-# def insert_file():
-#     try:
-#         # Extract values from a POST request into variables for the File table
-#         reference_number = request.form.get('referencenumber')
-#         statement_number = request.form.get('statementnumber')
-#         sequence_detail = request.form.get('sequencedetail')
-#         available_balance = request.form.get('availablebalance')
-#         forward_available_balance = request.form.get('forwardavbalance')
-#         account_identification = request.form.get('accountid')
-#
-#         cursor = postgre_connection.cursor()
-#         print(reference_number)
-#
-#         # call a stored procedure
-#         cursor.execute('CALL insert_into_file(%s,%s,%s,%s,%s,%s)', (
-#             reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_identification))
-#
-#         # commit the transaction
-#         postgre_connection.commit()
-#
-#         # close the cursor
-#         cursor.close()
-#
-#         return jsonify({'message': 'File inserted successfully'})
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         print(error)
-#     finally:
-#         if postgre_connection is not None:
-#             postgre_connection.close()
+@app.route("/api/insertTransaction", methods=["POST"])
+def insert_transaction():
+    try:
+        # Extract values from a POST request into variables for Transactions table
+        bank_reference = request.form.get('referencenumber')
+        amount = request.form.get('amount')
+        currency = request.form.get('currency')
+        transaction_date = request.form.get('transaction_date')
+        transaction_details = request.form.get('transaction_details')
+        description = request.form.get('description')
+        typetransaction = request.form.get('typetransaction')
 
+        cursor = postgre_connection.cursor()
 
-# @app.route("/api/insertTransaction", methods=["POST"])
-# def insert_transaction():
-#     try:
-#         # Extract values from a POST request into variables for Transactions table
-#         bank_reference = request.form.get('referencenumber')
-#         amount = request.form.get('amount')
-#         currency = request.form.get('currency')
-#         transaction_date = request.form.get('transaction_date')
-#         transaction_details = request.form.get('transaction_details')
-#         description = request.form.get('description')
-#         typetransaction = request.form.get('typetransaction')
-#
-#         cursor = postgre_connection.cursor()
-#
-#         cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
-#             bank_reference, transaction_details, description, amount, currency, transaction_date, None, None,
-#             typetransaction))
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         print(error)
-#     finally:
-#         if postgre_connection is not None:
-#             postgre_connection.close()
+        cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
+            bank_reference, transaction_details, description, amount, currency, transaction_date, None, None,
+            typetransaction))
+
+        # commit the transaction
+        postgre_connection.commit()
+
+        # close the cursor
+        cursor.close()
+
+        return jsonify({'message': 'File inserted successfully'})
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return jsonify({'message': error})
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
+    #         return jsonify({'message': 'Connection Closed'})
 
 
 @app.route("/api/insertFile/<referencenumber>/<statementnumber>/<sequencedetail>/<availablebalance>/<forwardavbalance>/<accountid>", methods=["GET"])
@@ -334,31 +313,36 @@ def insert_file(referencenumber, statementnumber, sequencedetail, availablebalan
 
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
+        return jsonify({'message': error})
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
+    #         return jsonify({'message': 'Connection Closed'})
 
 
-@app.route("/api/insertTransaction/<referencenumber>/<amount>/<currency>/<transaction_date>/<transaction_details>/<description>/<typetransaction>", methods=["GET"])
-def insert_transaction(referencenumber, amount, currency, transaction_date, transaction_details, description, typetransaction):
-    try:
-        cursor = postgre_connection.cursor()
-
-        cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
-            referencenumber, transaction_details, description, amount, currency, transaction_date, None, None,
-            typetransaction))
-
-        # commit the transaction
-        postgre_connection.commit()
-
-        # close the cursor
-        cursor.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
+# @app.route("/api/insertTransaction/<referencenumber>/<amount>/<currency>/<transaction_date>/<transaction_details>/<description>/<typetransaction>", methods=["GET"])
+# def insert_transaction(referencenumber, amount, currency, transaction_date, transaction_details, description, typetransaction):
+#     try:
+#         cursor = postgre_connection.cursor()
+#
+#         cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
+#             referencenumber, transaction_details, description, amount, currency, transaction_date, None, None,
+#             typetransaction))
+#
+#         # commit the transaction
+#         postgre_connection.commit()
+#
+#         # close the cursor
+#         cursor.close()
+#
+#         return jsonify({'message': 'File inserted successfully'})
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(error)
+#         return jsonify({'message': error})
+#     finally:
+#         if postgre_connection is not None:
+#             postgre_connection.close()
+#             return jsonify({'message': 'Connection Closed'})
 
 
 

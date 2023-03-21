@@ -90,7 +90,6 @@ def get_json_payload_mt940_file(file_path):
     available_balance = json_transactions["available_balance"]["amount"]["amount"]
     forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
     account_identification = json_transactions["account_identification"]
-    print(available_balance)
     # Extract values from a JSON into variables for the Transaction table
 
     payload = {'referencenumber': reference_number, 'statementnumber': statement_number, 'sequencedetail': sequence_detail, 'availablebalance': available_balance,
@@ -101,31 +100,16 @@ def get_json_payload_mt940_file(file_path):
 def get_json_payload_transaction(trans_set):
     amount = trans_set["amount"]["amount"]
     currency = trans_set["amount"]["currency"]
-    print(amount)
     transaction_date = trans_set["date"]
-    transaction_details = trans_set["transaction_details"]
-    description = ""
+    transaction_details = str(trans_set["transaction_details"])
+    transaction_details = transaction_details.replace("/", "-")
+    description = None
     typetransaction = trans_set["status"]
 
     payload = {"amount": amount, "currency": currency, "transaction_date": transaction_date,
                "transaction_details": transaction_details, "description": description, "typetransaction": typetransaction}
 
     return payload
-
-
-# json_trans = parse_mt940_file("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
-# # print(json_trans["transactions"][1])
-# get_json_payload_transaction(json_trans["transactions"][1])
-# pay = get_json_payload_transaction("C:/University/Semester_2/Project6.1/Project-6.1_Code/src/resources/mt940Example.sta")
-# pay.update(test = "testOUT")
-# print(pay["amount"])
-#
-#
-# for trans in json_trans["transactions"]:
-#     payload_trans = get_json_payload_transaction(trans)
-#     payload_trans.update(referencenumber = reference)
-#     url ='/api/insertTransaction' + str(payload["referencenumber"]) + "/" + str(payload["amount"]) + "/" + str(payload["currency"]) + "/" + str(payload["transaction_date"]) + "/" + str(payload["transaction_details"]) + "/" + str(payload["description"]) + "/" + str(payload["typetransaction"])
-#     print(ur.text)
 
 
 

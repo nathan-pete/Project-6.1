@@ -36,18 +36,10 @@ class MainWindow:
         # Check MT940 file
         if check_mt940_file(self.file_path):
             # Save to NoSQL DB
-            # url = api_server_ip + '/api/uploadFile'
-            # payload = {'file_path': self.file_path}
-            # response = requests.post(url, data=payload)
-            # print(response.text)
-
-            # Save to SQL DB FILE
-            # url = api_server_ip + '/api/insertFile'
-            # payload = get_json_payload_mt940_file(self.file_path)
-            # print(payload)
-            # reference = payload["referencenumber"]
-            # response = requests.post(url, data=payload)
-            # print(response.text)
+            url = api_server_ip + '/api/uploadFile'
+            payload = {'file_path': self.file_path}
+            response = requests.post(url, data=payload)
+            print(response.text)
 
             # Save to SQL DB FILE
             payload = get_json_payload_mt940_file(self.file_path)
@@ -59,15 +51,12 @@ class MainWindow:
             # Save to SQL DB Transaction
             json_trans = parse_mt940_file(self.file_path)
             for trans in json_trans["transactions"]:
+                url = api_server_ip + '/api/insertTransaction'
                 payload = get_json_payload_transaction(trans)
                 payload.update(referencenumber = reference)
-                url = api_server_ip + '/api/insertTransaction' + str(payload["referencenumber"]) + "/" + str(payload["amount"]) + "/" + str(payload["currency"]) + "/" + str(payload["transaction_date"]) + "/" + str(payload["transaction_details"]) + "/" + str(payload["description"]) + "/" + str(payload["typetransaction"])
-                response = requests.get(url)
-                print(response.text)
-
-
+                response = requests.post(url, data=payload)
         # Close Window
-        sys.exit()
+        self.master.destroy()
 
 def main():
     root = Tk()
@@ -77,3 +66,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# TEmp code
+# payload = get_json_payload_transaction(trans)
+# payload.update(referencenumber=reference)
+# url = api_server_ip + '/api/insertTransaction/' + str(payload["referencenumber"]) + "/" + str(payload["amount"]) + "/" + str(payload["currency"]) + "/" + str(payload["transaction_date"]) + "/" + str(payload["transaction_details"]) + "/" + str(payload["description"]) + "/" + str(payload["typetransaction"])
+# response_trans = requests.get(url)
+# print(response_trans.text)
