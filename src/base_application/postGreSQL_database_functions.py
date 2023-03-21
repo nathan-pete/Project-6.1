@@ -344,3 +344,25 @@ def select_join_transaction_member():
             conn.close()
 
 # insert_into_Member("lastTest", "lastTest@gmail.com")
+
+def search_keyword(search_term):
+    cursor = conn.cursor()
+
+
+    # Call the search_table2 function with a search term
+    cursor.execute("SELECT * FROM search_table2(%s)", (search_term,))
+
+    # Fetch the results from the function call
+    results = cursor.fetchall()
+    if cursor.rowcount == 0:
+        print("No results found.")
+    else:
+    # Print the results
+        for result in results:
+            print(result)
+
+    # Close the cursor and database connection
+    cursor.close()
+    conn.close()
+
+search_keyword('nothing')
