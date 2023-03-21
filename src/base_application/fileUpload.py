@@ -1,7 +1,7 @@
 import sys
 import mt940
 import json
-from utils import parse_mt940_file, check_mt940_file, get_json_payload_mt940_file
+from utils import parse_mt940_file, check_mt940_file, get_json_payload_mt940_file, get_json_payload_transaction
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
 import requests
@@ -11,6 +11,7 @@ class MainWindow:
     def __init__(self, master):
         self.master = master
         self.master.title("Sports Accounting - MT940 Parser")
+        self.master.wm_attributes("-topmost", 1)
 
         # Create the "Select File" button
         self.select_file_button = Button(self.master, text="Select File", command=self.select_file)
@@ -35,16 +36,36 @@ class MainWindow:
         # Check MT940 file
         if check_mt940_file(self.file_path):
             # Save to NoSQL DB
-            url = api_server_ip + '/api/uploadFile'
-            payload = {'file_path': self.file_path}
-            response = requests.post(url, data=payload)
+            # url = api_server_ip + '/api/uploadFile'
+            # payload = {'file_path': self.file_path}
+            # response = requests.post(url, data=payload)
+            # print(response.text)
+
+            # Save to SQL DB FILE
+            # url = api_server_ip + '/api/insertFile'
+            # payload = get_json_payload_mt940_file(self.file_path)
+            # print(payload)
+            # reference = payload["referencenumber"]
+            # response = requests.post(url, data=payload)
+            # print(response.text)
+
+            # Save to SQL DB FILE
+            payload = get_json_payload_mt940_file(self.file_path)
+            reference = payload["referencenumber"]
+            url = api_server_ip + '/api/insertFile/' + str(payload["referencenumber"]) + "/" + str(payload["statementnumber"]) + "/" + str(payload["sequencedetail"]) + "/" + str(payload["availablebalance"]) + "/" + str(payload["forwardavbalance"]) + "/" + str(payload["accountid"])
+            response = requests.get(url)
             print(response.text)
 
-            # Save to SQL DB
-            url = api_server_ip + '/api/insertFile'
-            payload = get_json_payload_mt940_file(self.file_path)
-            response = requests.post(url, data=payload)
-            print(response.text)
+            # Save to SQL DB Transaction
+            json_trans = parse_mt940_file(self.file_path)
+            for trans in json_trans["transactions"]:
+                payload = get_json_payload_transaction(trans)
+                payload.update(referencenumber = reference)
+                url = api_server_ip + '/api/insertTransaction' + str(payload["referencenumber"]) + "/" + str(payload["amount"]) + "/" + str(payload["currency"]) + "/" + str(payload["transaction_date"]) + "/" + str(payload["transaction_details"]) + "/" + str(payload["description"]) + "/" + str(payload["typetransaction"])
+                response = requests.get(url)
+                print(response.text)
+
+
         # Close Window
         sys.exit()
 
