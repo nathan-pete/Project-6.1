@@ -80,3 +80,23 @@ def check_email(email):
         return False
 
 
+def get_json_payload_mt940_file(file_path):
+    json_transactions = parse_mt940_file(file_path)
+
+    # Extract values from a JSON into variables for the File table
+    reference_number = json_transactions["transaction_reference"]
+    statement_number = json_transactions["statement_number"]
+    sequence_detail = str(json_transactions["sequence_number"])
+    available_balance = json_transactions["available_balance"]["amount"]["amount"]
+    forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
+    account_identification = json_transactions["account_identification"]
+
+    # Extract values from a JSON into variables for the Transaction table
+
+    payload = {'referencenumber': reference_number, 'statementnumber': statement_number, 'sequencedetail': sequence_detail, 'availablebalance': available_balance,
+               'forwardavbalance': forward_available_balance, 'accountid': account_identification}
+
+    return payload
+
+
+

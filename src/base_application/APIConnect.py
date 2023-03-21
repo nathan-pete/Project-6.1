@@ -71,12 +71,14 @@ def downloadJSON():
     # Prompt the user to select a file path
     root = tk.Tk()
     root.withdraw()
+    root.wm_attributes("-topmost", 1)
     file_path = filedialog.asksaveasfilename(defaultextension='.json')
 
     # Write the data to the selected file path
     with open(file_path, 'w') as f:
         f.write(json_data)
 
+    root.destroy()
     return response
 
 
@@ -98,6 +100,7 @@ def downloadXML():
         # Prompt the user to select a file path
         root = tk.Tk()
         root.withdraw()
+        root.wm_attributes("-topmost", 1)
         file_path = filedialog.asksaveasfilename(defaultextension='.xml')
 
         # Write the XML data to the selected file path
@@ -112,6 +115,7 @@ def downloadXML():
         response.headers['Content-Type'] = 'application/xml'
         response.headers['Content-Disposition'] = 'attachment; filename=data.xml'
 
+        root.destroy()
         return response
 
 
@@ -251,6 +255,34 @@ def get_association():
     finally:
         if postgre_connection is not None:
             postgre_connection.close()
+
+
+@app.route("/api/insertFile", methods=["POST"])
+def insert_transaction():
+    try:
+        # Extract values from a POST request into variables for the File table
+        reference_number = request.form.get('referencenumber')
+        statement_number = request.form.get('statementnumber')
+        sequence_detail = request.form.get('sequencedetail')
+        available_balance = request.form.get('availablebalance')
+        forward_available_balance = request.form.get('forwardavbalance')
+        account_identification = request.form.get('accountid')
+
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('CALL insert_into_association(%s,%s,%s)', ())
+
+        # commit the transaction
+        postgre_connection.commit()
+
+        # close the cursor
+        cursor.close()
+
+        return make_response(jsonify(status="Data inserted!"), 200)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+
 
 
 

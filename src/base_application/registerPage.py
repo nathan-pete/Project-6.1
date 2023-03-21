@@ -17,9 +17,9 @@ def register_page():
         hashed_pass = hash_password(password)
         # Save to DB
         payload = {'accountID': iban, 'name': name, 'password': hashed_pass}
-        response = requests.post(api_server_ip + "/api/insertAssociation", data=payload)
-        jsonTest = requests.get(api_server_ip + "/api/getAssociation")
-        print(jsonTest)
+        # response = requests.post(api_server_ip + "/api/insertAssociation", data=payload)
+        # jsonTest = requests.get(api_server_ip + "/api/getAssociation")
+        # print(jsonTest)
         root.destroy()
         create_window()
 

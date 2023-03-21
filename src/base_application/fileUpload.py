@@ -1,7 +1,7 @@
 import sys
 import mt940
 import json
-from utils import parse_mt940_file, check_mt940_file
+from utils import parse_mt940_file, check_mt940_file, get_json_payload_mt940_file
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
 import requests
@@ -34,9 +34,15 @@ class MainWindow:
         """Parse the selected MT940 file and save the result as a JSON file."""
         # Check MT940 file
         if check_mt940_file(self.file_path):
-            # Check DataBase
+            # Save to NoSQL DB
             url = api_server_ip + '/api/uploadFile'
             payload = {'file_path': self.file_path}
+            response = requests.post(url, data=payload)
+            print(response.text)
+
+            # Save to SQL DB
+            url = api_server_ip + '/api/insertFile'
+            payload = get_json_payload_mt940_file(self.file_path)
             response = requests.post(url, data=payload)
             print(response.text)
         # Close Window

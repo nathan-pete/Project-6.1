@@ -1,7 +1,7 @@
 import asyncio
 import threading
 from src.base_application import app, api_server_ip
-from adminPanel import adminPanel
+# from adminPanel import adminPanel
 # from registerPage import register_page
 
 
