@@ -153,20 +153,21 @@ def delete_member(member_id):
         cursor = postgre_connection.cursor()
 
         # call a stored procedure
-        cursor.execute('CALL delete_member(%s)', member_id)
+        cursor.execute('CALL delete_member(%s)', (member_id,))
 
-        # commit the transaction
+        # commit the procedure
         postgre_connection.commit()
 
         # close the cursor
         cursor.close()
+        print(member_id)
 
-        return make_response(jsonify(status="Member Removed"), 200)
+        return jsonify({'message': 'Member removed'})
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
+        return jsonify({'message': str(error)})
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
 
 
 # The function receives a hashed password
@@ -192,30 +193,9 @@ def insert_association():
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
-
-
-# @app.route("/api/getAssociation", methods=["GET"])
-# def getAssociation():
-#     try:
-#         cursor = postgre_connection.cursor()
-#
-#         # Call a stored procedure
-#         cursor.callproc("get_association")
-#         # Get the output
-#         output = cursor.fetchall()
-#
-#         cursor.close()
-#
-#         # Return the results as JSON
-#         return make_response(jsonify(output), 200)
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         print(error)
-#     finally:
-#         if postgre_connection is not None:
-#             postgre_connection.close()
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
 
 
 @app.route("/api/insertMemberSQL/<name>/<email>", methods=["GET"])
@@ -232,13 +212,14 @@ def insert_member(name, email):
         # close the cursor
         cursor.close()
 
-        return make_response(jsonify(status="Data inserted!"), 200)
-
+        # return make_response(jsonify(status="Data inserted!"), 200)
+        return jsonify({'message': 'Member saved successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    finally:
-        if postgre_connection is not None:
-            postgre_connection.close()
+    # finally:
+    #     if postgre_connection is not None:
+    #         postgre_connection.close()
+
 
 @app.route("/api/getAssociation", methods=["GET"])
 def get_association():
@@ -246,17 +227,16 @@ def get_association():
         cursor = postgre_connection.cursor()
 
         # call a stored procedure
-        cursor.execute('SELECT * FROM association')
+        cursor.execute('SELECT * FROM select_all_association()')
 
         # Get all data from the stored procedure
         data = cursor.fetchall()
 
         # Return data in JSON format
-        # return make_response(jsonify(response), 200)
         return jsonify(data)
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        return jsonify({'message': error})
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
     # finally:
     #     if postgre_connection is not None:
     #         postgre_connection.close()
@@ -320,29 +300,77 @@ def insert_file(referencenumber, statementnumber, sequencedetail, availablebalan
     #         return jsonify({'message': 'Connection Closed'})
 
 
-# @app.route("/api/insertTransaction/<referencenumber>/<amount>/<currency>/<transaction_date>/<transaction_details>/<description>/<typetransaction>", methods=["GET"])
-# def insert_transaction(referencenumber, amount, currency, transaction_date, transaction_details, description, typetransaction):
+@app.route("/api/getTransactionsSQL", methods=["GET"])
+def get_transactions_sql():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM select_all_transaction()')
+
+        # Get all data from the stored procedure
+        data = cursor.fetchall()
+
+        # Return data in JSON format
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
+# Balance is [4]
+@app.route("/api/getFile", methods=["GET"])
+def get_file():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM select_all_file()')
+
+        # Get all data from the stored procedure
+        data = cursor.fetchall()
+
+        # Return data in JSON format
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
+@app.route("/api/getMembers", methods=["GET"])
+def get_members():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM select_all_member()')
+
+        # Get all data from the stored procedure
+        data = cursor.fetchall()
+
+        # Return data in JSON format
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
+# @app.route("/api/getCategory", methods=["GET"])
+# def get_members():
 #     try:
 #         cursor = postgre_connection.cursor()
 #
-#         cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
-#             referencenumber, transaction_details, description, amount, currency, transaction_date, None, None,
-#             typetransaction))
+#         # call a stored procedure
+#         cursor.execute('SELECT * FROM select_all_member()')
 #
-#         # commit the transaction
-#         postgre_connection.commit()
+#         # Get all data from the stored procedure
+#         data = cursor.fetchall()
 #
-#         # close the cursor
-#         cursor.close()
-#
-#         return jsonify({'message': 'File inserted successfully'})
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         print(error)
-#         return jsonify({'message': error})
-#     finally:
-#         if postgre_connection is not None:
-#             postgre_connection.close()
-#             return jsonify({'message': 'Connection Closed'})
+#         # Return data in JSON format
+#         return jsonify(data)
+#     except psycopg2.InterfaceError as error:
+#         error_message = str(error)
+#         return jsonify({'error': error_message})
 
 
 

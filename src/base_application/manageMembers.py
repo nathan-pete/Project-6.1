@@ -2,38 +2,52 @@ import tkinter as tk
 import sqlite3
 from tkinter import ttk
 from tkinter import *
+
+import requests
+
 from member_registration_gui import member_registration
+from src.base_application import api_server_ip
 
 
 def manage_members():
+    selected_row = None
     # Create the main window
     root = tk.Tk()
     root.title("Manage members")
     root.geometry("1200x900")
 
-    # Create a frame to hold the left section
-
     # connect to the database
-    def retrieveDB(table):
-        conn = sqlite3.connect('quintor.db')
-        cursor = conn.cursor()
-        cursor.execute("")
-        rows = cursor.fetchall()
-        conn.close()
+    def retrieveDB():
+        response = requests.get(api_server_ip + "/api/getMembers")
+        if len(response.json()) == 0:
+            return
 
-        # Clear existing rows in the table
-        table.delete(*table.get_children())
+        # Convert JSON object into an array of tuples
+        rows_out = []
+        for entry in response.json():
+            rows_out.append(tuple(entry))
 
-        # Insert retrieved data into the table
-        for row in rows:
-            table.insert("", "end", values=row)
+        return rows_out
 
     def back_button_click():
         root.destroy()
+        from adminPanel import adminPanel
+        adminPanel()
 
     def add_member_button_click():
+        root.destroy()
         member_registration()
 
+    # Define a function to be called when a row of the table is clicked
+    def on_click_table_row(event):
+        global selected_row
+        # Get the selected item
+        item = table.selection()[0]
+        # Get the values of the selected item
+        values = table.item(item, "values")
+        selected_row = values[0]
+
+    # Create a frame to hold the left section
     left_frame = tk.Frame(root, bg="#D9D9D9")  # Set the background color to grey
     left_frame.pack(side="left", fill="both", expand=True)
 
@@ -42,31 +56,31 @@ def manage_members():
     right_frame.pack(side="right", fill="both", expand=True, padx=(0, 5))  # Add padding to prevent overlap
 
     # Headings
-    heading1 = tk.Label(left_frame, text="Admin panel", font=("Roboto", 24), bg="#D9D9D9", fg="#000000",
-                        justify="center")
-    heading1.place(x=15, y=20, width=200, height=40)
-
-    heading2 = tk.Label(left_frame, text="Welcome", font=("Roboto", 14), bg="#D9D9D9", fg="#000000", justify="center")
-    heading2.place(x=16, y=75, width=100, height=50)
 
     heading3 = tk.Label(left_frame, text="Manage members", font=("Roboto", 24), bg="#D9D9D9", fg="#000000",
                         justify="center")
     heading3.place(x=25, y=180, width=500, height=50)
 
-    # TABLE
-    table = ttk.Treeview(left_frame, columns=("Member ID", "Name", "Email", "Edit"), show="headings",
+    # -----------------------------TABLE-----------------------------------------
+    table = ttk.Treeview(left_frame, columns=("Member ID", "Name", "Email", "Delete"), show="headings",
                          style="Custom.Treeview")
     table.heading("Member ID", text="Member ID")
     table.heading("Name", text="Name")
     table.heading("Email", text="Email")
-    table.heading("Edit", text="Edit")
+    table.heading("Delete", text="Delete")
 
     for column in table["columns"]:
         # Assigning the heading as text of the column
         table.heading(column, text=column, command=lambda: None)
-        table.bind("<Button-1>", lambda event: "break")
+        # table.bind("<Button-1>", lambda event: "break")
 
-        retrieveDB(table)
+    rows = retrieveDB()
+    # # Clear existing rows in the table
+    table.delete(*table.get_children())
+
+    # Insert retrieved data into the table
+    for row in rows:
+        table.insert("", "end", values=row)
 
     style = ttk.Style()
     style.configure("Custom.Treeview", background="#D9D9D9")
@@ -74,13 +88,33 @@ def manage_members():
     table.column("Member ID", width=80)
     table.column("Name", width=160)
     table.column("Email", width=160)
-    table.column("Edit", width=160)
+    table.column("Delete", width=160)
 
     table.config(height=8)
 
     table.pack(fill="both", expand=False)
     table.place(x=16, y=280)
+
+    table.column("Delete", width=100, anchor="w")
+    table.heading("Delete", text="Delete", command=lambda: None)
+    table.bind("<ButtonRelease-1>", on_click_table_row, "+")
+
+    def delete_button_click(table, member_count):
+        global selected_row
+        if selected_row is None:
+            return
+        response = requests.get(api_server_ip + "/api/deleteMember/" + str(selected_row))
+        print(response.text)
+        # Update DB
+        rows = retrieveDB()
+        table.delete(*table.get_children())
+        member_count.config(text=str(len(rows)))
+        for row in rows:
+            table.insert("", "end", values=row)
+    # -------------------------------------------------------------
     left_frame.pack_propagate(False)
+
+    num_of_members = len(rows)
 
     # Right side
     heading4 = tk.Label(right_frame, text="Overview", font=("Roboto", 24), bg="#F0AFAF", fg="#000000", justify="center")
@@ -89,6 +123,10 @@ def manage_members():
     heading5 = tk.Label(right_frame, text="All members", font=("Roboto", 14), bg="#F0AFAF", fg="#000000",
                         justify="center")
     heading5.place(x=220, y=200, width=200, height=50)
+
+    member_count = tk.Label(right_frame, text=num_of_members, font=("Roboto", 14), bg="#F0AFAF", fg="#000000",
+                        justify="center")
+    member_count.place(x=220, y=260, width=200, height=50)
     # Buttons
 
     back_button = ttk.Button(left_frame, text="Back", command=lambda: back_button_click())
@@ -96,6 +134,9 @@ def manage_members():
 
     add_member_button = ttk.Button(left_frame, text="Add member", command=lambda: add_member_button_click())
     add_member_button.place(x=140, y=550, width=300, height=80)
+
+    delete_button = ttk.Button(left_frame, text="Delete", command=lambda: delete_button_click(table, member_count))
+    delete_button.place(x=450, y=850, width=100, height=30)
 
     # Start the main event loop
     root.mainloop()

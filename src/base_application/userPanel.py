@@ -2,18 +2,25 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import sqlite3
 from tkinter import ttk
+import requests
 from adminLogin import login_admin_page
+from src.base_application import api_server_ip
 
 
 
 
 def create_window():
     """Create a Tkinter window with two equal sections."""
-
     # Create the main window
     root = tk.Tk()
     root.title("Sports Accounting - Register a user")
     root.geometry("1200x900")
+
+    # Get balance from db
+    balance = "No data"
+    response = requests.get(api_server_ip + "/api/getFile")
+    if len(response.json()) != 0:
+        balance = response.json()[0][4]
 
     def admin_login_button_click():
         root.destroy()
@@ -35,7 +42,7 @@ def create_window():
                      underline=len("Welcome"))
     label.place(x=30, y=200, width=190, height=50)
 
-    # Create a label and text area for the User name
+    # Create a label and text area for the Username
     entry = tk.Entry(left_frame, font=("Inter", 14))
     entry.place(x=70, y=300, width=280, height=24)
 
@@ -60,6 +67,12 @@ def create_window():
                          command=admin_login_button_click)
 
     button2.place(x=250, y=400, width=150, height=24)
+
+    balance_label = tk.Label(left_frame, text="Available Balance:", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    balance_label.place(x=70, y=500, width=160, height=24)
+
+    balance_number = tk.Label(left_frame, text=balance, font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    balance_number.place(x=250, y=500, width=160, height=24)
 
     # Create a frame to hold the right section
     right_frame = tk.Frame(root, width=600, height=900, bg="#F0AFAF")
@@ -133,3 +146,4 @@ def retrieveDB(table):
     # Insert retrieved data into the table
     for row in rows:
         table.insert("", "end", values=row)
+

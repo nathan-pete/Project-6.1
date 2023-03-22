@@ -22,6 +22,12 @@ def adminPanel():
     frame1.pack(side="left")
     frame2.pack(side="right")
 
+    # Get balance from db
+    balance = "No data"
+    response = requests.get(api_server_ip + "/api/getFile")
+    if len(response.json()) != 0:
+        balance = response.json()[0][4]
+
     # --------------------------------------------------- Functions -------------------------------------------------- #
     def save_text():
         global input_text
@@ -44,8 +50,8 @@ def adminPanel():
             table.insert("", "end", values=row)
 
     def manage_members_button():
-        manage_members()
         window.destroy()
+        manage_members()
 
     def upload_button_click():
         main()
@@ -53,6 +59,8 @@ def adminPanel():
     def logout_button():
         # create_window()
         window.destroy()
+        from userPanel import create_window
+        create_window()
 
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -94,6 +102,12 @@ def adminPanel():
                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get(api_server_ip + "/api/downloadXML"))
     downloadXMLFile.place(x=300, y=500, width=250, height=30)
 
+    balance_label = tk.Label(frame1, text="Available Balance:", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    balance_label.place(x=35, y=600, width=160, height=24)
+
+    balance_number = tk.Label(frame1, text=balance, font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    balance_number.place(x=210, y=600, width=160, height=24)
+
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
     savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
                          justify="left")
@@ -128,4 +142,4 @@ def adminPanel():
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
 
-adminPanel()
+# adminPanel()

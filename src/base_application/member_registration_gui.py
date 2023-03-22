@@ -27,14 +27,14 @@ def member_registration():
     def register_button_click(email, name):
             if check_email(email):
                 if len(name) <= 0:
-                    print("Please enter your name")
+                    # POP up
                     email_entry.delete(first=0, last=255) # will delete what is from position 0 to 255
                     name_entry.delete(first=0, last=255)
                 else:
                     # Insert to DB
                     response = requests.get(api_server_ip + "/api/insertMemberSQL/" + name + "/" + email)
-                    print(response)
-
+                    email_entry.delete(first=0, last=255) # will delete what is from position 0 to 255
+                    name_entry.delete(first=0, last=255)
             else:
                 # Make a pop up
                 print("Please enter a valid email")
@@ -43,6 +43,8 @@ def member_registration():
 
     def back_button_click():
         window.destroy()
+        from manageMembers import manage_members
+        manage_members()
 
     # create two frames side by side
     frame1 = tk.Frame(window, width=600, height=900, bg="#D9D9D9")

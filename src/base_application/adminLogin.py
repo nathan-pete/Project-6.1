@@ -1,5 +1,8 @@
 import tkinter as tk
+import requests
 from adminPanel import adminPanel
+from src.base_application import api_server_ip
+from utils import hash_password
 
 
 def login_admin_page():
@@ -11,14 +14,26 @@ def login_admin_page():
     window.resizable(False, False)
 
     def login_button_click(password):
-        print(password)
+        # Get password from DB
+        json_resp = requests.get(api_server_ip + "/api/getAssociation")
+        if len(json_resp.json()) == 0:
+            # Make pop-up UNKNOWN ERROR
+            return
+
+        pass_from_db = json_resp.json()[0][2]
         # Check credentials
-        window.destroy()
-        adminPanel()
+        if hash_password(password) == pass_from_db:
+            window.destroy()
+            adminPanel()
+        else:
+            # POP up incorrect password
+            pass_entry.delete(first=0, last=255)
 
 
     def back_button_click():
+        from userPanel import create_window
         window.destroy()
+        create_window()
 
 
     # create two frames side by side
