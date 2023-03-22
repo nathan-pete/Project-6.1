@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="MT940">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Statement" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TransactionReferenceNumber" type="xs:string"/>
+                            <xs:element name="RelatedReferenceNumber" type="xs:string" minOccurs="0"/>
+                            <xs:element name="AccountIdentification" type="xs:string"/>
+                            <xs:element name="StatementNumber" type="xs:string"/>
+                            <xs:element name="OpeningBalance">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Amount" type="xs:decimal"/>
+                                        <xs:element name="Currency" type="xs:string"/>
+                                        <xs:element name="Date" type="xs:date"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="ClosingBalance">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Amount" type="xs:decimal"/>
+                                        <xs:element name="Currency" type="xs:string"/>
+                                        <xs:element name="Date" type="xs:date"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Transaction" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="TransactionType" type="xs:string"/>
+                                        <xs:element name="Amount" type="xs:decimal"/>
+                                        <xs:element name="Currency" type="xs:string"/>
+                                        <xs:element name="ValueDate" type="xs:date"/>
+                                        <xs:element name="EntryDate" type="xs:date"/>
+                                        <xs:element name="TransactionReference" type="xs:string"/>
+                                        <xs:element name="AccountHolderReference" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="AccountServicerReference" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="Information" type="xs:string" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
