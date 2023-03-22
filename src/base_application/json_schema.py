@@ -2,53 +2,232 @@ import json
 import jsonschema
 
 schema = {
-    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-        "header": {
+        "account_identification": {
+            "type": "string"
+        },
+        "available_balance": {
             "type": "object",
             "properties": {
-                "sender": {"type": "string"},
-                "receiver": {"type": "string"},
-                "message_type": {"type": "string", "pattern": "^940$"},
-                "message_date": {"type": "string", "format": "date"},
-                "message_time": {"type": "string", "format": "time"},
-                "reference": {"type": "string"}
-            },
-            "required": ["sender", "receiver", "message_type", "message_date"]
-        },
-
-        "transactions": {
-            "transaction_reference": {"type": "string"},
-            "account_identification": {"type": "string"},
-            "statement_number": {"type": "string"},
-            "final_opening_balance": {"type": "object", "properties": {"amount": {"type": "number"},
-                                                                       "date": {"type": "string", "format": "date"}}},
-            "final_closing_balance": {"type": "object", "properties": {"amount": {"type": "number"},
-                                                                       "date": {"type": "string", "format": "date"}}},
-            "transaction_details": {
-                "type": "array",
-                "items": {
+                "amount": {
                     "type": "object",
                     "properties": {
-                        "date": {"type": "string", "format": "date"},
-                        "entry_date": {"type": "string", "format": "date"},
-                        "transaction_reference_number": {"type": "string"},
-                        "amount": {"type": "number"},
-                        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
-                        "transaction_type": {"type": "string", "pattern": "^[A-Z]{3}$"},
-                        "transaction_details": {"type": "string"},
+                        "amount": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        }
                     },
-                    "required": ["transaction_date", "amount", "currency"]
+                    "required": [
+                        "amount",
+                        "currency"
+                    ]
+                },
+                "date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
                 }
-            }
+            },
+            "required": [
+                "amount",
+                "date",
+                "status"
+            ]
         },
-        "required": ["account_identification", "opening_balance", "closing_balance", "transactions"]
-
+        "final_closing_balance": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "object",
+                    "properties": {
+                        "amount": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "amount",
+                        "currency"
+                    ]
+                },
+                "date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "amount",
+                "date",
+                "status"
+            ]
+        },
+        "final_opening_balance": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "object",
+                    "properties": {
+                        "amount": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "amount",
+                        "currency"
+                    ]
+                },
+                "date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "amount",
+                "date",
+                "status"
+            ]
+        },
+        "forward_available_balance": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "object",
+                    "properties": {
+                        "amount": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "amount",
+                        "currency"
+                    ]
+                },
+                "date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "amount",
+                "date",
+                "status"
+            ]
+        },
+        "sequence_number": {
+            "type": "null"
+        },
+        "statement_number": {
+            "type": "string"
+        },
+        "transaction_reference": {
+            "type": "string"
+        },
+        "transactions": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "amount": {
+                            "type": "object",
+                            "properties": {
+                                "amount": {
+                                    "type": "string"
+                                },
+                                "currency": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "amount",
+                                "currency"
+                            ]
+                        },
+                        "bank_reference": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        },
+                        "customer_reference": {
+                            "type": "string"
+                        },
+                        "date": {
+                            "type": "string"
+                        },
+                        "entry_date": {
+                            "type": "string"
+                        },
+                        "extra_details": {
+                            "type": "string"
+                        },
+                        "funds_code": {
+                            "type": "null"
+                        },
+                        "guessed_entry_date": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "transaction_details": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "amount",
+                        "bank_reference",
+                        "currency",
+                        "customer_reference",
+                        "date",
+                        "entry_date",
+                        "extra_details",
+                        "funds_code",
+                        "guessed_entry_date",
+                        "id",
+                        "status",
+                        "transaction_details"
+                    ]
+                }
+            ]
+        }
     },
-    "required": ["transactions"]
+    "required": [
+        "account_identification",
+        "available_balance",
+        "final_closing_balance",
+        "final_opening_balance",
+        "forward_available_balance",
+        "sequence_number",
+        "statement_number",
+        "transaction_reference",
+        "transactions"
+    ]
+
 }
 
+# Load the MT940 file as a JSON object
 with open('C:/Users/Omen/IdeaProjects/pr1/venv/json_1.json.') as json_file:
     mt940_json = json.load(json_file)
 
