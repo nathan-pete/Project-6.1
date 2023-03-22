@@ -1,0 +1,685 @@
+<?xml version="1.0" ?>
+<all>
+	<item type="dict">
+		<_id type="dict">
+			<key name="$oid" type="str">6411b77091a1909548eaa958</key>
+		</_id>
+		<account_identification type="str">NL69INGB0123456789EUR</account_identification>
+		<available_balance type="dict">
+			<amount type="dict">
+				<amount type="str">564.35</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-20</date>
+			<status type="str">C</status>
+		</available_balance>
+		<final_closing_balance type="dict">
+			<amount type="dict">
+				<amount type="str">564.35</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-20</date>
+			<status type="str">C</status>
+		</final_closing_balance>
+		<final_opening_balance type="dict">
+			<amount type="dict">
+				<amount type="str">662.23</amount>
+				<currency type="str">EUR</currency>
+				
+			
+			</amount>
+			
+			
+			<date type="str">2014-02-19</date>
+			
+			
+			<status type="str">C</status>
+			
+		
+		</final_opening_balance>
+		
+		
+		<forward_available_balance type="dict">
+			
+			
+			<amount type="dict">
+				
+				
+				<amount type="str">564.35</amount>
+				
+				
+				<currency type="str">EUR</currency>
+				
+			
+			</amount>
+			
+			
+			<date type="str">2014-02-24</date>
+			
+			
+			<status type="str">C</status>
+			
+		
+		</forward_available_balance>
+		
+		
+		<sequence_number type="null"/>
+		
+		
+		<statement_number type="str">00000</statement_number>
+		
+		
+		<transaction_reference type="str">P140220000000001</transaction_reference>
+		
+		
+		<transactions type="list">
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">1.56</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001005</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">EREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/00100/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NTRF</id>
+				
+				
+				<status type="str">C</status>
+				
+				
+				<transaction_details type="str">/EREF/EV12341REP1231456T1234//CNTP/NL32INGB0000012345/INGBNL2
+A/ING BANK NV INZAKE WEB///REMI/USTD//EV10001REP1000000T1000/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">-1.57</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001006</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">PREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/00200/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NTRF</id>
+				
+				
+				<status type="str">D</status>
+				
+				
+				<transaction_details type="str">/PREF/M000000003333333//REMI/USTD//TOTAAL 1 VZ/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">1.57</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001007</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">EREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/00190/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NRTI</id>
+				
+				
+				<status type="str">C</status>
+				
+				
+				<transaction_details type="str">/RTRN/MS03//EREF/20120123456789//CNTP/NL32INGB0000012345/INGB
+NL2A/J.Janssen///REMI/USTD//Factuurnr 123456 Klantnr 00123/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">-1.14</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001009</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">EREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/01016/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NDDT</id>
+				
+				
+				<status type="str">D</status>
+				
+				
+				<transaction_details type="str">/EREF/EV123REP123412T1234//MARF/MND-EV01//CSID/NL32ZZZ9999999
+91234//CNTP/NL32INGB0000012345/INGBNL2A/ING Bank N.V. inzake WeB/
+//REMI/USTD//EV123REP123412T1234/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">1.45</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001008</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">PREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/01000/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NDDT</id>
+				
+				
+				<status type="str">C</status>
+				
+				
+				<transaction_details type="str">/PREF/M000000001111111//CSID/NL32ZZZ999999991234//REMI/USTD//
+TOTAAL       1 POSTEN/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">-12.75</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001010</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">EREF</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/01315/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NRTI</id>
+				
+				
+				<status type="str">D</status>
+				
+				
+				<transaction_details type="str">/RTRN/MS03//EREF/20120501P0123478//MARF/MND-120123//CSID/NL32
+ZZZ999999991234//CNTP/NL32INGB0000012345/INGBNL2A/J.Janssen///REM
+I/USTD//CONTRIBUTIE FEB 2014/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">32.00</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001011</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">9001123412341234</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/00108/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NTRF</id>
+				
+				
+				<status type="str">C</status>
+				
+				
+				<transaction_details type="str">/EREF/15814016000676480//CNTP/NL32INGB0000012345/INGBNL2A/J.J
+anssen///REMI/STRD/CUR/9001123412341234/</transaction_details>
+				
+			
+			</item>
+			
+			
+			<item type="dict">
+				
+				
+				<amount type="dict">
+					
+					
+					<amount type="str">-119.00</amount>
+					
+					
+					<currency type="str">EUR</currency>
+					
+				
+				</amount>
+				
+				
+				<bank_reference type="str">00000000001012</bank_reference>
+				
+				
+				<currency type="str">EUR</currency>
+				
+				
+				<customer_reference type="str">1070123412341234</customer_reference>
+				
+				
+				<date type="str">2014-02-20</date>
+				
+				
+				<entry_date type="str">2014-02-20</entry_date>
+				
+				
+				<extra_details type="str">/TRCD/00108/</extra_details>
+				
+				
+				<funds_code type="null"/>
+				
+				
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				
+				
+				<id type="str">NTRF</id>
+				
+				
+				<status type="str">D</status>
+				
+				
+				<transaction_details type="str">/EREF/15614016000384600//CNTP/NL32INGB0000012345/INGBNL2A/ING
+BANK NV///REMI/STRD/CUR/1070123412341234/
+/SUM/4/4/134,46/36,58/
+-}</transaction_details>
+			</item>
+		</transactions>
+	</item>
+	<item type="dict">
+		<_id type="dict">
+			<key name="$oid" type="str">6411b9768f463dfc0991da8f</key>
+		</_id>
+		<account_identification type="str">NL69INGB0123456789EUR</account_identification>
+		<available_balance type="dict">
+			<amount type="dict">
+				<amount type="str">564.35</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-20</date>
+			<status type="str">C</status>
+		</available_balance>
+		<final_closing_balance type="dict">
+			<amount type="dict">
+				<amount type="str">564.35</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-20</date>
+			<status type="str">C</status>
+		</final_closing_balance>
+		<final_opening_balance type="dict">
+			<amount type="dict">
+				<amount type="str">662.23</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-19</date>
+			<status type="str">C</status>
+		</final_opening_balance>
+		<forward_available_balance type="dict">
+			<amount type="dict">
+				<amount type="str">564.35</amount>
+				<currency type="str">EUR</currency>
+			</amount>
+			<date type="str">2014-02-24</date>
+			<status type="str">C</status>
+		</forward_available_balance>
+		<sequence_number type="null"/>
+		<statement_number type="str">00000</statement_number>
+		<transaction_reference type="str">P140220000000001</transaction_reference>
+		<transactions type="list">
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">1.56</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001005</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">EREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/00100/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NTRF</id>
+				<status type="str">C</status>
+				<transaction_details type="str">/EREF/EV12341REP1231456T1234//CNTP/NL32INGB0000012345/INGBNL2
+A/ING BANK NV INZAKE WEB///REMI/USTD//EV10001REP1000000T1000/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">-1.57</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001006</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">PREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/00200/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NTRF</id>
+				<status type="str">D</status>
+				<transaction_details type="str">/PREF/M000000003333333//REMI/USTD//TOTAAL 1 VZ/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">1.57</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001007</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">EREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/00190/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NRTI</id>
+				<status type="str">C</status>
+				<transaction_details type="str">/RTRN/MS03//EREF/20120123456789//CNTP/NL32INGB0000012345/INGB
+NL2A/J.Janssen///REMI/USTD//Factuurnr 123456 Klantnr 00123/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">-1.14</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001009</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">EREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/01016/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NDDT</id>
+				<status type="str">D</status>
+				<transaction_details type="str">/EREF/EV123REP123412T1234//MARF/MND-EV01//CSID/NL32ZZZ9999999
+91234//CNTP/NL32INGB0000012345/INGBNL2A/ING Bank N.V. inzake WeB/
+//REMI/USTD//EV123REP123412T1234/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">1.45</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001008</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">PREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/01000/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NDDT</id>
+				<status type="str">C</status>
+				<transaction_details type="str">/PREF/M000000001111111//CSID/NL32ZZZ999999991234//REMI/USTD//
+TOTAAL       1 POSTEN/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">-12.75</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001010</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">EREF</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/01315/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NRTI</id>
+				<status type="str">D</status>
+				<transaction_details type="str">/RTRN/MS03//EREF/20120501P0123478//MARF/MND-120123//CSID/NL32
+ZZZ999999991234//CNTP/NL32INGB0000012345/INGBNL2A/J.Janssen///REM
+I/USTD//CONTRIBUTIE FEB 2014/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">32.00</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001011</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">9001123412341234</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/00108/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NTRF</id>
+				<status type="str">C</status>
+				<transaction_details type="str">/EREF/15814016000676480//CNTP/NL32INGB0000012345/INGBNL2A/J.J
+anssen///REMI/STRD/CUR/9001123412341234/</transaction_details>
+			</item>
+			<item type="dict">
+				<amount type="dict">
+					<amount type="str">-119.00</amount>
+					<currency type="str">EUR</currency>
+				</amount>
+				<bank_reference type="str">00000000001012</bank_reference>
+				<currency type="str">EUR</currency>
+				<customer_reference type="str">1070123412341234</customer_reference>
+				<date type="str">2014-02-20</date>
+				<entry_date type="str">2014-02-20</entry_date>
+				<extra_details type="str">/TRCD/00108/</extra_details>
+				<funds_code type="null"/>
+				<guessed_entry_date type="str">2014-02-20</guessed_entry_date>
+				<id type="str">NTRF</id>
+				<status type="str">D</status>
+				<transaction_details type="str">/EREF/15614016000384600//CNTP/NL32INGB0000012345/INGBNL2A/ING
+BANK NV///REMI/STRD/CUR/1070123412341234/
+/SUM/4/4/134,46/36,58/
+-}</transaction_details>
+			</item>
+		</transactions>
+	</item>
+</all>
