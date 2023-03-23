@@ -76,8 +76,6 @@ def edit_transaction_page(transaction_id):
     if transaction_json is not None:
         description_trans = transaction_json[3]
     textbox_description.insert(INSERT, str(description_trans))
-    print(transaction_json)
-    print(description_trans)
 
     # Category/Member Menu and Label
     label_category = tk.Label(frame_left, text="Category", font=("Inter", 20, "normal"), fg="#575757", bg="#D9D9D9", justify="left")
@@ -114,10 +112,6 @@ def edit_transaction_page(transaction_id):
         # Save to DB
         payload = {'trans_id': transaction_id, 'desc': desc, 'category': category_out, 'member': member_out}
         response = requests.post(api_server_ip + "/api/updateTransaction", data=payload)
-        print(response)
-        print(category_out)
-        print(member_out)
-        print(desc[0:126])
         back_button_click()
 
     # Start the window
@@ -195,8 +189,6 @@ def edit_transaction_page_admin(transaction_id):
     if transaction_json is not None:
         description_trans = transaction_json[3]
     textbox_description.insert(INSERT, str(description_trans))
-    print(transaction_json)
-    print(description_trans)
 
     # Category/Member Menu and Label
     label_category = tk.Label(frame_left, text="Category", font=("Inter", 20, "normal"), fg="#575757", bg="#D9D9D9", justify="left")

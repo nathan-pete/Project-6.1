@@ -57,7 +57,6 @@ def adminPanel():
         # Get the values of the selected item
         values = table.item(item, "values")
         selected_row = values[0]
-        print(selected_row)
 
     def edit_button_click():
         global selected_row
@@ -71,14 +70,20 @@ def adminPanel():
         response = requests.get(api_server_ip + "/api/getTransactionsSQL")
         if len(response.json()) == 0:
             return
-
         # Convert JSON object into an array of tuples
         rows_out = []
         for entry in response.json():
             temp_tuple = (entry[0], entry[6], entry[2], entry[3], entry[1], entry[4])
             rows_out.append(tuple(temp_tuple))
-
         return rows_out
+
+    def details_button_click():
+        global selected_row
+        if selected_row is None:
+            return
+        from transactionDetails import transaction_details
+        transaction_details(selected_row)
+
 
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -146,7 +151,7 @@ def adminPanel():
 
     # Apply the background color to the entire table
     style = ttk.Style()
-    style.configure("Custom.Treeview", background="#F0AFAF", rowheight=60)
+    style.configure("Custom.Treeview", background="#F0AFAF", rowheight=30)
 
     table.column("ID", width=20)  # Set width of column zero
     table.column("Date", width=100)  # Set the width of the first column
@@ -154,7 +159,7 @@ def adminPanel():
     table.column("Description", width=100)  # Set the width of the third column
     table.column("Ref", width=50)  # Set the width of the forth column
     table.column("Amount", width=100)  # Set the width of the fifth
-    table.config(height=600)  # Set the height of the table to 10 rows
+    table.config(height=20)  # Set the height of the table to 10 rows
 
     rows = retrieveDB()
 
@@ -173,6 +178,9 @@ def adminPanel():
 
     edit_button = ttk.Button(frame2, text="Edit", command=lambda: edit_button_click())
     edit_button.place(x=15, y=35, width=100, height=30)
+
+    details_button = ttk.Button(frame2, text="Details", command=lambda: details_button_click())
+    details_button.place(x=485, y=35, width=100, height=30)
 
     def on_closing():
         window.destroy()

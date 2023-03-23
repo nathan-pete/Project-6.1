@@ -1,10 +1,7 @@
 import tkinter as tk
-import sqlite3
 from tkinter import ttk
 from tkinter import *
-
 import requests
-
 from member_registration_gui import member_registration
 from src.base_application import api_server_ip
 

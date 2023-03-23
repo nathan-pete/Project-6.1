@@ -418,6 +418,21 @@ def update_transaction():
         return jsonify({'error': error_message})
 
 
+@app.route("/api/getTransactionOnIdJoin/<trans_id>", methods=["GET"])
+def get_transaction_on_id_join(trans_id):
+    try:
+        cursor = postgre_connection.cursor()
+
+        cursor.execute('select * from full_join_view where transactionid = %s', (int(trans_id),))
+
+        data = cursor.fetchall()
+
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
 
 
 
