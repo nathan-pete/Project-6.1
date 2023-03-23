@@ -3,6 +3,7 @@ import requests
 from adminPanel import adminPanel
 from src.base_application import api_server_ip
 from utils import hash_password
+from tkinter import messagebox
 
 
 def login_admin_page():
@@ -18,16 +19,23 @@ def login_admin_page():
         json_resp = requests.get(api_server_ip + "/api/getAssociation")
         if len(json_resp.json()) == 0:
             # Make pop-up UNKNOWN ERROR
+            messagebox.showerror("Error", "Unknown error")
             return
 
         pass_from_db = json_resp.json()[0][2]
         # Check credentials
+        if password == "":
+            messagebox.showerror("Error", "Please enter a password")
+            return
+        # Check if password matches the one from the database
         if hash_password(password) == pass_from_db:
             window.destroy()
             adminPanel()
         else:
             # POP up incorrect password
             pass_entry.delete(first=0, last=255)
+            messagebox.showerror("Error", "Incorrect password")
+
 
 
     def back_button_click():
@@ -71,3 +79,5 @@ def login_admin_page():
 
     # run the main loop
     window.mainloop()
+
+login_admin_page()

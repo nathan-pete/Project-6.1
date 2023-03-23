@@ -1,7 +1,7 @@
 # ----------------------------------------------------- Imports ------------------------------------------------------ #
 import sqlite3
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tkinter import filedialog
 from manageMembers import manage_members
 from fileUpload import main
@@ -33,6 +33,10 @@ def adminPanel():
     def save_text():
         global input_text
         input_text = searchBar.get()
+        if input_text.strip() == "":
+            #Display error message if search field is empty
+            messagebox.showerror("Error", "Please enter a search term")
+            return
         savedText.config(text="Search Results for: " + input_text)
         print("Saved:", input_text)
 
@@ -193,4 +197,4 @@ def adminPanel():
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
 
-# adminPanel()
+adminPanel()

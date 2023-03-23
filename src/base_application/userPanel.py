@@ -177,3 +177,4 @@ def retrieveDB():
 
     return rows_out
 
+create_window()

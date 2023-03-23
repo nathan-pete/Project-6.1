@@ -27,7 +27,7 @@ def transaction_details(trans_id):
     # Create a frame to hold the left section
     left_frame = tk.Frame(window, width=1200, height=900, bg="#D9D9D9")  # Set the background color to grey
     left_frame.pack(side="left")
-    
+
     # -------------------------------------------------------
     # ----------------- Table -------------------------------
     table = ttk.Treeview(left_frame, columns=("ID", "Date", "Details", "Description", "Ref", "Amount", "Currency",
