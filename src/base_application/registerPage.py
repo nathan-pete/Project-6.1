@@ -29,11 +29,11 @@ def register_page():
         create_window()
 
     # Create a frame to hold the left section
-    left_frame = tk.Frame(root, bg="#D9D9D9")  # Set the background color to grey
+    left_frame = tk.Frame(root, width=600, height=900,  bg="#D9D9D9")  # Set the background color to grey
     left_frame.pack(side="left", fill="both", expand=True)
 
     # Create a frame to hold the right section
-    right_frame = tk.Frame(root, bg="#F0AFAF")  # Set the background color to pink
+    right_frame = tk.Frame(root, width=600, height=900,  bg="#F0AFAF")  # Set the background color to pink
     right_frame.pack(side="right", fill="both", expand=True, padx=(0, 5))  # Add padding to prevent overlap
 
     # Headings

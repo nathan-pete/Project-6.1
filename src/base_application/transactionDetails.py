@@ -19,17 +19,22 @@ def transaction_details(trans_id):
     # ----------------- Window TKinter ---------------------
     # Create a standard size window of 1200x900 pixels, not resizable
     window = tk.Tk()
-    window.geometry("1200x300")
+    window.geometry("1200x900")
     window.resizable(False, False)
     window.title("Sports Accounting - Transaction Details")
-    frame = tk.Frame(window, width=1200, height=300, bg="#D9D9D9")
-    frame.pack(side="left")
 
+
+    # Create a frame to hold the left section
+    left_frame = tk.Frame(window, width=1200, height=900, bg="#D9D9D9")  # Set the background color to grey
+    left_frame.pack(side="left")
+    
     # -------------------------------------------------------
     # ----------------- Table -------------------------------
-    table = ttk.Treeview(frame, columns=("ID", "Date", "Details", "Description", "Ref", "Amount", "Currency",
+    table = ttk.Treeview(left_frame, columns=("ID", "Date", "Details", "Description", "Ref", "Amount", "Currency",
                                          "CategoryID", "Category", "MemberID", "Member", "Type"),
                          show="headings", style="Custom.Treeview")
+    table.place(x=40, y=9000, width=1100, height=300)  # move down the table by 50 pixels
+
 
     table.heading("ID", text="ID")
     table.heading("Date", text="Date")
@@ -77,5 +82,8 @@ def transaction_details(trans_id):
     # Pack the table into the frame and center it horizontally
     table.pack(fill="both", expand=False)  # Fill the frame with the table
     table.place(x=20, y=20)
+
     # -------------------------------------------------------------------------
     window.mainloop()
+
+transaction_details("1")

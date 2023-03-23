@@ -36,7 +36,7 @@ def get_connection_postgre():
 def get_connection_postgre_user():
     # Establishing the connection
     conn = psycopg2.connect(
-        database="Quintor", user='myuser', password='mypassword', host='localhost', port='5432'
+        database="Quintor", user='myuser', password='user', host='localhost', port='5432'
     )
     return conn
 
