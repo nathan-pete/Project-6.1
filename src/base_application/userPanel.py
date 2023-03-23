@@ -10,6 +10,7 @@ from src.base_application import api_server_ip
 
 
 def create_window():
+    selected_row = None
     """Create a Tkinter window with two equal sections."""
     # Create the main window
     root = tk.Tk()
@@ -25,6 +26,25 @@ def create_window():
     def admin_login_button_click():
         root.destroy()
         login_admin_page()
+
+    # Define a function to be called when a row of the table is clicked
+    def on_click_table_row(event):
+        global selected_row
+        # Get the selected item
+        item = table.selection()[0]
+        # Get the values of the selected item
+        values = table.item(item, "values")
+        selected_row = values[0]
+
+    def edit_button_click():
+        global selected_row
+        if selected_row is None:
+            return
+        root.destroy()
+        from editTransaction import edit_transaction_page
+        edit_transaction_page(selected_row)
+
+
 
     root.resizable(False, False)  # Prevent the window from being resized
 
@@ -80,46 +100,50 @@ def create_window():
     right_frame.pack(side="right")  # Add padding to prevent overlap
 
     # Create a Treeview widget to display the table
-    table = ttk.Treeview(right_frame, columns=("Date", "Details", "Description", "Ref", "Amount", "Edit"),
+    table = ttk.Treeview(right_frame, columns=("ID", "Date", "Details", "Description", "Ref", "Amount"),
                          show="headings", style="Custom.Treeview")
+    table.heading("ID", text="ID")
     table.heading("Date", text="Date")
     table.heading("Details", text="Company Name")
     table.heading("Description", text="Description")
     table.heading("Ref", text="Ref")
     table.heading("Amount", text="Amount")
-    table.heading("Edit", text="Edit")
 
 
     # Looping through the columns and get the heading
     for column in table["columns"]:
         # Assigning the heading as text of the column
         table.heading(column, text=column, command=lambda: None)
-        # For each heading we are disabling the property of resizing the column
-        table.bind("<Button-1>", lambda event: "break")
 
     # Apply the background color to the entire table
     style = ttk.Style()
-    style.configure("Custom.Treeview", background="#F0AFAF")
+    style.configure("Custom.Treeview", background="#F0AFAF", rowheight=60)
 
+    table.column("ID", width=20)  # Set width of column zero
     table.column("Date", width=100)  # Set the width of the first column
-    table.column("Details", width=100)  # Set the width of the second column
+    table.column("Details", width=200)  # Set the width of the second column
     table.column("Description", width=100)  # Set the width of the third column
     table.column("Ref", width=50)  # Set the width of the forth column
     table.column("Amount", width=100)  # Set the width of the fifth
-    table.column("Edit", width=100)  # Set the width of the fifth column to 20% of the table width
-    table.config(height=2)  # Set the height of the table to 10 rows
+    table.config(height=600)  # Set the height of the table to 10 rows
 
-    # Insert the data into the table
-    # table.insert("", "end", values=("1/1/2021", "Company Name", "Description", "Ref", "Amount", "Edit"))
-    # table.insert("", "end", values=("1/1/2021", "Company Name", "Description", "Ref", "Amount", "Edit"))
-    # table.insert("", "end", values=("1/1/2021", "Company Name", "Description", "Ref", "Amount", "Edit"))
+    rows = retrieveDB()
 
-    retrieveDB(table)
+    # # Clear existing rows in the table
+    table.delete(*table.get_children())
+
+    # Insert retrieved data into the table
+    for row in rows:
+        table.insert("", "end", values=row)
 
     # Pack the table into the frame and center it horizontally
     table.pack(fill="both", expand=False)  # Fill the frame with the table
-    table.place(x=30, y=150)  # Place the table 30 pixels from the left and 150 pixels from the top
+    table.place(x=15, y=100)  # Place the table 15 pixels from the left and 100 pixels from the top
+    table.bind("<ButtonRelease-1>", on_click_table_row, "+") # Bind row selection
     right_frame.pack_propagate(False)  # Prevent the frame from resizing to fit the table
+
+    edit_button = ttk.Button(right_frame, text="Edit", command=lambda: edit_button_click())
+    edit_button.place(x=15, y=35, width=100, height=30)
 
     def on_closing():
         root.destroy()
@@ -130,20 +154,16 @@ def create_window():
     # Start the main event loop
     root.mainloop()
 
-def retrieveDB(table):
-    """Retrieve data from the database and insert it into the table."""
+def retrieveDB():
+    response = requests.get(api_server_ip + "/api/getTransactionsSQL")
+    if len(response.json()) == 0:
+        return
 
-    # Retrieve data from the database
-    conn = sqlite3.connect('quintor.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT transaction_date, transactionDetail, description, amount, referenceNumber FROM transactions")
-    rows = cursor.fetchall()
-    conn.close()
+    # Convert JSON object into an array of tuples
+    rows_out = []
+    for entry in response.json():
+        temp_tuple = (entry[0], entry[6], entry[2], entry[3], entry[1], entry[4])
+        rows_out.append(tuple(temp_tuple))
 
-    # Clear existing rows in the table
-    table.delete(*table.get_children())
-
-    # Insert retrieved data into the table
-    for row in rows:
-        table.insert("", "end", values=row)
+    return rows_out
 

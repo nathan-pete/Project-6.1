@@ -355,22 +355,69 @@ def get_members():
         return jsonify({'error': error_message})
 
 
-# @app.route("/api/getCategory", methods=["GET"])
-# def get_members():
-#     try:
-#         cursor = postgre_connection.cursor()
-#
-#         # call a stored procedure
-#         cursor.execute('SELECT * FROM select_all_member()')
-#
-#         # Get all data from the stored procedure
-#         data = cursor.fetchall()
-#
-#         # Return data in JSON format
-#         return jsonify(data)
-#     except psycopg2.InterfaceError as error:
-#         error_message = str(error)
-#         return jsonify({'error': error_message})
+@app.route("/api/getCategory", methods=["GET"])
+def get_category():
+    try:
+        cursor = postgre_connection.cursor()
+
+        # call a stored procedure
+        cursor.execute('SELECT * FROM category')
+
+        # Get all data from the stored procedure
+        data = cursor.fetchall()
+
+        # Return data in JSON format
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
+@app.route("/api/getTransactionOnId/<trans_id>", methods=["GET"])
+def get_transaction_on_id(trans_id):
+    try:
+        cursor = postgre_connection.cursor()
+
+        cursor.execute('SELECT * FROM select_transaction_on_id(%s)', (int(trans_id),))
+
+        data = cursor.fetchall()
+
+        return jsonify(data)
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
+@app.route("/api/updateTransaction", methods=["POST"])
+def update_transaction():
+    try:
+        cursor = postgre_connection.cursor()
+        # Get data from a post request
+        transactionID = request.form.get('trans_id')
+        description = request.form.get('desc')
+        categoryID = request.form.get('category')
+        memberID = request.form.get('member')
+        cursor = postgre_connection.cursor()
+
+        if categoryID == "None":
+            categoryID = None
+        else:
+            categoryID = int(categoryID)
+
+        if memberID == "None":
+            memberID = None
+        else:
+            memberID = int(memberID)
+
+        cursor.execute('CALL update_transaction(%s,%s,%s,%s)', (
+            transactionID, description, categoryID, memberID))
+
+        return jsonify({'message': 'Transaction Updated'})
+    except psycopg2.InterfaceError as error:
+        error_message = str(error)
+        return jsonify({'error': error_message})
+
+
 
 
 

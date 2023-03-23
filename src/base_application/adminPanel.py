@@ -10,6 +10,7 @@ from src.base_application import api_server_ip
 
 
 def adminPanel():
+    selected_row = None
     window = tk.Tk()
     window.geometry("1200x900")
     window.title("Sports Accounting - Admin Panel")
@@ -35,20 +36,6 @@ def adminPanel():
         savedText.config(text="Search Results for: " + input_text)
         print("Saved:", input_text)
 
-    def retrieveDB(table):
-        conn = sqlite3.connect('quintor.db')
-        cursor = conn.cursor()
-        cursor.execute("")
-        rows = cursor.fetchall()
-        conn.close()
-
-        # Clear existing rows in the table
-        table.delete(*table.get_children())
-
-        # Insert retrieved data into the table
-        for row in rows:
-            table.insert("", "end", values=row)
-
     def manage_members_button():
         window.destroy()
         manage_members()
@@ -61,6 +48,37 @@ def adminPanel():
         window.destroy()
         from userPanel import create_window
         create_window()
+
+    # Define a function to be called when a row of the table is clicked
+    def on_click_table_row(event):
+        global selected_row
+        # Get the selected item
+        item = table.selection()[0]
+        # Get the values of the selected item
+        values = table.item(item, "values")
+        selected_row = values[0]
+        print(selected_row)
+
+    def edit_button_click():
+        global selected_row
+        if selected_row is None:
+            return
+        window.destroy()
+        from editTransaction import edit_transaction_page_admin
+        edit_transaction_page_admin(selected_row)
+
+    def retrieveDB():
+        response = requests.get(api_server_ip + "/api/getTransactionsSQL")
+        if len(response.json()) == 0:
+            return
+
+        # Convert JSON object into an array of tuples
+        rows_out = []
+        for entry in response.json():
+            temp_tuple = (entry[0], entry[6], entry[2], entry[3], entry[1], entry[4])
+            rows_out.append(tuple(temp_tuple))
+
+        return rows_out
 
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -112,33 +130,58 @@ def adminPanel():
     savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
                          justify="left")
     savedText.place(x=20, y=20, width=550, height=50)
-
-    table = ttk.Treeview(frame2, columns=("Member ID", "Name", "DoB", "Contact", "Member Since", "Paid"),
+    table = ttk.Treeview(frame2, columns=("ID", "Date", "Details", "Description", "Ref", "Amount"),
                          show="headings", style="Custom.Treeview")
-    table.heading("Member ID", text="Member ID")
-    table.heading("Name", text="Name")
-    table.heading("DoB", text="DoB")
-    table.heading("Contact", text="Contact")
-    table.heading("Member Since", text="Member Since")
-    table.heading("Paid", text="Paid")
+    table.heading("ID", text="ID")
+    table.heading("Date", text="Date")
+    table.heading("Details", text="Company Name")
+    table.heading("Description", text="Description")
+    table.heading("Ref", text="Ref")
+    table.heading("Amount", text="Amount")
 
+    # Looping through the columns and get the heading
     for column in table["columns"]:
+        # Assigning the heading as text of the column
         table.heading(column, text=column, command=lambda: None)
-        table.bind("<Button-1>", lambda event: "break")
 
-        retrieveDB(table)
+    # Apply the background color to the entire table
+    style = ttk.Style()
+    style.configure("Custom.Treeview", background="#F0AFAF", rowheight=60)
 
-    table.column("Member ID", width=100)
-    table.column("Name", width=100)
-    table.column("DoB", width=50)
-    table.column("Contact", width=100)
-    table.column("Member Since", width=100)
-    table.column("Paid", width=50)
-    table.config(height=2)
+    table.column("ID", width=20)  # Set width of column zero
+    table.column("Date", width=100)  # Set the width of the first column
+    table.column("Details", width=200)  # Set the width of the second column
+    table.column("Description", width=100)  # Set the width of the third column
+    table.column("Ref", width=50)  # Set the width of the forth column
+    table.column("Amount", width=100)  # Set the width of the fifth
+    table.config(height=600)  # Set the height of the table to 10 rows
 
-    table.pack(fill="both", expand=False)
-    table.place(x=50, y=150)
-    frame2.pack_propagate(False)
+    rows = retrieveDB()
+
+    # # Clear existing rows in the table
+    table.delete(*table.get_children())
+
+    # Insert retrieved data into the table
+    for row in rows:
+        table.insert("", "end", values=row)
+
+    # Pack the table into the frame and center it horizontally
+    table.pack(fill="both", expand=False)  # Fill the frame with the table
+    table.place(x=15, y=100)  # Place the table 15 pixels from the left and 100 pixels from the top
+    table.bind("<ButtonRelease-1>", on_click_table_row, "+") # Bind row selection
+    frame2.pack_propagate(False)  # Prevent the frame from resizing to fit the table
+
+    edit_button = ttk.Button(frame2, text="Edit", command=lambda: edit_button_click())
+    edit_button.place(x=15, y=35, width=100, height=30)
+
+    def on_closing():
+        window.destroy()
+
+    # Bind the on_closing function to the window close event
+    window.protocol("WM_DELETE_WINDOW", on_closing)
+
+    # Start the main event loop
+    window.mainloop()
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
 
