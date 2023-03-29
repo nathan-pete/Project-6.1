@@ -2,8 +2,7 @@ import hashlib
 import json
 import mt940
 import re
-# Make a regular expression
-# for validating an Email
+# Make a regular expression for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 
@@ -71,8 +70,7 @@ def hash_password(password):
 
 
 def check_email(email):
-    # pass the regular expression
-    # and the string into the fullmatch() method
+    # pass the regular expression and the string into the fullmatch() method
     if re.fullmatch(regex, email):
         return True
     else:
@@ -95,6 +93,7 @@ def get_json_payload_mt940_file(file_path):
                'forwardavbalance': forward_available_balance, 'accountid': account_identification}
 
     return payload
+
 
 def get_json_payload_transaction(trans_set):
     amount = trans_set["amount"]["amount"]

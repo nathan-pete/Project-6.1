@@ -1,6 +1,4 @@
 import tkinter as tk
-import tkinter.ttk as ttk
-import sqlite3
 from tkinter import ttk
 import requests
 from adminLogin import login_admin_page

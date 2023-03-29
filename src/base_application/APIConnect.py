@@ -190,9 +190,6 @@ def insert_association():
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
 
 
 @app.route("/api/insertMemberSQL/<name>/<email>", methods=["GET"])
@@ -213,9 +210,6 @@ def insert_member(name, email):
         return jsonify({'message': 'Member saved successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
 
 
 @app.route("/api/getAssociation", methods=["GET"])
@@ -234,9 +228,6 @@ def get_association():
     except psycopg2.InterfaceError as error:
         error_message = str(error)
         return jsonify({'error': error_message})
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
 
 
 @app.route("/api/insertTransaction", methods=["POST"])
@@ -267,10 +258,6 @@ def insert_transaction():
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         return jsonify({'message': error})
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
-    #         return jsonify({'message': 'Connection Closed'})
 
 
 @app.route("/api/insertFile/<referencenumber>/<statementnumber>/<sequencedetail>/<availablebalance>/<forwardavbalance>/<accountid>", methods=["GET"])
@@ -291,11 +278,6 @@ def insert_file(referencenumber, statementnumber, sequencedetail, availablebalan
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify({'message': error})
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
-    #         return jsonify({'message': 'Connection Closed'})
-
 
 @app.route("/api/getTransactionsSQL", methods=["GET"])
 def get_transactions_sql():
@@ -441,10 +423,6 @@ def search_keyword(keyword):
         # Fetch the results from the function call
         results = cursor.fetchall()
         return jsonify(results)
-        # if cursor.rowcount == 0:
-        #     return jsonify({'Message': 'No Results Found'})
-        # else:
-        #     return jsonify(results)
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify({'message': error})
 
