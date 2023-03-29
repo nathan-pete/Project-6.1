@@ -7,7 +7,7 @@ import psycopg2
 import os
 from flask import jsonify, request, make_response
 from json2xml import json2xml
-from utils import parse_mt940_file, check_mt940_file, check_email, validate_xml
+from utils import parse_mt940_file, check_mt940_file, check_email, validate_xml, validate_json
 from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 
@@ -66,6 +66,10 @@ def downloadJSON():
         response = make_response(json_data)
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
+
+    # # Validate JSON
+    # if not validate_json(json_data):
+    #     return jsonify({'Error': 'Error Occured'})
 
     # Prompt the user to select a file path
     root = tk.Tk()

@@ -1,13 +1,14 @@
 import hashlib
 import json
+import jsonschema
 import mt940
 import re
 from lxml import etree
 import os
-from json_schema import schema
 # Make a regular expression for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 xml_schema_path = os.path.join(os.path.dirname(__file__), 'xmlSchema.xsd')
+json_schema_path = os.path.join(os.path.dirname(__file__), 'json_schema_mt940.json')
 
 def parse_mt940_file(file_path) -> dict:
     # Parse the contents of the MT940 file
@@ -125,6 +126,17 @@ def validate_xml(xml_file):
     is_valid = schema.validate(xml)
 
     return is_valid
+
+
+def validate_json(json_inp):
+    try:
+        with open(json_schema_path) as r:
+            schema = json.load(r)
+        jsonschema.validate(json_inp, schema)
+        return True
+    except (Exception, jsonschema.ValidationError) as error:
+        print(error)
+        return False
 
 
 
