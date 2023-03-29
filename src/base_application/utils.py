@@ -2,9 +2,12 @@ import hashlib
 import json
 import mt940
 import re
+from lxml import etree
+import os
+from json_schema import schema
 # Make a regular expression for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-
+xml_schema_path = os.path.join(os.path.dirname(__file__), 'xmlSchema.xsd')
 
 def parse_mt940_file(file_path) -> dict:
     # Parse the contents of the MT940 file
@@ -108,6 +111,20 @@ def get_json_payload_transaction(trans_set):
                "transaction_details": transaction_details, "description": description, "typetransaction": typetransaction}
 
     return payload
+
+
+def validate_xml(xml_file):
+    with open(xml_schema_path, 'r') as f:
+        xsd = etree.parse(f)
+
+    with open(xml_file, 'r') as f:
+        xml = etree.parse(f)
+
+    schema = etree.XMLSchema(xsd)
+
+    is_valid = schema.validate(xml)
+
+    return is_valid
 
 
 

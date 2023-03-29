@@ -4,9 +4,10 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import tkinter as tk
 import psycopg2
+import os
 from flask import jsonify, request, make_response
 from json2xml import json2xml
-from utils import parse_mt940_file, check_mt940_file, check_email
+from utils import parse_mt940_file, check_mt940_file, check_email, validate_xml
 from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 
@@ -108,6 +109,11 @@ def downloadXML():
             with open(file_path, 'wb') as f:
                 f.write(xml_string_pretty.encode('utf-8'))
 
+        # validate XML contents
+        if not validate_xml(file_path):
+            os.remove(file_path)
+            return jsonify({'Error': 'Error Occured'})
+
         # Create a response with appropriate headers
         response = make_response()
         response.headers['Content-Type'] = 'application/xml'
@@ -122,7 +128,6 @@ def get_all_transactions():
     output_transactions = []
 
     for trans in transactions_collection.find():
-        print(trans)
         output_transactions.append(trans)
 
     return output_transactions
@@ -158,7 +163,6 @@ def delete_member(member_id):
 
         # close the cursor
         cursor.close()
-        print(member_id)
 
         return jsonify({'message': 'Member removed'})
     except (Exception, psycopg2.DatabaseError) as error:
@@ -187,7 +191,8 @@ def insert_association():
         # return make_response(jsonify(status="Data inserted!"), 200)
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        error_message = str(error)
+        return jsonify({'error': error_message})
 
 
 @app.route("/api/insertMemberSQL/<name>/<email>", methods=["GET"])
@@ -207,7 +212,8 @@ def insert_member(name, email):
         # return make_response(jsonify(status="Data inserted!"), 200)
         return jsonify({'message': 'Member saved successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        error_message = str(error)
+        return jsonify({'error': error_message})
 
 
 @app.route("/api/getAssociation", methods=["GET"])
@@ -254,8 +260,8 @@ def insert_transaction():
 
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        return jsonify({'message': error})
+        error_message = str(error)
+        return jsonify({'error': error_message})
 
 
 @app.route("/api/insertFile/<referencenumber>/<statementnumber>/<sequencedetail>/<availablebalance>/<forwardavbalance>/<accountid>", methods=["GET"])
