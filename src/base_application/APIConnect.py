@@ -33,8 +33,6 @@ def index():
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
             "deleteMemberSQL": "/api/deleteMember/<member_id>",
             "getAssociationSQL": "/api/getAssociation"
-
-
         }
     }
     return make_response(jsonify(answer), 200)
