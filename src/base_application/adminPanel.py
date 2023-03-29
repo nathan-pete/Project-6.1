@@ -164,8 +164,9 @@ def adminPanel():
     table.delete(*table.get_children())
 
     # Insert retrieved data into the table
-    for row in rows:
-        table.insert("", "end", values=row)
+    if rows is not None:
+        for row in rows:
+            table.insert("", "end", values=row)
 
     # Pack the table into the frame and center it horizontally
     table.pack(fill="both", expand=False)  # Fill the frame with the table
@@ -183,6 +184,9 @@ def adminPanel():
                        bg="#D9D9D9", fg="black", justify="left", command=lambda: keyword_search_button(searchBar.get(), table))
     search.place(x=300, y=400, width=180, height=30)
 
+    update_button = ttk.Button(frame2, text="Update", command=lambda: update_button_click(table))
+    update_button.place(x=235, y=35, width=100, height=30)
+
     def on_closing():
         window.destroy()
 
@@ -197,6 +201,17 @@ def adminPanel():
         # Insert retrieved data into the table
         for result in keyword_table:
             table.insert("", "end", values=result)
+
+    def update_button_click(table_inp):
+        # Clear existing rows in the table
+        table.delete(*table.get_children())
+        searchBar.delete(first=0, last=255)
+        # Show all transactions if keyword entry field is empty
+        rows = retrieveDB()
+        # Insert retrieved data into the table
+        for result in rows:
+            table.insert("", "end", values=result)
+
 
     # Bind the on_closing function to the window close event
     window.protocol("WM_DELETE_WINDOW", on_closing)

@@ -134,8 +134,9 @@ def create_window():
     table.delete(*table.get_children())
 
     # Insert retrieved data into the table
-    for row in rows:
-        table.insert("", "end", values=row)
+    if rows is not None:
+        for row in rows:
+            table.insert("", "end", values=row)
 
     # Pack the table into the frame and center it horizontally
     table.pack(fill="both", expand=False)  # Fill the frame with the table
