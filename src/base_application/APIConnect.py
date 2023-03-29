@@ -165,9 +165,6 @@ def delete_member(member_id):
         return jsonify({'message': 'Member removed'})
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify({'message': str(error)})
-    # finally:
-    #     if postgre_connection is not None:
-    #         postgre_connection.close()
 
 
 # The function receives a hashed password
@@ -431,6 +428,25 @@ def get_transaction_on_id_join(trans_id):
     except psycopg2.InterfaceError as error:
         error_message = str(error)
         return jsonify({'error': error_message})
+
+
+@app.route("/api/searchKeyword/<keyword>", methods=["GET"])
+def search_keyword(keyword):
+    try:
+        cursor = postgre_connection.cursor()
+
+        # Call the search_table2 function with a search term
+        cursor.execute("SELECT * FROM search_table2(%s)", (keyword,))
+
+        # Fetch the results from the function call
+        results = cursor.fetchall()
+        return jsonify(results)
+        # if cursor.rowcount == 0:
+        #     return jsonify({'Message': 'No Results Found'})
+        # else:
+        #     return jsonify(results)
+    except (Exception, psycopg2.DatabaseError) as error:
+        return jsonify({'message': error})
 
 
 

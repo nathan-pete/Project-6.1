@@ -19,7 +19,7 @@ def transaction_details(trans_id):
     # ----------------- Window TKinter ---------------------
     # Create a standard size window of 1200x900 pixels, not resizable
     window = tk.Tk()
-    window.geometry("1200x900")
+    window.geometry("1200x400")
     window.resizable(False, False)
     window.title("Sports Accounting - Transaction Details")
 
@@ -85,5 +85,3 @@ def transaction_details(trans_id):
 
     # -------------------------------------------------------------------------
     window.mainloop()
-
-transaction_details("1")

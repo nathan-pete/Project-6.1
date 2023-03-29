@@ -15,16 +15,6 @@ def member_registration():
 
     window.resizable(False, False)
 
-    # def check_For_Existing_Email():
-    #     isGood = True
-    #     email_list = select_Email_From_Member()
-    #     for value in email_list.values():
-    #         if value == email_entry.get():
-    #             isGood = False
-    #         else:
-    #             isGood = True
-    #     return isGood
-
     def register_button_click(email, name):
             if check_email(email):
                 if len(name) <= 0:
@@ -40,7 +30,6 @@ def member_registration():
             else:
                 # Make a pop up
                 messagebox.showinfo("Error", "Please enter a valid email")
-                print("Please enter a valid email")
                 email_entry.delete(first=0, last=30)
                 name_entry.delete(first=0, last=30)
 
@@ -91,5 +80,3 @@ def member_registration():
 
     # run the main loop
     window.mainloop()
-
-member_registration()

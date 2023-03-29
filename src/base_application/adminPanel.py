@@ -30,16 +30,6 @@ def adminPanel():
         balance = response.json()[0][4]
 
     # --------------------------------------------------- Functions -------------------------------------------------- #
-    def save_text():
-        global input_text
-        input_text = searchBar.get()
-        if input_text.strip() == "":
-            #Display error message if search field is empty
-            messagebox.showerror("Error", "Please enter a search term")
-            return
-        savedText.config(text="Search Results for: " + input_text)
-        print("Saved:", input_text)
-
     def manage_members_button():
         window.destroy()
         manage_members()
@@ -88,6 +78,16 @@ def adminPanel():
         from transactionDetails import transaction_details
         transaction_details(selected_row)
 
+    def retrieveDB_keyword_search(keyword):
+        response = requests.get(api_server_ip + "/api/searchKeyword/" + str(keyword))
+        if len(response.json()) == 0:
+            return
+        # Convert JSON object into an array of tuples
+        rows_out = []
+        for entry in response.json():
+            temp_tuple = (entry[0], entry[6], entry[2], entry[3], entry[1], entry[4])
+            rows_out.append(tuple(temp_tuple))
+        return rows_out
 
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
@@ -117,10 +117,6 @@ def adminPanel():
     searchBar = tk.Entry(frame1, font=("Inter", 14, "normal"), bg="#D9D9D9", fg="black", justify="left")
     searchBar.place(x=75, y=400, width=180, height=30)
 
-    search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left", command=save_text)
-    search.place(x=300, y=400, width=180, height=30)
-
     downloadJSONFile = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
                                  bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get(api_server_ip + "/api/downloadJSON"))
     downloadJSONFile.place(x=35, y=500, width=250, height=30)
@@ -136,9 +132,6 @@ def adminPanel():
     balance_number.place(x=210, y=600, width=160, height=24)
 
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
-    savedText = tk.Label(frame2, text="", font=("Inter", 14, "normal"), bg="#F0AFAF", fg="black",
-                         justify="left")
-    savedText.place(x=20, y=20, width=550, height=50)
     table = ttk.Treeview(frame2, columns=("ID", "Date", "Details", "Description", "Ref", "Amount"),
                          show="headings", style="Custom.Treeview")
     table.heading("ID", text="ID")
@@ -186,8 +179,24 @@ def adminPanel():
     details_button = ttk.Button(frame2, text="Details", command=lambda: details_button_click())
     details_button.place(x=485, y=35, width=100, height=30)
 
+    search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
+                       bg="#D9D9D9", fg="black", justify="left", command=lambda: keyword_search_button(searchBar.get(), table))
+    search.place(x=300, y=400, width=180, height=30)
+
     def on_closing():
         window.destroy()
+
+    def keyword_search_button(keyword, table):
+        # Clear existing rows in the table
+        table.delete(*table.get_children())
+        # Show all transactions if keyword entry field is empty
+        if len(keyword) == 0:
+            keyword_table = retrieveDB()
+        else:
+            keyword_table = retrieveDB_keyword_search(keyword)
+        # Insert retrieved data into the table
+        for result in keyword_table:
+            table.insert("", "end", values=result)
 
     # Bind the on_closing function to the window close event
     window.protocol("WM_DELETE_WINDOW", on_closing)
@@ -196,5 +205,3 @@ def adminPanel():
     window.mainloop()
     # ------------------------------------------------------ Run ----------------------------------------------------- #
     window.mainloop()
-
-adminPanel()

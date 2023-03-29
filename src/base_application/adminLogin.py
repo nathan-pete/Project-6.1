@@ -80,4 +80,4 @@ def login_admin_page():
     # run the main loop
     window.mainloop()
 
-login_admin_page()
+# login_admin_page()

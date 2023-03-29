@@ -79,10 +79,6 @@ def create_window():
                     font=("Inter", 14), borderwidth=0, bordercolor="#000000")
     style.map("RoundedButton.TButton", background=[("active", "#333333")])
 
-    button1 = ttk.Button(left_frame, text="Keyboard Search",
-                         command=lambda: print("Button 1 clicked!"))
-
-    button1.place(x=70, y=400, width=150, height=24)
 
     style = ttk.Style()
     style.configure("RoundedButton.TButton", padding=6, relief="flat",
@@ -155,14 +151,32 @@ def create_window():
     details_button = ttk.Button(right_frame, text="Details", command=lambda: details_button_click())
     details_button.place(x=485, y=35, width=100, height=30)
 
+    button1 = ttk.Button(left_frame, text="Keyboard Search", command=lambda: keyword_search_button(entry.get(), table))
+    button1.place(x=70, y=400, width=150, height=24)
+
     def on_closing():
         root.destroy()
+
+    def keyword_search_button(keyword, table):
+        # global table
+        # Clear existing rows in the table
+        table.delete(*table.get_children())
+        # Show all transactions if keyword entry field is empty
+        if len(keyword) == 0:
+            keyword_table = retrieveDB()
+        else:
+            keyword_table = retrieveDB_keyword_search(keyword)
+        # Insert retrieved data into the table
+        for result in keyword_table:
+            table.insert("", "end", values=result)
+
 
     # Bind the on_closing function to the window close event
     root.protocol("WM_DELETE_WINDOW", on_closing)
 
     # Start the main event loop
     root.mainloop()
+
 
 def retrieveDB():
     response = requests.get(api_server_ip + "/api/getTransactionsSQL")
@@ -177,4 +191,16 @@ def retrieveDB():
 
     return rows_out
 
-create_window()
+
+def retrieveDB_keyword_search(keyword):
+    response = requests.get(api_server_ip + "/api/searchKeyword/" + str(keyword))
+    if len(response.json()) == 0:
+        return
+
+    # Convert JSON object into an array of tuples
+    rows_out = []
+    for entry in response.json():
+        temp_tuple = (entry[0], entry[6], entry[2], entry[3], entry[1], entry[4])
+        rows_out.append(tuple(temp_tuple))
+
+    return rows_out

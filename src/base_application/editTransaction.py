@@ -229,5 +229,3 @@ def edit_transaction_page_admin(transaction_id):
 
     # Start the window
     window.mainloop()
-
-edit_transaction_page_admin("1")
