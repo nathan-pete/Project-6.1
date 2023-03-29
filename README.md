@@ -18,6 +18,7 @@ The application was built with Python and TKinter utilizing Flask to create the 
 * json2xml 3.21.0
 * psycopg2 2.9.5
 * pymongo 4.3.3
+* lxml 4.9.2
 
 
 <h3> Installation </h3>
