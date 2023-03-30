@@ -131,6 +131,12 @@ def adminPanel():
     balance_number = tk.Label(frame1, text=balance, font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
     balance_number.place(x=210, y=600, width=160, height=24)
 
+    search_balance_label = tk.Label(frame1, text="Sum of found transactions:", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    search_balance_label.place(x=35, y=700, width=240, height=24)
+
+    search_summary_num = tk.Label(frame1, text="", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    search_summary_num.pack_forget()
+
     # ---------------------------------------------------- Frame 2 --------------------------------------------------- #
     table = ttk.Treeview(frame2, columns=("ID", "Date", "Details", "Description", "Ref", "Amount"),
                          show="headings", style="Custom.Treeview")
@@ -181,36 +187,47 @@ def adminPanel():
     details_button.place(x=485, y=35, width=100, height=30)
 
     search = tk.Button(frame1, text="Search Keyword", font=("Inter", 12, "normal"),
-                       bg="#D9D9D9", fg="black", justify="left", command=lambda: keyword_search_button(searchBar.get(), table))
+                       bg="#D9D9D9", fg="black", justify="left", command=lambda: keyword_search_button(searchBar.get(), table, search_summary_num))
     search.place(x=300, y=400, width=180, height=30)
 
-    update_button = ttk.Button(frame2, text="Update", command=lambda: update_button_click(table))
+    update_button = ttk.Button(frame2, text="Update", command=lambda: update_button_click(table, search_summary_num))
     update_button.place(x=235, y=35, width=100, height=30)
 
     def on_closing():
         window.destroy()
 
-    def keyword_search_button(keyword, table):
+    def keyword_search_button(keyword, table, widget):
         # Clear existing rows in the table
         table.delete(*table.get_children())
         # Show all transactions if keyword entry field is empty
         if len(keyword) == 0:
             keyword_table = retrieveDB()
+            # Remove the sum per search label if no keyword is input
+            widget.config(text="")
         else:
             keyword_table = retrieveDB_keyword_search(keyword)
+            sum_output = 0
+            # Calculate total sum of money per keyword
+            for tuple_entry in keyword_table:
+                sum_output = sum_output + float(tuple_entry[5])
+            widget.config(text=str(sum_output))
+            widget.place(x=275, y=700, width=350, height=24)
+
         # Insert retrieved data into the table
         for result in keyword_table:
             table.insert("", "end", values=result)
 
-    def update_button_click(table_inp):
+    def update_button_click(table_inp, widget):
         # Clear existing rows in the table
-        table.delete(*table.get_children())
+        table_inp.delete(*table_inp.get_children())
         searchBar.delete(first=0, last=255)
         # Show all transactions if keyword entry field is empty
         rows = retrieveDB()
         # Insert retrieved data into the table
         for result in rows:
-            table.insert("", "end", values=result)
+            table_inp.insert("", "end", values=result)
+        # Remove the sum per search label if table is updated
+        widget.config(text="")
 
 
     # Bind the on_closing function to the window close event

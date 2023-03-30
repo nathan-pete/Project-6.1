@@ -95,6 +95,12 @@ def create_window():
     balance_number = tk.Label(left_frame, text=balance, font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
     balance_number.place(x=250, y=500, width=160, height=24)
 
+    search_balance_label = tk.Label(left_frame, text="Sum of found transactions:", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    search_balance_label.place(x=70, y=600, width=240, height=24)
+
+    search_summary_num = tk.Label(left_frame, text="", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")
+    search_summary_num.pack_forget()
+
     # Create a frame to hold the right section
     right_frame = tk.Frame(root, width=600, height=900, bg="#F0AFAF")
     # Set the background color to pink
@@ -150,21 +156,28 @@ def create_window():
     details_button = ttk.Button(right_frame, text="Details", command=lambda: details_button_click())
     details_button.place(x=485, y=35, width=100, height=30)
 
-    button1 = ttk.Button(left_frame, text="Keyboard Search", command=lambda: keyword_search_button(entry.get(), table))
+    button1 = ttk.Button(left_frame, text="Keyboard Search", command=lambda: keyword_search_button(entry.get(), table, search_summary_num))
     button1.place(x=70, y=400, width=150, height=24)
 
     def on_closing():
         root.destroy()
 
-    def keyword_search_button(keyword, table):
-        # global table
+    def keyword_search_button(keyword, table, widget):
         # Clear existing rows in the table
         table.delete(*table.get_children())
         # Show all transactions if keyword entry field is empty
         if len(keyword) == 0:
             keyword_table = retrieveDB()
+            widget.config(text="")
         else:
             keyword_table = retrieveDB_keyword_search(keyword)
+            sum_output = 0
+            # Calculate total sum of money per keyword
+            for tuple_entry in keyword_table:
+                sum_output = sum_output + float(tuple_entry[5])
+            widget.config(text=str(sum_output))
+            widget.place(x=310, y=600, width=350, height=24)
+
         # Insert retrieved data into the table
         for result in keyword_table:
             table.insert("", "end", values=result)
