@@ -67,9 +67,9 @@ def downloadJSON():
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
 
-    # # Validate JSON
-    # if not validate_json(json_data):
-    #     return jsonify({'Error': 'Error Occured'})
+    # Validate JSON
+    if not validate_json(json_data):
+        jsonify({'Error': 'Error Occured'})
 
     # Prompt the user to select a file path
     root = tk.Tk()

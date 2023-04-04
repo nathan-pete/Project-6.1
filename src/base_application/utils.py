@@ -135,7 +135,6 @@ def validate_json(json_inp):
         jsonschema.validate(json_inp, schema)
         return True
     except (Exception, jsonschema.ValidationError) as error:
-        print(error)
         return False
 
 

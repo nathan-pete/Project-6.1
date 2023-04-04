@@ -223,6 +223,8 @@ def adminPanel():
         searchBar.delete(first=0, last=255)
         # Show all transactions if keyword entry field is empty
         rows = retrieveDB()
+        if len(rows) == 0:
+            return
         # Insert retrieved data into the table
         for result in rows:
             table_inp.insert("", "end", values=result)
