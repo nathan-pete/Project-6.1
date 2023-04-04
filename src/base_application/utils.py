@@ -8,7 +8,7 @@ import os
 # Make a regular expression for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 xml_schema_path = os.path.join(os.path.dirname(__file__), 'xmlSchema.xsd')
-json_schema_path = os.path.join(os.path.dirname(__file__), 'json_schema_mt940.json')
+json_schema_path = os.path.join(os.path.dirname(__file__), 'mt940_schema.json')
 
 def parse_mt940_file(file_path) -> dict:
     # Parse the contents of the MT940 file
