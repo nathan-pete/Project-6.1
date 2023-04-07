@@ -27,7 +27,7 @@ The application was built with Python and TKinter utilizing Flask to create the 
 1. Clone requirments
     `git clone <repository_link>` 
 2. Install the requirements
-3. Host the postgresql server either locally (Using PGadmin 4) or online. Create a DB called "Quintor" and restore the DB using the `Quintor` file in src - resources directory 
+3. Host the postgresql server either locally (Using PGadmin 4) or online. Create a DB called "Quintor" and restore the DB using the `Quintor` file in src - resources directory. DB's password if needed is "password"
 4. Files `__init__` `APIConnect` `datBaseConnectionPyMongo` `main` are parts of the API used by the app. These can be hosted seperatly on a server. Alternatively, run `main` first to start the flask app locally.
 5. If needed, adjust connection strings to MongoDB and PostgreSQL in `dataBaseConnectionPyMongo` file and API server ip in `__init__` file
 6. Run the `registerPage` page to start the application 
