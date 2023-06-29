@@ -100,9 +100,10 @@ def manage_members():
         global selected_row
         if selected_row is None:
             return
-        response = requests.get(api_server_ip + "/api/deleteMember/" + str(selected_row))
-        print(response.text)
+        data_params = {'memberid': str(selected_row)}
         # Update DB
+        response = requests.delete(api_server_ip + "/api/deleteMember", params=data_params)
+        print(response.text)
         rows = retrieveDB()
         table.delete(*table.get_children())
         member_count.config(text=str(len(rows)))

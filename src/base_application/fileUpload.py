@@ -1,3 +1,5 @@
+import json
+
 from utils import parse_mt940_file, check_mt940_file, get_json_payload_mt940_file, get_json_payload_transaction
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
@@ -38,8 +40,9 @@ class MainWindow:
             if check_mt940_file(file_path):
                 # Save to NoSQL DB
                 url = api_server_ip + '/api/uploadFile'
-                payload = {'file_path': file_path}
-                response = requests.post(url, data=payload)
+                json_data = parse_mt940_file(file_path)
+                headers = {'Content-Type': 'application/json'}
+                response = requests.post(url, json=json_data, headers=headers)
 
                 # Save to SQL DB FILE
                 payload = get_json_payload_mt940_file(file_path)

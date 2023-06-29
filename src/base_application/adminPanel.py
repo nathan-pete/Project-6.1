@@ -1,12 +1,15 @@
 # ----------------------------------------------------- Imports ------------------------------------------------------ #
-import sqlite3
+import json
+import xml.dom.minidom
 import tkinter as tk
+import xml
 from tkinter import ttk, messagebox
 from tkinter import filedialog
 from manageMembers import manage_members
 from fileUpload import main
 import requests
 from src.base_application import api_server_ip
+import xml.etree.ElementTree as ET
 
 
 def adminPanel():
@@ -89,6 +92,47 @@ def adminPanel():
             rows_out.append(tuple(temp_tuple))
         return rows_out
 
+    def get_json_button_click():
+        # Make a request to download the JSON data
+        response = requests.get(api_server_ip + "/api/downloadJSON")
+        json_data = response.json()
+
+
+        # Format and indent the JSON data
+        formatted_json = json.dumps(json_data, indent=4)
+
+        # Prompt the user to select a file path
+        root = tk.Tk()
+        root.withdraw()
+        root.wm_attributes("-topmost", 1)
+        file_path = filedialog.asksaveasfilename(defaultextension='.json')
+
+        if file_path:
+            # Write the formatted JSON data to the selected file path
+            with open(file_path, 'w') as f:
+                f.write(formatted_json)
+
+        root.destroy()
+
+    def get_xml_button_click():
+        headers = {'Accept': 'application/xml'}
+        xml_data = requests.get(api_server_ip + "/api/downloadXML", headers=headers)
+        # xml_root = ET.fromstring(xml_data.content)
+        xml_root = xml_data.text
+        print(xml_root)
+
+        # Prompt the user to select a file path
+        root = tk.Tk()
+        root.withdraw()
+        root.wm_attributes("-topmost", 1)
+        file_path = filedialog.asksaveasfilename(defaultextension='.xml')
+
+        # Write the XML data to the selected file path
+        if file_path:
+            with open(file_path, 'wb') as file:
+                file.write(xml_root.encode('utf-8'))
+        root.destroy()
+
     # ---------------------------------------------------- Frame 1 --------------------------------------------------- #
     label = tk.Label(frame1, text="Admin Panel", font=("Inter", 24, "normal"), bg="#D9D9D9", fg="black", justify="left")
     label.place(x=20, y=20, width=190, height=50)
@@ -118,11 +162,11 @@ def adminPanel():
     searchBar.place(x=75, y=400, width=180, height=30)
 
     downloadJSONFile = tk.Button(frame1, text="Download Transactions in JSON", font=("Inter", 12, "normal"),
-                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get(api_server_ip + "/api/downloadJSON"))
+                                 bg="#D9D9D9", fg="black", justify="left", command=lambda: get_json_button_click())
     downloadJSONFile.place(x=35, y=500, width=250, height=30)
 
     downloadXMLFile = tk.Button(frame1, text="Download Transactions in XML", font=("Inter", 12, "normal"),
-                                bg="#D9D9D9", fg="black", justify="left", command=lambda: requests.get(api_server_ip + "/api/downloadXML"))
+                                bg="#D9D9D9", fg="black", justify="left", command=lambda: get_xml_button_click())
     downloadXMLFile.place(x=300, y=500, width=250, height=30)
 
     balance_label = tk.Label(frame1, text="Available Balance:", font=("Inter", 15), bg="#D9D9D9", fg="#000000", justify="left")

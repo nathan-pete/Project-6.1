@@ -5,7 +5,7 @@ import xml.dom.minidom
 import tkinter as tk
 import psycopg2
 import os
-from flask import jsonify, request, make_response
+from flask import jsonify, request, make_response, Flask, Response
 from json2xml import json2xml
 from utils import parse_mt940_file, check_mt940_file, check_email, validate_xml, validate_json
 from bson import json_util, ObjectId
@@ -32,7 +32,7 @@ def index():
             "insertTransactionSQL": "/api/insertTransaction",
             "insertMemberSQL": "/api/insertMemberSQL/<name>/<email>",
             "updateTransactionSQL": "/api/updateTransactionSQL/<transaction_id>",
-            "deleteMemberSQL": "/api/deleteMember/<member_id>",
+            "deleteMemberSQL": "/api/deleteMember",
             "getAssociationSQL": "/api/getAssociation"
         }
     }
@@ -63,68 +63,42 @@ def downloadJSON():
 
         # Create a response object
         json_data = json_util.dumps(data, indent=4)
+
+        # # Validate JSON
+        # if not validate_json(json_data):
+        #     return jsonify({'Error': 'Error Occured'})
+
         response = make_response(json_data)
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
-
-    # Validate JSON
-    if not validate_json(json_data):
-        jsonify({'Error': 'Error Occured'})
-
-    # Prompt the user to select a file path
-    root = tk.Tk()
-    root.withdraw()
-    root.wm_attributes("-topmost", 1)
-    file_path = filedialog.asksaveasfilename(defaultextension='.json')
-
-    # Write the data to the selected file path
-    with open(file_path, 'w') as f:
-        f.write(json_data)
-
-    root.destroy()
     return response
 
 
 @app.route("/api/downloadXML", methods=["GET"])
 def downloadXML():
-    with app.app_context():
-        # Get the data from the database
-        try:
-            data = get_all_transactions()
-        except TypeError:
-            data = []
+    # Get the data from the database
+    try:
+        data = get_all_transactions()
+    except TypeError:
+        data = []
 
-        # Convert the data to a JSON string
-        json_data = json_util.dumps(data)
+    # Convert the data to a JSON string
+    # json_data = json.dumps(data)
+    json_data = json_util.dumps(data, indent=4)
+    # Convert the JSON data to an ElementTree
+    xml_root = ET.fromstring(json2xml.Json2xml(json.loads(json_data)).to_xml())
+    xml_str = ET.tostring(xml_root, encoding='utf-8', method='xml')
 
-        # Convert the JSON data to an ElementTree
-        xml_root = ET.fromstring(json2xml.Json2xml(json.loads(json_data)).to_xml())
+    # Validate the XML file
+    # if not validate_xml(file_path):
+    #     os.remove(file_path)
+    #     return {'Error': 'Error Occurred'}
 
-        # Prompt the user to select a file path
-        root = tk.Tk()
-        root.withdraw()
-        root.wm_attributes("-topmost", 1)
-        file_path = filedialog.asksaveasfilename(defaultextension='.xml')
-
-        # Write the XML data to the selected file path
-        if file_path:
-            xml_string = ET.tostring(xml_root, encoding='utf-8', method='xml')
-            xml_string_pretty = xml.dom.minidom.parseString(xml_string).toprettyxml()
-            with open(file_path, 'wb') as f:
-                f.write(xml_string_pretty.encode('utf-8'))
-
-        # validate XML contents
-        if not validate_xml(file_path):
-            os.remove(file_path)
-            return jsonify({'Error': 'Error Occured'})
-
-        # Create a response with appropriate headers
-        response = make_response()
-        response.headers['Content-Type'] = 'application/xml'
-        response.headers['Content-Disposition'] = 'attachment; filename=data.xml'
-
-        root.destroy()
-        return response
+    # Create the Flask response object with XML data
+    response = make_response(xml_str)
+    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Disposition"] = "attachment; filename=data.xml"
+    return response
 
 
 @app.route("/api/getTransactions", methods=["GET"])
@@ -140,23 +114,25 @@ def get_all_transactions():
 # Send a POST request with the file path to this function
 @app.route("/api/uploadFile", methods=["POST"])
 def file_upload():
-    # Grab the file path from the post request sent to this function of API
+    # Get the JSON file from the POST request
     file_path = request.form.get('file_path')
+    json_data = request.get_json()
 
-    if not check_mt940_file(file_path):
-        return make_response(jsonify(error="File is not correct format. Unprocessable Entity"), 422)
+    # Validate JSON
+    if not validate_json(json_data):
+        jsonify({'Error': 'Error Occured'})
 
     # Insert into No SQL Db
-    transaction = parse_mt940_file(file_path)
-    transactions_collection.insert_one(transaction)
+    transactions_collection.insert_one(json_data)
 
     return make_response(jsonify(status="File uploaded!"), 200)
 
 
 # -------------------------- SQL PostGreSQL DB functions of the API ---------------------------
-@app.route("/api/deleteMember/<member_id>", methods=["GET"])
-def delete_member(member_id):
+@app.route("/api/deleteMember", methods=["DELETE"])
+def delete_member():
     try:
+        member_id = request.args.get('memberid')
         cursor = postgre_connection.cursor()
 
         # call a stored procedure
@@ -375,7 +351,7 @@ def get_transaction_on_id(trans_id):
         return jsonify({'error': error_message})
 
 
-@app.route("/api/updateTransaction", methods=["POST"])
+@app.route("/api/updateTransaction", methods=["PUT"])
 def update_transaction():
     try:
         cursor = postgre_connection.cursor()
