@@ -45,18 +45,14 @@ class MainWindow:
                 response = requests.post(url, json=json_data, headers=headers)
 
                 # Save to SQL DB FILE
-                payload = get_json_payload_mt940_file(file_path)
-                reference = payload["referencenumber"]
-                url = api_server_ip + '/api/insertFile/' + str(payload["referencenumber"]) + "/" + str(payload["statementnumber"]) + "/" + str(payload["sequencedetail"]) + "/" + str(payload["availablebalance"]) + "/" + str(payload["forwardavbalance"]) + "/" + str(payload["accountid"])
-                response = requests.get(url)
+                url = api_server_ip + '/api/insertFile'
+                headers = {'Content-Type': 'application/json'}
+                response = requests.post(url, json=json_data, headers=headers)
 
                 # Save to SQL DB Transaction
-                json_trans = parse_mt940_file(file_path)
-                for trans in json_trans["transactions"]:
-                    url = api_server_ip + '/api/insertTransaction'
-                    payload = get_json_payload_transaction(trans)
-                    payload.update(referencenumber = reference)
-                    response = requests.post(url, data=payload)
+                url = api_server_ip + '/api/insertTransaction'
+                headers = {'Content-Type': 'application/json'}
+                response = requests.post(url, json=json_data, headers=headers)
 
         # Close Window
         self.master.destroy()

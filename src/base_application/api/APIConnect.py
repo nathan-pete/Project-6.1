@@ -1,18 +1,16 @@
 import json
-from tkinter import filedialog
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
-import tkinter as tk
 import psycopg2
-import os
 from flask import jsonify, request, make_response, Flask, Response
 from json2xml import json2xml
-from src.base_application.utils import parse_mt940_file, check_mt940_file, check_email, validate_xml, validate_json
 from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
 from src.base_application import app, transactions_collection, postgre_connection, postgre_connection_user
+from src.base_application.api.api_utils import validate_json, validate_member_json, validate_association_json, \
+    validate_xml
 
 
 @app.route("/")
@@ -64,9 +62,9 @@ def downloadJSON():
         # Create a response object
         json_data = json_util.dumps(data, indent=4)
 
-        # # Validate JSON
-        # if not validate_json(json_data):
-        #     return jsonify({'Error': 'Error Occured'})
+        # Validate JSON
+        if not validate_json(json_data):
+            return jsonify({'Error': 'Error Occured'})
 
         response = make_response(json_data)
         response.headers['Content-Type'] = 'application/json'
@@ -90,9 +88,8 @@ def downloadXML():
     xml_str = ET.tostring(xml_root, encoding='utf-8', method='xml')
 
     # Validate the XML file
-    # if not validate_xml(file_path):
-    #     os.remove(file_path)
-    #     return {'Error': 'Error Occurred'}
+    if not validate_xml(xml_str):
+        return {'Error': 'Error Occurred'}
 
     # Create the Flask response object with XML data
     response = make_response(xml_str)
@@ -115,7 +112,6 @@ def get_all_transactions():
 @app.route("/api/uploadFile", methods=["POST"])
 def file_upload():
     # Get the JSON file from the POST request
-    file_path = request.form.get('file_path')
     json_data = request.get_json()
 
     # Validate JSON
@@ -153,9 +149,15 @@ def delete_member():
 @app.route("/api/insertAssociation", methods=["POST"])
 def insert_association():
     try:
-        accountID = request.form.get('accountID')
-        name = request.form.get('name')
-        hashed_password = request.form.get('password')
+        # Get the JSON file from the POST request
+        json_data = request.get_json()
+        # Validate with schema
+        if not validate_association_json(json_data):
+            jsonify({'Error': 'Error Occured'})
+
+        accountID = json_data['accountID']
+        name = json_data['name']
+        hashed_password = json_data['password']
 
         cursor = postgre_connection.cursor()
 
@@ -168,16 +170,24 @@ def insert_association():
         # close the cursor
         cursor.close()
 
-        # return make_response(jsonify(status="Data inserted!"), 200)
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         error_message = str(error)
         return jsonify({'error': error_message})
 
 
-@app.route("/api/insertMemberSQL/<name>/<email>", methods=["GET"])
-def insert_member(name, email):
+@app.route("/api/insertMemberSQL", methods=["POST"])
+def insert_member():
     try:
+        # Get the JSON file from the POST request
+        json_data = request.get_json()
+        # Validate with schema
+        if not validate_member_json(json_data):
+            jsonify({'Error': 'Error Occured'})
+
+        name = json_data['name']
+        email = json_data['email']
+
         cursor = postgre_connection.cursor()
 
         # call a stored procedure
@@ -189,7 +199,6 @@ def insert_member(name, email):
         # close the cursor
         cursor.close()
 
-        # return make_response(jsonify(status="Data inserted!"), 200)
         return jsonify({'message': 'Member saved successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         error_message = str(error)
@@ -217,23 +226,31 @@ def get_association():
 @app.route("/api/insertTransaction", methods=["POST"])
 def insert_transaction():
     try:
-        # Extract values from a POST request into variables for Transactions table
-        bank_reference = request.form.get('referencenumber')
-        amount = request.form.get('amount')
-        currency = request.form.get('currency')
-        transaction_date = request.form.get('transaction_date')
-        transaction_details = request.form.get('transaction_details')
-        description = request.form.get('description')
-        typetransaction = request.form.get('typetransaction')
+        # Get the JSON file from the POST request
+        json_trans = request.get_json()
+
+        # Validate JSON
+        if not validate_json(json_trans):
+            return jsonify({'Error': 'Error Occured'})
+
+        bank_reference = json_trans["transaction_reference"]
 
         cursor = postgre_connection.cursor()
 
-        cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
-            bank_reference, transaction_details, description, amount, currency, transaction_date, None, None,
-            typetransaction))
+        for trans_set in json_trans["transactions"]:
+            amount = trans_set["amount"]["amount"]
+            currency = trans_set["amount"]["currency"]
+            transaction_date = trans_set["date"]
+            transaction_details = str(trans_set["transaction_details"])
+            transaction_details = transaction_details.replace("/", "-")
+            description = None
+            typetransaction = trans_set["status"]
 
-        # commit the transaction
-        postgre_connection.commit()
+            cursor.execute('CALL insert_into_transaction(%s,%s,%s,%s,%s,%s,%s,%s,%s)', (
+                bank_reference, transaction_details, description, amount, currency, transaction_date, None, None,
+                typetransaction))
+            # commit the transaction
+            postgre_connection.commit()
 
         # close the cursor
         cursor.close()
@@ -244,14 +261,29 @@ def insert_transaction():
         return jsonify({'error': error_message})
 
 
-@app.route("/api/insertFile/<referencenumber>/<statementnumber>/<sequencedetail>/<availablebalance>/<forwardavbalance>/<accountid>", methods=["GET"])
-def insert_file(referencenumber, statementnumber, sequencedetail, availablebalance, forwardavbalance, accountid):
+@app.route("/api/insertFile", methods=["POST"])
+def insert_file():
     try:
+        # Get the JSON file from the POST request
+        json_transactions = request.get_json()
+
+        # # Validate JSON
+        # if not validate_json(json_transactions):
+        #     return jsonify({'Error': 'Error Occured'})
+
+        # Extract values from a JSON into variables for the File table
+        reference_number = json_transactions["transaction_reference"]
+        statement_number = json_transactions["statement_number"]
+        sequence_detail = json_transactions["sequence_number"]
+        available_balance = json_transactions["available_balance"]["amount"]["amount"]
+        forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
+        account_identification = json_transactions["account_identification"]
+
         cursor = postgre_connection.cursor()
 
-        # call a stored procedure
+        # Call a stored procedure
         cursor.execute('CALL insert_into_file(%s,%s,%s,%s,%s,%s)', (
-            referencenumber, statementnumber, sequencedetail, availablebalance, forwardavbalance, accountid))
+            reference_number, statement_number, sequence_detail, available_balance, forward_available_balance, account_identification))
 
         # commit the transaction
         postgre_connection.commit()
@@ -262,6 +294,7 @@ def insert_file(referencenumber, statementnumber, sequencedetail, availablebalan
         return jsonify({'message': 'File inserted successfully'})
     except (Exception, psycopg2.DatabaseError) as error:
         return jsonify({'message': error})
+
 
 @app.route("/api/getTransactionsSQL", methods=["GET"])
 def get_transactions_sql():

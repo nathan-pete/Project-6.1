@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
@@ -5,6 +6,7 @@ import requests
 from src.base_application import api_server_ip
 from userPanel import create_window
 from src.base_application.utils import hash_password
+
 
 def register_page():
     # Check if a user is already registered
@@ -22,8 +24,13 @@ def register_page():
     def button_click(name, password, iban):
         hashed_pass = hash_password(password)
         # Save to DB
-        payload = {'accountID': iban, 'name': name, 'password': hashed_pass}
-        response = requests.post(api_server_ip + "/api/insertAssociation", data=payload)
+        payload = {'accountID': iban,
+                   'name': name,
+                   'password': hashed_pass}
+        json_data = json.dumps(payload, indent=4)
+        url = api_server_ip + '/api/insertAssociation'
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, json=json_data, headers=headers)
         # Navigate to user panel
         root.destroy()
         create_window()

@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import messagebox
 
@@ -24,7 +25,14 @@ def member_registration():
                     name_entry.delete(first=0, last=255)
                 else:
                     # Insert to DB
-                    response = requests.get(api_server_ip + "/api/insertMemberSQL/" + name + "/" + email)
+                    members_json = {
+                        'name': name,
+                        'email': email
+                    }
+                    members_json = json.dumps(members_json, indent=4)
+                    url = api_server_ip + '/api/insertMemberSQL'
+                    headers = {'Content-Type': 'application/json'}
+                    response = requests.post(url, json=members_json, headers=headers)
                     email_entry.delete(first=0, last=255) # will delete what is from position 0 to 255
                     name_entry.delete(first=0, last=255)
             else:

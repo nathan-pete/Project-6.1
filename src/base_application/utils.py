@@ -1,14 +1,9 @@
 import hashlib
 import json
-import jsonschema
 import mt940
 import re
-from lxml import etree
-import os
 # Make a regular expression for validating an Email
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-xml_schema_path = os.path.join(os.path.dirname(__file__), 'xmlSchema.xsd')
-json_schema_path = os.path.join(os.path.dirname(__file__), 'mt940_schema.json')
 
 
 def parse_mt940_file(file_path) -> dict:
@@ -80,63 +75,3 @@ def check_email(email):
         return True
     else:
         return False
-
-
-def get_json_payload_mt940_file(file_path):
-    json_transactions = parse_mt940_file(file_path)
-
-    # Extract values from a JSON into variables for the File table
-    reference_number = json_transactions["transaction_reference"]
-    statement_number = json_transactions["statement_number"]
-    sequence_detail = json_transactions["sequence_number"]
-    available_balance = json_transactions["available_balance"]["amount"]["amount"]
-    forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
-    account_identification = json_transactions["account_identification"]
-    # Extract values from a JSON into variables for the Transaction table
-
-    payload = {'referencenumber': reference_number, 'statementnumber': statement_number, 'sequencedetail': sequence_detail, 'availablebalance': available_balance,
-               'forwardavbalance': forward_available_balance, 'accountid': account_identification}
-
-    return payload
-
-
-def get_json_payload_transaction(trans_set):
-    amount = trans_set["amount"]["amount"]
-    currency = trans_set["amount"]["currency"]
-    transaction_date = trans_set["date"]
-    transaction_details = str(trans_set["transaction_details"])
-    transaction_details = transaction_details.replace("/", "-")
-    description = None
-    typetransaction = trans_set["status"]
-
-    payload = {"amount": amount, "currency": currency, "transaction_date": transaction_date,
-               "transaction_details": transaction_details, "description": description, "typetransaction": typetransaction}
-
-    return payload
-
-
-def validate_xml(xml_file):
-    with open(xml_schema_path, 'r') as f:
-        xsd = etree.parse(f)
-
-    with open(xml_file, 'r') as f:
-        xml = etree.parse(f)
-
-    schema = etree.XMLSchema(xsd)
-
-    is_valid = schema.validate(xml)
-
-    return is_valid
-
-
-def validate_json(json_inp):
-    try:
-        with open(json_schema_path) as r:
-            schema = json.load(r)
-        jsonschema.validate(json_inp, schema)
-        return True
-    except (Exception, jsonschema.ValidationError) as error:
-        return False
-
-
-
