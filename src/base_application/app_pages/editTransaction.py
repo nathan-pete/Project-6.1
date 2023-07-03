@@ -98,7 +98,7 @@ def edit_transaction_page(transaction_id):
 
     def back_button_click():
         window.destroy()
-        from userPanel import create_window
+        from src.base_application.app_pages.userPanel import create_window
         create_window()
 
     def get_input_save(category, member, desc):
@@ -211,7 +211,7 @@ def edit_transaction_page_admin(transaction_id):
 
     def back_button_click():
         window.destroy()
-        from adminPanel import adminPanel
+        from src.base_application.admin.adminPanel import adminPanel
         adminPanel()
 
     def get_input_save(category, member, desc):

@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 import requests
 
-from utils import check_email
+from src.base_application.utils import check_email
 from src.base_application import api_server_ip
 
 
@@ -35,7 +35,7 @@ def member_registration():
 
     def back_button_click():
         window.destroy()
-        from manageMembers import manage_members
+        from src.base_application.member.manageMembers import manage_members
         manage_members()
 
     # create two frames side by side

@@ -1,8 +1,8 @@
 import tkinter as tk
 import requests
-from adminPanel import adminPanel
+from src.base_application.admin.adminPanel import adminPanel
 from src.base_application import api_server_ip
-from utils import hash_password
+from src.base_application.utils import hash_password
 from tkinter import messagebox
 
 

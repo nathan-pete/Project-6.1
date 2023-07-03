@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 import requests
-from member_registration_gui import member_registration
+from src.base_application.member.member_registration_gui import member_registration
 from src.base_application import api_server_ip
 
 
@@ -28,7 +27,7 @@ def manage_members():
 
     def back_button_click():
         root.destroy()
-        from adminPanel import adminPanel
+        from src.base_application.admin.adminPanel import adminPanel
         adminPanel()
 
     def add_member_button_click():

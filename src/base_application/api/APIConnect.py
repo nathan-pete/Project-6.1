@@ -7,7 +7,7 @@ import psycopg2
 import os
 from flask import jsonify, request, make_response, Flask, Response
 from json2xml import json2xml
-from utils import parse_mt940_file, check_mt940_file, check_email, validate_xml, validate_json
+from src.base_application.utils import parse_mt940_file, check_mt940_file, check_email, validate_xml, validate_json
 from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 

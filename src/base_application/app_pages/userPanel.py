@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import requests
-from adminLogin import login_admin_page
+from src.base_application.admin.adminLogin import login_admin_page
 from src.base_application import api_server_ip
 
 
@@ -46,7 +46,7 @@ def create_window():
         global selected_row
         if selected_row is None:
             return
-        from transactionDetails import transaction_details
+        from src.base_application.app_pages.transactionDetails import transaction_details
         transaction_details(selected_row)
 
 

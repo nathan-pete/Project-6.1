@@ -5,8 +5,8 @@ import tkinter as tk
 import xml
 from tkinter import ttk, messagebox
 from tkinter import filedialog
-from manageMembers import manage_members
-from fileUpload import main
+from src.base_application.member.manageMembers import manage_members
+from src.base_application import main
 import requests
 from src.base_application import api_server_ip
 import xml.etree.ElementTree as ET

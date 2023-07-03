@@ -4,7 +4,7 @@ from tkinter import *
 import requests
 from src.base_application import api_server_ip
 from userPanel import create_window
-from utils import hash_password
+from src.base_application.utils import hash_password
 
 def register_page():
     # Check if a user is already registered
