@@ -180,7 +180,8 @@ def insert_association():
 def insert_member():
     try:
         # Get the JSON file from the POST request
-        json_data = request.get_json()
+        json_temp = request.get_json()
+        json_data = json.loads(json_temp)
         # Validate with schema
         if not validate_member_json(json_data):
             jsonify({'Error': 'Error Occured'})
@@ -227,7 +228,8 @@ def get_association():
 def insert_transaction():
     try:
         # Get the JSON file from the POST request
-        json_trans = request.get_json()
+        json_temp = request.get_json()
+        json_trans = json.loads(json_temp)
 
         # Validate JSON
         if not validate_json(json_trans):

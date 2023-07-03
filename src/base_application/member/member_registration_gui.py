@@ -26,10 +26,11 @@ def member_registration():
                 else:
                     # Insert to DB
                     members_json = {
-                        'name': name,
-                        'email': email
+                        "name": str(name),
+                        "email": str(email)
                     }
                     members_json = json.dumps(members_json, indent=4)
+                    print(members_json)
                     url = api_server_ip + '/api/insertMemberSQL'
                     headers = {'Content-Type': 'application/json'}
                     response = requests.post(url, json=members_json, headers=headers)

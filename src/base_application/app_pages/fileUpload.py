@@ -1,10 +1,10 @@
 import json
-
-from utils import parse_mt940_file, check_mt940_file, get_json_payload_mt940_file, get_json_payload_transaction
 from tkinter import Tk, filedialog
 from tkinter.ttk import Button, Label
 import requests
 from src.base_application import api_server_ip
+from src.base_application.utils import check_mt940_file, parse_mt940_file
+
 
 class MainWindow:
     def __init__(self, master):

@@ -6,7 +6,7 @@ import xml
 from tkinter import ttk, messagebox
 from tkinter import filedialog
 from src.base_application.member.manageMembers import manage_members
-from src.base_application import main
+from src.base_application.app_pages.fileUpload import main
 import requests
 from src.base_application import api_server_ip
 import xml.etree.ElementTree as ET
@@ -43,7 +43,7 @@ def adminPanel():
     def logout_button():
         # create_window()
         window.destroy()
-        from userPanel import create_window
+        from src.base_application.app_pages.userPanel import create_window
         create_window()
 
     # Define a function to be called when a row of the table is clicked
@@ -60,7 +60,7 @@ def adminPanel():
         if selected_row is None:
             return
         window.destroy()
-        from editTransaction import edit_transaction_page_admin
+        from src.base_application.app_pages.editTransaction import edit_transaction_page_admin
         edit_transaction_page_admin(selected_row)
 
     def retrieveDB():
@@ -78,7 +78,7 @@ def adminPanel():
         global selected_row
         if selected_row is None:
             return
-        from transactionDetails import transaction_details
+        from src.base_application.app_pages.transactionDetails import transaction_details
         transaction_details(selected_row)
 
     def retrieveDB_keyword_search(keyword):
