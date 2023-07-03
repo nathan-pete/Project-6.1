@@ -6,4 +6,3 @@ postgre_connection = get_connection_postgre()
 api_server_ip = "http://127.0.0.1:5000"
 postgre_connection_user = get_connection_postgre_user()
 
-from src.base_application.api import APIConnect

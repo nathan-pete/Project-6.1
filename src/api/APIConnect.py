@@ -1,15 +1,13 @@
 import json
 import xml.etree.ElementTree as ET
-import xml.dom.minidom
 import psycopg2
-from flask import jsonify, request, make_response, Flask, Response
+from flask import jsonify, request, make_response
 from json2xml import json2xml
-from bson import json_util, ObjectId
-from bson.json_util import dumps as json_util_dumps
+from bson import json_util
 
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
-from src.base_application import app, transactions_collection, postgre_connection, postgre_connection_user
-from src.base_application.api.api_utils import validate_json, validate_member_json, validate_association_json, \
+from src.base_application import app, transactions_collection, postgre_connection
+from src.base_application.api import validate_json, validate_member_json, validate_association_json, \
     validate_xml
 
 
