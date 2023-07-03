@@ -39,7 +39,7 @@ def login_admin_page():
 
 
     def back_button_click():
-        from userPanel import create_window
+        from src.base_application.app_pages.userPanel import create_window
         window.destroy()
         create_window()
 
