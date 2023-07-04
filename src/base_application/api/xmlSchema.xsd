@@ -1,200 +1,200 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="all" type="allType"/>
-    <xs:complexType name="keyType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="name" use="optional"/>
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="_idType">
-        <xs:sequence>
-            <xs:element type="keyType" name="key"/>
-        </xs:sequence>
+  <xs:element name="all" type="allType"/>
+  <xs:complexType name="keyType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="_idType">
+    <xs:sequence>
+      <xs:element type="keyType" name="key"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="account_identificationType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="amountType" mixed="true">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount" minOccurs="0"/>
+      <xs:element type="currencyType" name="currency" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="currencyType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="account_identificationType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="amountType" mixed="true">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount" minOccurs="0"/>
-            <xs:element type="currencyType" name="currency" minOccurs="0"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="dateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="currencyType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="dateType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="statusType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="available_balanceType">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount"/>
-            <xs:element type="dateType" name="date"/>
-            <xs:element type="statusType" name="status"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="statusType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="final_closing_balanceType">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount"/>
-            <xs:element type="dateType" name="date"/>
-            <xs:element type="statusType" name="status"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="available_balanceType">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount"/>
+      <xs:element type="dateType" name="date"/>
+      <xs:element type="statusType" name="status"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="final_closing_balanceType">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount"/>
+      <xs:element type="dateType" name="date"/>
+      <xs:element type="statusType" name="status"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="final_opening_balanceType">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount"/>
+      <xs:element type="dateType" name="date"/>
+      <xs:element type="statusType" name="status"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="forward_available_balanceType">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount"/>
+      <xs:element type="dateType" name="date"/>
+      <xs:element type="statusType" name="status"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="sequence_numberType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="statement_numberType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="transaction_referenceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="bank_referenceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="final_opening_balanceType">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount"/>
-            <xs:element type="dateType" name="date"/>
-            <xs:element type="statusType" name="status"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="customer_referenceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="forward_available_balanceType">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount"/>
-            <xs:element type="dateType" name="date"/>
-            <xs:element type="statusType" name="status"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="entry_dateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="sequence_numberType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="statement_numberType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="transaction_referenceType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="bank_referenceType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="customer_referenceType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="entry_dateType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="extra_detailsType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="funds_codeType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="guessed_entry_dateType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="idType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="transaction_detailsType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="itemType">
-        <xs:sequence>
-            <xs:element type="amountType" name="amount" minOccurs="0"/>
-            <xs:element type="bank_referenceType" name="bank_reference" minOccurs="0"/>
-            <xs:element type="currencyType" name="currency" minOccurs="0"/>
-            <xs:element type="customer_referenceType" name="customer_reference" minOccurs="0"/>
-            <xs:element type="dateType" name="date" minOccurs="0"/>
-            <xs:element type="entry_dateType" name="entry_date" minOccurs="0"/>
-            <xs:element type="extra_detailsType" name="extra_details" minOccurs="0"/>
-            <xs:element type="funds_codeType" name="funds_code" minOccurs="0"/>
-            <xs:element type="guessed_entry_dateType" name="guessed_entry_date" minOccurs="0"/>
-            <xs:element type="idType" name="id" minOccurs="0"/>
-            <xs:element type="statusType" name="status" minOccurs="0"/>
-            <xs:element type="transaction_detailsType" name="transaction_details" minOccurs="0"/>
-            <xs:element type="_idType" name="_id" minOccurs="0"/>
-            <xs:element type="account_identificationType" name="account_identification" minOccurs="0"/>
-            <xs:element type="available_balanceType" name="available_balance" minOccurs="0"/>
-            <xs:element type="final_closing_balanceType" name="final_closing_balance" minOccurs="0"/>
-            <xs:element type="final_opening_balanceType" name="final_opening_balance" minOccurs="0"/>
-            <xs:element type="forward_available_balanceType" name="forward_available_balance" minOccurs="0"/>
-            <xs:element type="sequence_numberType" name="sequence_number" minOccurs="0"/>
-            <xs:element type="statement_numberType" name="statement_number" minOccurs="0"/>
-            <xs:element type="transaction_referenceType" name="transaction_reference" minOccurs="0"/>
-            <xs:element type="transactionsType" name="transactions" minOccurs="0"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="extra_detailsType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="transactionsType">
-        <xs:sequence>
-            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
-        </xs:sequence>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="funds_codeType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="type" use="optional"/>
-    </xs:complexType>
-    <xs:complexType name="allType">
-        <xs:sequence>
-            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="guessed_entry_dateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="idType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="transaction_detailsType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="itemType">
+    <xs:sequence>
+      <xs:element type="amountType" name="amount" minOccurs="0"/>
+      <xs:element type="bank_referenceType" name="bank_reference" minOccurs="0"/>
+      <xs:element type="currencyType" name="currency" minOccurs="0"/>
+      <xs:element type="customer_referenceType" name="customer_reference" minOccurs="0"/>
+      <xs:element type="dateType" name="date" minOccurs="0"/>
+      <xs:element type="entry_dateType" name="entry_date" minOccurs="0"/>
+      <xs:element type="extra_detailsType" name="extra_details" minOccurs="0"/>
+      <xs:element type="funds_codeType" name="funds_code" minOccurs="0"/>
+      <xs:element type="guessed_entry_dateType" name="guessed_entry_date" minOccurs="0"/>
+      <xs:element type="idType" name="id" minOccurs="0"/>
+      <xs:element type="statusType" name="status" minOccurs="0"/>
+      <xs:element type="transaction_detailsType" name="transaction_details" minOccurs="0"/>
+      <xs:element type="_idType" name="_id" minOccurs="0"/>
+      <xs:element type="account_identificationType" name="account_identification" minOccurs="0"/>
+      <xs:element type="available_balanceType" name="available_balance" minOccurs="0"/>
+      <xs:element type="final_closing_balanceType" name="final_closing_balance" minOccurs="0"/>
+      <xs:element type="final_opening_balanceType" name="final_opening_balance" minOccurs="0"/>
+      <xs:element type="forward_available_balanceType" name="forward_available_balance" minOccurs="0"/>
+      <xs:element type="sequence_numberType" name="sequence_number" minOccurs="0"/>
+      <xs:element type="statement_numberType" name="statement_number" minOccurs="0"/>
+      <xs:element type="transaction_referenceType" name="transaction_reference" minOccurs="0"/>
+      <xs:element type="transactionsType" name="transactions" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="transactionsType">
+    <xs:sequence>
+      <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type"/>
+  </xs:complexType>
+  <xs:complexType name="allType">
+    <xs:sequence>
+      <xs:element type="itemType" name="item"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>

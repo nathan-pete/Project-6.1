@@ -224,7 +224,7 @@ def edit_transaction_page_admin(transaction_id):
 
         # Save to DB
         payload = {'trans_id': transaction_id, 'desc': desc, 'category': category_out, 'member': member_out}
-        response = requests.post(api_server_ip + "/api/updateTransaction", data=payload)
+        response = requests.put(api_server_ip + "/api/updateTransaction", data=payload)
         back_button_click()
 
     # Start the window

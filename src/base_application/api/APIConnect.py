@@ -8,7 +8,7 @@ from bson import json_util, ObjectId
 from bson.json_util import dumps as json_util_dumps
 
 # Get instances of Flask App and MongoDB collection from dataBaseConnectionPyMongo file
-from src.base_application import app, transactions_collection, postgre_connection, postgre_connection_user
+from src.base_application.api import app, transactions_collection, postgre_connection, postgre_connection_user
 from src.base_application.api.api_utils import validate_json, validate_member_json, validate_association_json, \
     validate_xml
 
@@ -62,10 +62,6 @@ def downloadJSON():
         # Create a response object
         json_data = json_util.dumps(data, indent=4)
 
-        # Validate JSON
-        if not validate_json(json_data):
-            return jsonify({'Error': 'Error Occured'})
-
         response = make_response(json_data)
         response.headers['Content-Type'] = 'application/json'
         response.headers['Content-Disposition'] = 'attachment; filename=data.json'
@@ -87,9 +83,10 @@ def downloadXML():
     xml_root = ET.fromstring(json2xml.Json2xml(json.loads(json_data)).to_xml())
     xml_str = ET.tostring(xml_root, encoding='utf-8', method='xml')
 
-    # Validate the XML file
+    # Validate XML
     if not validate_xml(xml_str):
-        return {'Error': 'Error Occurred'}
+        print('Validation failed')
+        return jsonify({'Error': 'Error Occured'})
 
     # Create the Flask response object with XML data
     response = make_response(xml_str)
@@ -228,14 +225,14 @@ def get_association():
 def insert_transaction():
     try:
         # Get the JSON file from the POST request
-        json_temp = request.get_json()
-        json_trans = json.loads(json_temp)
+        json_trans = request.get_json()
 
         # Validate JSON
         if not validate_json(json_trans):
+            print("Validation failed")
             return jsonify({'Error': 'Error Occured'})
 
-        bank_reference = json_trans["transaction_reference"]
+        bank_reference = str(json_trans["transaction_reference"])
 
         cursor = postgre_connection.cursor()
 
@@ -269,17 +266,18 @@ def insert_file():
         # Get the JSON file from the POST request
         json_transactions = request.get_json()
 
-        # # Validate JSON
-        # if not validate_json(json_transactions):
-        #     return jsonify({'Error': 'Error Occured'})
+        # Validate JSON
+        if not validate_json(json_transactions):
+            print("Validation failed")
+            return jsonify({'Error': 'Error Occured'})
 
         # Extract values from a JSON into variables for the File table
-        reference_number = json_transactions["transaction_reference"]
-        statement_number = json_transactions["statement_number"]
-        sequence_detail = json_transactions["sequence_number"]
+        reference_number = str(json_transactions["transaction_reference"])
+        statement_number = str(json_transactions["statement_number"])
+        sequence_detail = str(json_transactions["sequence_number"])
         available_balance = json_transactions["available_balance"]["amount"]["amount"]
         forward_available_balance = json_transactions["forward_available_balance"]["amount"]["amount"]
-        account_identification = json_transactions["account_identification"]
+        account_identification = str(json_transactions["account_identification"])
 
         cursor = postgre_connection.cursor()
 

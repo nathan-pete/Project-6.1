@@ -119,7 +119,6 @@ def adminPanel():
         xml_data = requests.get(api_server_ip + "/api/downloadXML", headers=headers)
         # xml_root = ET.fromstring(xml_data.content)
         xml_root = xml_data.text
-        print(xml_root)
 
         # Prompt the user to select a file path
         root = tk.Tk()
