@@ -112,8 +112,8 @@ def file_upload():
     json_data = request.get_json()
 
     # Validate JSON
-    # if not validate_json(json_data):
-    #     jsonify({'Error': 'Error Occured'})
+    if not validate_json(json_data):
+        jsonify({'Error': 'Error Occured'})
 
     # Insert into No SQL Db
     transactions_collection.insert_one(json_data)
@@ -228,9 +228,9 @@ def insert_transaction():
         json_trans = request.get_json()
 
         # Validate JSON
-        # if not validate_json(json_trans):
-        #     print("Validation failed")
-        #     return jsonify({'Error': 'Error Occured'})
+        if not validate_json(json_trans):
+            print("Validation failed")
+            return jsonify({'Error': 'Error Occured'})
 
         bank_reference = str(json_trans["transaction_reference"])
 
@@ -267,9 +267,9 @@ def insert_file():
         json_transactions = request.get_json()
 
         # Validate JSON
-        # if not validate_json(json_transactions):
-        #     print("Validation failed")
-        #     return jsonify({'Error': 'Error Occured'})
+        if not validate_json(json_transactions):
+            print("Validation failed")
+            return jsonify({'Error': 'Error Occured'})
 
         # Extract values from a JSON into variables for the File table
         reference_number = str(json_transactions["transaction_reference"])
