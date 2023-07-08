@@ -86,7 +86,6 @@ def downloadXML():
     # Validate XML
     if not validate_xml(xml_str):
         print('Validation failed')
-        return jsonify({'Error': 'Error Occured'})
 
     # Create the Flask response object with XML data
     response = make_response(xml_str)

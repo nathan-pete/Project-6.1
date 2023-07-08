@@ -12,7 +12,7 @@
             "format": "date"
           },
           "amount": {
-            "type": "number"
+            "type": "object"
           },
           "currency": {
             "type": "string"
@@ -31,11 +31,10 @@
             "type": "string"
           }
         },
-        "required": ["transaction_date", "amount", "currency", "description", "transaction_type", "reference", "account_number"],
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   },
   "required": ["transactions"],
-  "additionalProperties": false
+  "additionalProperties": true
 }
